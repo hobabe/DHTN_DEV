@@ -3,7 +3,9 @@
 <head> 
     <meta charset="UTF-8" />
     <title>Making your first Phaser 3 Game - Part 10</title>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
+    <!-- <script src="http://cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script> -->
+
     <style type="text/css">
         body {
             margin: 0;
@@ -13,11 +15,12 @@
 <body>
 
 <script type="text/javascript">
-
+var temp = 'abc'
 var config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    parent: 'phaser-example',
     physics: {
         default: 'arcade',
         arcade: {
@@ -25,12 +28,18 @@ var config = {
             debug: false
         }
     },
+    dom: {
+        createContainer: true
+    },
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
+        hitbomb: hitBomb
     }
 };
+var game = new Phaser.Game(config);
+
 
 var player;
 var stars;
@@ -45,8 +54,11 @@ var level_state;
 var level = 1;
 
 var de_star = 0;
+var element;
+var playbtn;
 
-var game = new Phaser.Game(config);
+var player_list=[0,0,0,0,0,0,0,0,0,0];
+var score_list = [0,0,0,0,0,0,0,0,0,0,0];
 
 function preload ()
 {
@@ -55,10 +67,14 @@ function preload ()
     this.load.image('star', 'assets/bomb.png');
     this.load.image('bomb', 'assets/star.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.html('play-btn', 'assets/play.html');
+    this.load.html('nameform', 'assets/loginform.html');
+    console.log(temp)
 }
 
 function create ()
 {
+
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -109,12 +125,11 @@ function create ()
     
     stars = this.physics.add.group({
         key: 'star',
-        repeat: 11,
+        repeat: 1,
         setXY: { x: 12, y: 0, stepX: 70 }
     });
 
     stars.children.iterate(function (child) {
-
         //  Give each star a slightly different bounce
         child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
@@ -133,9 +148,9 @@ function create ()
     this.physics.add.collider(bombs, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    this.physics.add.overlap(player, stars, collectStar, null, this);
+    // this.physics.add.overlap(player, stars, collectStar, null, this);
 
-    this.physics.add.collider(player, bombs, hitBomb, null, this);
+    this.physics.add.collider(player, stars, hitBomb, null, this);
 }
 
 function update ()
@@ -186,9 +201,9 @@ function collectStar (player, star)
 
         de_star+=1;
         stars = this.physics.add.group({
-        key: 'star',
-        repeat: 11-de_star,
-        setXY: { x: 12, y: 0, stepX: 70 }
+            key: 'star',
+            repeat: 11-de_star,
+            setXY: { x: 12, y: 0, stepX: 70 }
         });
 
         this.physics.add.collider(stars, platforms);
@@ -206,7 +221,7 @@ function collectStar (player, star)
 
         });
 
-        this.physics.add.overlap(player, stars, collectStar, null, this);
+        // this.physics.add.overlap(player, stars, collectStar, null, this);
 
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
@@ -222,7 +237,7 @@ function collectStar (player, star)
     level_state.setText('Level: '+level);
 }
 
-function hitBomb (player, bomb)
+function hitBomb (player, star)
 {
     this.physics.pause();
 
@@ -231,9 +246,78 @@ function hitBomb (player, bomb)
     player.anims.play('turn');
 
     gameOver = true;
+
+    var element = this.add.dom(400, 600).createFromCache('nameform');
+
+    element.setPerspective(800);
+
+    element.addListener('click');
+
+    element.on('click', function (event) {
+
+        if (event.target.name === 'loginButton')
+        {
+            var inputUsername = this.getChildByName('username');
+            var inputPassword = this.getChildByName('password');
+            player_list[0]= inputUsername.value;
+            score_list[0]= score;
+            console.log(player_list[0]);
+            //  Have they entered anything?
+            if (inputUsername.value !== '' && inputPassword.value !== '')
+            {
+                //  Turn off the click events
+                this.removeListener('click');
+
+                //  Tween the login form out
+                this.scene.tweens.add({ targets: element.rotate3d, x: 1, w: 90, duration: 3000, ease: 'Power3' });
+
+                this.scene.tweens.add({ targets: element, scaleX: 2, scaleY: 2, y: 700, duration: 3000, ease: 'Power3',
+                    onComplete: function ()
+                    {
+                        element.setVisible(false);
+                    }
+                });
+                //  Populate the text with whatever they typed in as the username!
+                //text.setText('Welcome ' + inputUsername.value);
+            }
+            else
+            {
+                //  Flash the prompt
+                this.scene.tweens.add({ targets: text, alpha: 0.1, duration: 200, ease: 'Power3', yoyo: true });
+            }
+        }
+
+    });
+
+    this.tweens.add({
+        targets: element,
+        y: 300,
+        duration: 3000,
+        ease: 'Power3'
+    });
+
+    var playbtn = this.add.dom(390, 600).createFromCache('play-btn');
+
+    playbtn.setPerspective(600);
+
+    playbtn.addListener('click');
+
+    playbtn.on('click', (event) => {
+        temp = '123';
+        this.scene.restart();
+        
+    });
     
-    this.myInput = this.createInput(this.game.world.centerX, 50);
+    this.tweens.add({
+        targets: playbtn,
+        y: 500,
+        duration: 3000,
+        ease: 'Power3'
+    });
+   // this.collectStar();
+   
 }
+
 
 </script>
 
