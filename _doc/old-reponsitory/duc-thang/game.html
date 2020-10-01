@@ -56,18 +56,18 @@ var level = 1;
 var de_star = 0;
 var element;
 var playbtn;
+var viewbtn;
 
 var player_board;
 var score_board;
 var player_name;
-var player_name_state = false;
-var pos = 32;
 
-var player_1 ;
-var player_2;
-var player_3;
-var player_4;
-var numply =1;
+var player_list = ['-', '-', '-','-']
+var score_list = [0,0,0,0]
+var numply = 0;
+
+var player_1, player_2, player_3, player_4;
+var score_1, score_2, score_3, score_4;
 
 function preload ()
 {
@@ -77,13 +77,16 @@ function preload ()
     this.load.image('bomb', 'assets/star.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.html('play-btn', 'assets/play.html');
+    this.load.html('view-btn', 'assets/view.html');
+
     this.load.html('nameform', 'assets/loginform.html');
     console.log(temp)
 }
 
 function create ()
 {
-
+    score =0;
+    de_star = 0;
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -151,42 +154,26 @@ function create ()
     level_state = this.add.text(16, 50, 'Level: 1', { fontSize: '32px', fill: '#000' });
     player_board = this.add.text(600, 16, 'player', {fontSize: '16px', fill:'#000'})
     score_board = this.add.text(700, 16, 'score', {fontSize: '16px', fill:'#000'})
-    // if(player_name_state == false)
-    // {
-    //     if (numply == 1 )
-    //     {
-    //         player_1 = this.add.text(600, pos, '...', {fontSize: '16px', fill: '#000'})
-    //     }
-    //     else if(numply == 2)
-    //     {
-    //         player_2 = this.add.text(600, pos, '...', {fontSize: '16px', fill: '#000'})
-    //     }
-    //     else if(numply == 3)
-    //     {
-    //         player_3 = this.add.text(600, pos, '...', {fontSize: '16px', fill: '#000'})
-    //     }
-    //     else if(numply == 4)
-    //     {
-    //         player_4 = this.add.text(600, pos, '...', {fontSize: '16px', fill: '#000'})
-    //     }
-    //     numply = numply%3+1;
-    // }
 
+    player_1 = this.add.text(600, 32, '...', {fontSize: '16px', fill: '#000'})
+    player_2 = this.add.text(600, 48, '...', {fontSize: '16px', fill: '#000'})
+    player_3 = this.add.text(600, 64, '...', {fontSize: '16px', fill: '#000'})
+    player_4 = this.add.text(600, 80, '...', {fontSize: '16px', fill: '#000'})
 
-    // else{
-    //     player_list[numply] = this.add.text(600, pos, player_name, {fontSize: '16px', fill: '#000'})
-    //     numply = numply%3+1;
-    // }
-    // console.log(player_list[1]);
+    score_1 = this.add.text(700, 32, '...', {fontSize: '16px', fill: '#000'})
+    score_2 = this.add.text(700, 48, '...', {fontSize: '16px', fill: '#000'})
+    score_3 = this.add.text(700, 64, '...', {fontSize: '16px', fill: '#000'})
+    score_4 = this.add.text(700, 80, '...', {fontSize: '16px', fill: '#000'})
+    
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(stars, platforms);
     this.physics.add.collider(bombs, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    // this.physics.add.overlap(player, stars, collectStar, null, this);
+    this.physics.add.overlap(player, stars, collectStar, null, this);
 
-    this.physics.add.collider(player, stars, hitBomb, null, this);
+    this.physics.add.collider(player, bombs, hitBomb, null, this);
 }
 
 function update ()
@@ -256,7 +243,7 @@ function collectStar (player, star)
 
         });
 
-        // this.physics.add.overlap(player, stars, collectStar, null, this);
+        this.physics.add.overlap(player, stars, collectStar, null, this);
 
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
@@ -310,36 +297,13 @@ function hitBomb (player, star)
                         element.setVisible(false);
                     }
                 });
-                //  Populate the text with whatever they typed in as the username!
-                // playername.setText(inputUsername.value);
-                console.log(numply%4)
-                if (numply == 1 )
-                {
-                    player_1.setText(player_name)
-                }
-                else if(numply == 2)
-                {
-                    player_2 = this.add.text(600, pos, player_name, {fontSize: '16px', fill: '#000'})
-                }
-                else if(numply == 3)
-                {
-                    player_3 = this.add.text(600, pos, player_name, {fontSize: '16px', fill: '#000'})
-                }
-                else if(numply == 4)
-                {
-                    player_4 = this.add.text(600, pos, player_name, {fontSize: '16px', fill: '#000'})
-                }
-                numply = (numply%4)+  1;
-               
-                pos = pos + numply*16;
-            }
-            else
-            {
-                //  Flash the prompt
-               // this.scene.tweens.add({ targets: text, alpha: 0.1, duration: 200, ease: 'Power3', yoyo: true });
+                
+                player_list[numply] = player_name;
+                score_list[numply] = score;
+                numply = (numply%3)+1;
+                
             }
         }
-
     });
 
     this.tweens.add({
@@ -349,7 +313,7 @@ function hitBomb (player, star)
         ease: 'Power3'
     });
 
-    var playbtn = this.add.dom(390, 600).createFromCache('play-btn');
+    var playbtn = this.add.dom(240, 600).createFromCache('play-btn');
 
     playbtn.setPerspective(600);
 
@@ -358,7 +322,6 @@ function hitBomb (player, star)
     playbtn.on('click', (event) => {
         temp = '123';
         gameOver =false;
-        // player_name_state = true;   
         this.scene.restart();
     });
     
@@ -368,10 +331,40 @@ function hitBomb (player, star)
         duration: 3000,
         ease: 'Power3'
     });
+
+    var viewbtn = this.add.dom(540, 600).createFromCache('view-btn');
+
+    viewbtn.setPerspective(600);
+
+    viewbtn.addListener('click');
+
+    viewbtn.on('click', (event) => {
+        temp = '123';
+        gameOver =false;
+        for (i=0;i<4;i++)
+        {
+            console.log(player_list[i] + ' - '+ score_list[i])
+        }
+        player_1.setText(player_list[0])
+        player_2.setText(player_list[1])
+        player_3.setText(player_list[2])
+        player_4.setText(player_list[3])
+
+        score_1.setText(score_list[0])
+        score_2.setText(score_list[1])
+        score_3.setText(score_list[2])
+        score_4.setText(score_list[3])
+    });
+    
+    this.tweens.add({
+        targets: viewbtn,
+        y: 500,
+        duration: 3000,
+        ease: 'Power3'
+    });
 }
 
 
 </script>
-
 </body>
 </html>
