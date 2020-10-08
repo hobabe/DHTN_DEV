@@ -1,0 +1,305 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 10</title>
+    <script src="/src/js/root/phaser-3.24.min.js"></script>
+	<link rel="shortcut icon" href="favicon.ico">
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var players = { player1: {sprite: null, joystick:null}, player2:  {sprite: null, joystick:null}};
+var stars;
+var bombs;
+var platforms;
+var cursors;
+var score = 0;
+var gameOver = false;
+var scoreText;
+var scene;
+
+var game = new Phaser.Game(config);
+
+function preload ()
+{
+    scene = this;
+	var pathAssets = 'media/img/shooting-to-stars/'
+    this.load.image('sky', pathAssets+ 'sky.png');
+    this.load.image('ground', pathAssets+ 'platform.png');
+    this.load.image('star', pathAssets+ 'star.png');
+    this.load.image('bomb', pathAssets+ 'bomb.png');
+    this.load.spritesheet('dude', pathAssets+ 'dude.png', { frameWidth: 32, frameHeight: 48 });
+}
+
+function create ()
+{
+    //------ init background ----
+    cteateInitBackground();
+
+    createInitJoystick("player1", ['LEFT', 'UP', 'RIGHT', 'DOWN']);
+    createInitJoystick("player2", ['A', 'W', 'D', 'S']);
+
+    //------ Player init setting -----
+    createInitPlayerSetting("player1", 100, 450);
+    createInitPlayerSetting("player2", 300, 450);
+
+   
+    //-------- Init player animation -------
+    createInitAnimationMoving("player1");
+    createInitAnimationMoving("player2");
+
+    //-------- Init boom ----
+    createInitBoom();
+
+    //  Input Events
+    cursors = createInitKeyboard(Phaser.Input.Keyboard.KeyCodes);
+
+    //------ Init stars ------
+    createInitStars();
+
+    //------Init player colision-----------
+    createPlayer("player1",16);
+    createPlayer("player2", 260);
+}
+
+
+function update ()
+{
+    if (gameOver)
+    {
+        return;
+    }
+
+    playerMove("player1");
+    playerMove("player2");
+}
+
+function playerMove(keyPlayer){
+    var player = players[keyPlayer];
+    var sprite = player.sprite;
+    var joystick = player.joystick;
+
+    if (cursors[joystick.left].isDown)
+    {
+        sprite.setVelocityX(-160);
+
+        sprite.anims.play(joystick.left, true);//'left'
+        // console.log(cursors);
+    }
+    else if (cursors[joystick.right].isDown)
+    {
+        sprite.setVelocityX(160);
+
+        sprite.anims.play(joystick.right, true);//right
+    }
+    else //if (cursors[joystick.down].isDown)
+    {
+        sprite.setVelocityX(0);
+
+        sprite.anims.play(joystick.down);//'turn'
+    }
+
+    if (cursors[joystick.up].isDown && sprite.body.touching.down)
+    {
+        sprite.setVelocityY(-330);
+    }
+}
+
+function collectStar (player, star)
+{
+    star.disableBody(true, true);
+
+    //  Add and update the score
+    score += 10;
+    scoreText.setText('Score: ' + score);
+
+    if (stars.countActive(true) === 0)
+    {
+        //  A new batch of stars to collect
+        stars.children.iterate(function (child) {
+
+            child.enableBody(true, child.x, 0, true, true);
+
+        });
+
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+        var bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        bomb.allowGravity = false;
+
+    }
+}
+
+function hitBomb (player, bomb)
+{
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play('turn');
+
+    gameOver = true;
+}
+
+
+//============== CREATE -------------
+
+function createInitKeyboard(KeyCodes){
+    
+    return scene.input.keyboard.addKeys({
+        UP: KeyCodes.UP,//player 1
+        DOWN: KeyCodes.DOWN,
+        LEFT: KeyCodes.LEFT,
+        RIGHT: KeyCodes.RIGHT,
+        W: KeyCodes.W,//player 2
+        S: KeyCodes.S,
+        A: KeyCodes.A,
+        D: KeyCodes.D,
+    });
+}
+
+function createInitJoystick(keyPlayer, arrDirection){
+    var player = players[keyPlayer];
+    var joy= {};
+    joy['left'] = arrDirection[0];
+    joy['up'] = arrDirection[1];
+    joy['right'] = arrDirection[2];
+    joy['down'] = arrDirection[3];
+
+    player.joystick = joy;
+}
+
+function cteateInitBackground(){
+    //  A simple background for our game
+    scene.add.image(400, 300, 'sky');
+
+    //  The platforms group contains the ground and the 2 ledges we can jump on
+    platforms = scene.physics.add.staticGroup();
+
+    //  Here we create the ground.
+    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+    //  Now let's create some ledges
+    platforms.create(600, 400, 'ground');
+    platforms.create(50, 250, 'ground');
+    platforms.create(750, 220, 'ground');
+}
+
+function createInitStars(){
+     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+     stars = scene.physics.add.group({
+        key: 'star',
+        repeat: 1,
+        setXY: { x: 12, y: 0, stepX: 70 }
+    });
+
+    stars.children.iterate(function (child) {
+
+        //  Give each star a slightly different bounce
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+    });
+}
+
+function createInitBoom(){
+    bombs = scene.physics.add.group();
+}
+
+function createInitAnimationMoving(keyPlayer){
+    var player = players[keyPlayer];
+    var joystick = player.joystick;
+
+     //  Our player animations, turning, walking left and walking right.
+     scene.anims.create({
+        key: joystick.left,
+        frames: scene.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    scene.anims.create({
+        key: joystick.up,
+        frames: [ { key: 'dude', frame: 4 } ],
+        frameRate: 20
+    });
+
+    scene.anims.create({
+        key: joystick.down,
+        frames: [ { key: 'dude', frame: 4 } ],
+        frameRate: 20
+    });
+
+    scene.anims.create({
+        key: joystick.right,
+        frames: scene.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
+}
+
+function createInitPlayerSetting(keyPlayer, x,y){
+    var player = players[keyPlayer];
+    var sprite = player.sprite;
+    
+    // The player and its settings
+    player.sprite = scene.physics.add.sprite(x,y, 'dude');
+
+    //  Player physics properties. Give the little guy a slight bounce.
+    player.sprite.setBounce(0.2);
+    player.sprite.setCollideWorldBounds(true);
+}
+
+function createPlayer(keyPlayer, x){
+    var player = players[keyPlayer];
+    //  The score
+    if(!scoreText){
+        scoreText = scene.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    }
+
+    //  Collide the player and the stars with the platforms
+    scene.physics.add.collider(player.sprite, platforms);
+    scene.physics.add.collider(stars, platforms);
+    scene.physics.add.collider(bombs, platforms);
+
+    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+    scene.physics.add.overlap(player.sprite, stars, collectStar, null, scene);
+
+    scene.physics.add.collider(player.sprite, bombs, hitBomb, null, scene);
+}
+
+//-------------- CREATE =============
+
+
+</script>
+
+</body>
+</html>
