@@ -15,7 +15,6 @@
 <body>
 
 <script type="text/javascript">
-var temp = 'abc'
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -80,7 +79,6 @@ function preload ()
     this.load.html('view-btn', 'assets/view.html');
 
     this.load.html('nameform', 'assets/loginform.html');
-    console.log(temp)
 }
 
 function create ()
@@ -137,7 +135,7 @@ function create ()
     
     stars = this.physics.add.group({
         key: 'star',
-        repeat: 11,
+        repeat: 0,
         setXY: { x: 12, y: 0, stepX: 70 }
     });
 
@@ -320,7 +318,6 @@ function hitBomb (player, star)
     playbtn.addListener('click');
 
     playbtn.on('click', (event) => {
-        temp = '123';
         gameOver =false;
         this.scene.restart();
     });
@@ -339,7 +336,6 @@ function hitBomb (player, star)
     viewbtn.addListener('click');
 
     viewbtn.on('click', (event) => {
-        temp = '123';
         gameOver =false;
         for (i=0;i<4;i++)
         {
