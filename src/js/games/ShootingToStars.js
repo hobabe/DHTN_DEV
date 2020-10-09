@@ -1,11 +1,12 @@
-var d, T, ST;
+var d, T, S, ST;// T = this, ST = setting game
 class ShootingToStars extends Phaser.Scene {
     constructor() {
         super('ShootingToStars');
     }
 
     preload() {
-        ST = EPT._gameInitSetting.ShootingToStars();
+        ST = EPT._gameSettings.ShootingToStars(this);        
+        this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
         this.load.image('sky', pathAssets + 'sky.png');
@@ -19,8 +20,8 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
-        T.createInitJoystick("player1", ['LEFT', 'UP', 'RIGHT', 'DOWN']);
-        T.createInitJoystick("player2", ['A', 'W', 'D', 'S']);
+        EPT._keyboard.createInitJoystick(ST.players, "player1", ['LEFT', 'UP', 'RIGHT', 'DOWN']);
+        EPT._keyboard.createInitJoystick(ST.players, "player2", ['A', 'W', 'D', 'S']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting("player1", 100, 450);
@@ -35,7 +36,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitBoom();
 
         //  Input Events
-        cursors = T.createInitKeyboard(Phaser.Input.Keyboard.KeyCodes);
+        ST.cursors = EPT._keyboard.createInitKeyboard();
 
         //------ Init stars ------
         T.createInitStars();
@@ -47,104 +48,20 @@ class ShootingToStars extends Phaser.Scene {
 
 
     update() {
-        if (gameOver) {
+        if (ST.gameOver) {
             return;
         }
 
-        T.playerMove("player1");
-        T.playerMove("player2");
+        EPT._player.playerMove(ST, "player1");
+        EPT._player.playerMove(ST, "player2");
     }
 
-    playerMove(keyPlayer) {
-        var player = ST.players[keyPlayer];
-        var sprite = player.sprite;
-        var joystick = player.joystick;
 
-        if (cursors[joystick.left].isDown) {
-            sprite.setVelocityX(-160);
-
-            sprite.anims.play(joystick.left, true);//'left'
-            // console.log(cursors);
-        }
-        else if (cursors[joystick.right].isDown) {
-            sprite.setVelocityX(160);
-
-            sprite.anims.play(joystick.right, true);//right
-        }
-        else //if (cursors[joystick.down].isDown)
-        {
-            sprite.setVelocityX(0);
-
-            sprite.anims.play(joystick.down);//'turn'
-        }
-
-        if (cursors[joystick.up].isDown && sprite.body.touching.down) {
-            sprite.setVelocityY(-330);
-        }
-    }
-
-    collectStar(player, star) {
-        star.disableBody(true, true);
-
-        //  Add and update the score
-        ST.score += 10;
-        ST.scoreText.setText('Score: ' + score);
-
-        if (stars.countActive(true) === 0) {
-            //  A new batch of stars to collect
-            stars.children.iterate((child) => {
-
-                child.enableBody(true, child.x, 0, true, true);
-
-            });
-
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-            var bomb = bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            bomb.allowGravity = false;
-
-        }
-    }
-
-    hitBomb(player, bomb) {
-        this.physics.pause();
-
-        player.setTint(0xff0000);
-
-        player.anims.play('turn');
-
-        ST.gameOver = true;
-    }
+    
 
 
     //============== CREATE -------------
 
-    createInitKeyboard(KeyCodes) {
-        return T.input.keyboard.addKeys({
-            UP: KeyCodes.UP,//player 1
-            DOWN: KeyCodes.DOWN,
-            LEFT: KeyCodes.LEFT,
-            RIGHT: KeyCodes.RIGHT,
-            W: KeyCodes.W,//player 2
-            S: KeyCodes.S,
-            A: KeyCodes.A,
-            D: KeyCodes.D,
-        });
-    }
-
-    createInitJoystick(keyPlayer, arrDirection) {
-        var player = ST.players[keyPlayer];
-        var joy = {};
-        joy['left'] = arrDirection[0];
-        joy['up'] = arrDirection[1];
-        joy['right'] = arrDirection[2];
-        joy['down'] = arrDirection[3];
-
-        player.joystick = joy;
-    }
 
     cteateInitBackground() {
         //  A simple background for our game
@@ -230,8 +147,8 @@ class ShootingToStars extends Phaser.Scene {
     createPlayer(keyPlayer, x) {
         var player = ST.players[keyPlayer];
         //  The score
-        if (!scoreText) {
-            scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        if (!ST.scoreText) {
+            ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         }
 
         //  Collide the player and the stars with the platforms
@@ -240,8 +157,8 @@ class ShootingToStars extends Phaser.Scene {
         T.physics.add.collider(ST.bombs, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
-        T.physics.add.overlap(player.sprite, ST.stars, this.collectStar, null, T);
+        T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T);
 
-        T.physics.add.collider(player.sprite, ST.bombs, this.hitBomb, null, T);
+        T.physics.add.collider( player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
 }
