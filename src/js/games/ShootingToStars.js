@@ -20,30 +20,30 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
-        EPT._keyboard.createInitJoystick(ST.players, "player1", ['LEFT', 'UP', 'RIGHT', 'DOWN']);
-        EPT._keyboard.createInitJoystick(ST.players, "player2", ['A', 'W', 'D', 'S']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN','END']);
+        EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S','SPACE']);
 
         //------ Player init setting -----
-        T.createInitPlayerSetting("player1", 100, 450);
-        T.createInitPlayerSetting("player2", 300, 450);
+        T.createInitPlayerSetting(0, 100, 450);
+        T.createInitPlayerSetting(1, 300, 450);
 
 
         //-------- Init player animation -------
-        T.createInitAnimationMoving("player1");
-        T.createInitAnimationMoving("player2");
+        T.createInitAnimationMoving(0);
+        T.createInitAnimationMoving(1);
 
         //-------- Init boom ----
         T.createInitBoom();
 
         //  Input Events
-        ST.cursors = EPT._keyboard.createInitKeyboard();
+        ST.cursors = EPT._keyboard.createInitKeyboard(ST.players);
 
         //------ Init stars ------
         T.createInitStars();
 
         //------Init player colision-----------
-        T.createPlayer("player1", 16);
-        T.createPlayer("player2", 260);
+        T.createPlayer(0, 16);
+        T.createPlayer(1, 260);
     }
 
 
@@ -52,14 +52,11 @@ class ShootingToStars extends Phaser.Scene {
             return;
         }
 
-        EPT._player.playerMove(ST, "player1");
-        EPT._player.playerMove(ST, "player2");
+        EPT._player.playerMove(ST, 0);
+        EPT._player.playerMove(ST, 1);
     }
 
-
     
-
-
     //============== CREATE -------------
 
 
@@ -100,40 +97,41 @@ class ShootingToStars extends Phaser.Scene {
         ST.bombs = T.physics.add.group();
     }
 
-    createInitAnimationMoving(keyPlayer) {
-        var player = ST.players[keyPlayer];
+    createInitAnimationMoving(indexPlayer) {
+        var player = ST.players[indexPlayer];
         var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
 
         //  Our player animations, turning, walking left and walking right.
-        T.anims.create({
-            key: joystick.left,
+        T.anims.create({//left
+            key: joystick[joyKeys[0]],
             frames: T.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });
 
-        T.anims.create({
-            key: joystick.up,
+        T.anims.create({//up
+            key: joystick[joyKeys[1]],
             frames: [{ key: 'dude', frame: 4 }],
             frameRate: 20
         });
 
-        T.anims.create({
-            key: joystick.down,
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
-        });
-
-        T.anims.create({
-            key: joystick.right,
+        T.anims.create({//right
+            key: joystick[joyKeys[2]],
             frames: T.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
             frameRate: 10,
             repeat: -1
         });
+
+        T.anims.create({//down
+            key: joystick[joyKeys[3]],
+            frames: [{ key: 'dude', frame: 4 }],
+            frameRate: 20
+        });
     }
 
-    createInitPlayerSetting(keyPlayer, x, y) {
-        var player = ST.players[keyPlayer];
+    createInitPlayerSetting(indexPlayer, x, y) {
+        var player = ST.players[indexPlayer];
         var sprite = player.sprite;
 
         // The player and its settings
@@ -144,8 +142,8 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(keyPlayer, x) {
-        var player = ST.players[keyPlayer];
+    createPlayer(indexPlayer, x) {
+        var player = ST.players[indexPlayer];
         //  The score
         if (!ST.scoreText) {
             ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });

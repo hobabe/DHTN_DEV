@@ -1,6 +1,7 @@
 EPT._enemy = {
   
-    hitBomb(ST, player) {
+    hitBomb(player, bomb) {
+        var ST = this.ST;
         this.physics.pause();
 
         player.setTint(0xff0000);

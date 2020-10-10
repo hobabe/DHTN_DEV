@@ -1,7 +1,7 @@
 EPT._gameSettings = {
     ShootingToStars(scene) {
         return {
-            players : { player1: {sprite: null, joystick:null}, player2:  {sprite: null, joystick:null}},
+            players : [ {sprite: null, joystick:null, joyKeys:[]}, {sprite: null, joystick:null, joyKeys:[]}],
             stars: null,
             bombs: null,
             platforms: null,

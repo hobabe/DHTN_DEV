@@ -4,26 +4,27 @@ EPT._player = {
         var player = ST.players[keyPlayer];
         var sprite = player.sprite;
         var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
 
-        if (ST.cursors[joystick.left].isDown) {
+        if (ST.cursors[joystick[joyKeys[0]]].isDown) {
             sprite.setVelocityX(-160);
 
-            sprite.anims.play(joystick.left, true);//'left'
+            sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
         }
-        else if (ST.cursors[joystick.right].isDown) {
+        else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(160);
 
-            sprite.anims.play(joystick.right, true);//right
+            sprite.anims.play(joystick[joyKeys[2]], true);//right
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
             sprite.setVelocityX(0);
 
-            sprite.anims.play(joystick.down);//'turn'
+            sprite.anims.play(joystick[joyKeys[3]]);//'turn'
         }
 
-        if (ST.cursors[joystick.up].isDown && sprite.body.touching.down) {
+        if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-330);
         }
     }
