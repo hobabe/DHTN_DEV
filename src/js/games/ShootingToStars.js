@@ -3,10 +3,9 @@ class ShootingToStars extends Phaser.Scene {
     constructor() {
         super('ShootingToStars');
     }
-
     preload() {
 
-        ST = EPT._gameSettings.ShootingToStars(this);
+        ST = EPT._gameSettings.ShootingToStars();
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
@@ -21,6 +20,11 @@ class ShootingToStars extends Phaser.Scene {
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('gun', pathAssets + 'bomb.png')
         this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
+
+        var a={b:0};
+        T.show(a.b);
+
+        ST()
     }
 
     create() {
