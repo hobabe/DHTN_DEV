@@ -5,17 +5,18 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     preload() {
+
         ST = EPT._gameSettings.ShootingToStars(this);
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
         var pathAssets_2 = '_design/learning-game/publish/class-1/';
-
         this.load.image('sky', pathAssets + 'sky.png');
         this.load.image('ground', pathAssets + 'platform.png');
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('bomb', pathAssets + 'bomb.png');
         this.load.spritesheet('dude', pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 });
+
 
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('gun', pathAssets + 'bomb.png')
@@ -25,6 +26,7 @@ class ShootingToStars extends Phaser.Scene {
     create() {
         //------ init background ----
         T.cteateInitBackground();
+
 
         EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
@@ -51,8 +53,6 @@ class ShootingToStars extends Phaser.Scene {
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
 
-
-        //conflict
         //------ Init enemy ------
         T.createInitEnemy();
     }
@@ -65,6 +65,7 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
+
 
         EPT._enemy.updateEnemyMove(ST);
     }
@@ -94,6 +95,7 @@ class ShootingToStars extends Phaser.Scene {
             repeat: 1,
             setXY: { x: 12, y: 0, stepX: 70 }
         });
+
 
         ST.stars.children.iterate((child) => {
 
@@ -154,6 +156,7 @@ class ShootingToStars extends Phaser.Scene {
 
     createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
+
         //  The score and item
         if (!ST.scoreText) {
             ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });

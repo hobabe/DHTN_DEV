@@ -9,6 +9,7 @@ EPT._enemy = {
         player.anims.play('down');
 
         ST.gameOver = true;
+
     },
     updateEnemyMove(ST){
         if (ST.enemy1.body.touching.down) {
