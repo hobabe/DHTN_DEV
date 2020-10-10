@@ -8,6 +8,10 @@ EPT._gameSettings = {
             cursors: null,
             score : 0,
             gameOver : false,
+            scoreText: null,
+            enemy1: null,
+            enemy2: null,
+            enemy3: null,
             scoreText: null
         }
     }

@@ -5,23 +5,31 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     preload() {
-        ST = EPT._gameSettings.ShootingToStars(this);        
+
+        ST = EPT._gameSettings.ShootingToStars(this);
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
+        var pathAssets_2 = '_design/learning-game/publish/class-1/';
         this.load.image('sky', pathAssets + 'sky.png');
         this.load.image('ground', pathAssets + 'platform.png');
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('bomb', pathAssets + 'bomb.png');
         this.load.spritesheet('dude', pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 });
+
+
+        this.load.image('star', pathAssets + 'star.png');
+        this.load.image('gun', pathAssets + 'bomb.png')
+        this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
     }
 
     create() {
         //------ init background ----
         T.cteateInitBackground();
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN','END']);
-        EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S','SPACE']);
+
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
+        EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
@@ -44,6 +52,9 @@ class ShootingToStars extends Phaser.Scene {
         //------Init player colision-----------
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
+
+        //------ Init enemy ------
+        T.createInitEnemy();
     }
 
 
@@ -54,12 +65,12 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
+
+
+        EPT._enemy.updateEnemyMove(ST);
     }
 
-    
     //============== CREATE -------------
-
-
     cteateInitBackground() {
         //  A simple background for our game
         T.add.image(400, 300, 'sky');
@@ -85,7 +96,8 @@ class ShootingToStars extends Phaser.Scene {
             setXY: { x: 12, y: 0, stepX: 70 }
         });
 
-        ST.stars.children.iterate((child) =>{
+
+        ST.stars.children.iterate((child) => {
 
             //  Give each star a slightly different bounce
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -144,7 +156,8 @@ class ShootingToStars extends Phaser.Scene {
 
     createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
-        //  The score
+
+        //  The score and item
         if (!ST.scoreText) {
             ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
         }
@@ -157,6 +170,24 @@ class ShootingToStars extends Phaser.Scene {
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
         T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T);
 
-        T.physics.add.collider( player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+        T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+    }
+
+    createInitEnemy(){
+        ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+        ST.enemy1 = this.physics.add.sprite(0, 0, 'enemy');
+        ST.enemy1.setScale(0.5).refreshBody();
+        ST.enemy1.setVelocityX(100);
+        ST.enemy2 = this.physics.add.sprite(350, 250, 'enemy');
+        ST.enemy2.setScale(0.5).refreshBody();
+        ST.enemy2.setVelocityX(100);
+        ST.enemy3 = this.physics.add.sprite(400, 300, 'enemy');
+        ST.enemy3.setScale(0.5).refreshBody();
+        ST.enemy3.setVelocityX(-100);
+
+        this.physics.add.collider(ST.enemy1, ST.platforms);
+        this.physics.add.collider(ST.enemy2, ST.platforms);
+        this.physics.add.collider(ST.enemy3, ST.platforms);
     }
 }
