@@ -21,10 +21,6 @@ class ShootingToStars extends Phaser.Scene {
         this.load.image('gun', pathAssets + 'bomb.png')
         this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
 
-        var a={b:0};
-        T.show(a.b);
-
-        ST()
     }
 
     create() {
@@ -59,6 +55,9 @@ class ShootingToStars extends Phaser.Scene {
 
         //------ Init enemy ------
         T.createInitEnemy();
+
+        //------ Init item -------
+        T.createInitItem();
     }
 
 
@@ -193,5 +192,12 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy1, ST.platforms);
         this.physics.add.collider(ST.enemy2, ST.platforms);
         this.physics.add.collider(ST.enemy3, ST.platforms);
+    }
+
+    createInitItem()
+    {
+        if (!ST.lifeText) {
+            ST.lifeText = T.add.text(16, 50, 'Life: '+ ST.life, { fontSize: '16px', fill: '#000' });
+        }
     }
 }
