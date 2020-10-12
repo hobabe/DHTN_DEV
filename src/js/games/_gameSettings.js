@@ -5,24 +5,16 @@ EPT._gameSettings = {
                 {
                     sprite: null, joystick:null, joyKeys:[],
                     life: 2,
-                    score: 0,
                     info: {
                         x: 16
-                    },
-                    // text show
-                    scoreText: null,
-                    lifeText: null,
+                    }
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
                     life: 2,
-                    score: 0,
                     info: {
                         x: 600
-                    },
-                    // text show
-                    scoreText: null,
-                    lifeText: null,
+                    }
                 }
             ],
             stars: null,
@@ -33,7 +25,7 @@ EPT._gameSettings = {
             enemy1: null,
             enemy2: null,
             enemy3: null,
-            gameLevel: 0
+            gameLevel: 0,
         }
     }
 }
