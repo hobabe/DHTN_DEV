@@ -193,11 +193,4 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy2, ST.platforms);
         this.physics.add.collider(ST.enemy3, ST.platforms);
     }
-
-    createInitItem()
-    {
-        if (!ST.lifeText) {
-            ST.lifeText = T.add.text(16, 50, 'Life: '+ ST.life, { fontSize: '16px', fill: '#000' });
-        }
-    }
 }
