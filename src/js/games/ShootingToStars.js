@@ -197,7 +197,7 @@ class ShootingToStars extends Phaser.Scene {
     createInitItem()
     {
         if (!ST.lifeText) {
-            ST.lifeText = T.add.text(16, 50, 'Life: '+ ST.life, { fontSize: '16px', fill: '#000' });
+            ST.lifeText = T.add.text(16, 50, 'Life: '+ ST.life_qty, { fontSize: '16px', fill: '#000' });
         }
     }
 }
