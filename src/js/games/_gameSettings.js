@@ -25,7 +25,7 @@ EPT._gameSettings = {
             enemy1: null,
             enemy2: null,
             enemy3: null,
-            gameLevel: 0,
+            gameLevel: 0
         }
     }
 }

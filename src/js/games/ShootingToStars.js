@@ -166,7 +166,15 @@ class ShootingToStars extends Phaser.Scene {
         T.physics.add.collider(ST.bombs, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
-        T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T);
+        if(indexPlayer == 0 )
+        {
+            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T)
+        }
+        if(indexPlayer == 1)
+        {
+            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar_2, null, T)
+        }
+
 
         T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
