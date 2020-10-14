@@ -13,6 +13,8 @@ EPT._gameSettings = {
             enemy2: null,
             enemy3: null,
             scoreText: null,
+            scoreText_2: null,
+            score_2: 0
         }
     }
 }

@@ -57,7 +57,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitEnemy();
 
         //------ Init item -------
-        T.createInitItem();
+        // T.createInitItem();
     }
 
 
@@ -162,7 +162,11 @@ class ShootingToStars extends Phaser.Scene {
 
         //  The score and item
         if (!ST.scoreText) {
-            ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+            ST.scoreText = T.add.text(x, 16, 'score_1: 0', { fontSize: '32px', fill: '#000' });
+        }
+
+        if (!ST.scoreText_2) {
+            ST.scoreText_2 = T.add.text(x+580, 16, 'score_2: 0', { fontSize: '32px', fill: '#000' });
         }
 
         //  Collide the player and the stars with the platforms
@@ -171,7 +175,15 @@ class ShootingToStars extends Phaser.Scene {
         T.physics.add.collider(ST.bombs, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
-        T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T);
+        if(indexPlayer == 0 )
+        {
+            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T)
+        }
+        if(indexPlayer == 1)
+        {
+            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar_2, null, T)
+        }
+
 
         T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }

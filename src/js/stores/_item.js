@@ -22,5 +22,29 @@ EPT._item = {
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
             bomb.allowGravity = false;
         }
+    },
+    collectStar_2(player, star) {
+        star.disableBody(true, true);
+        var ST = this.ST;
+        //  Add and update the score
+        ST.score_2 += 10;
+        ST.scoreText_2.setText('Score 2: ' + ST.score_2);
+
+        if (ST.stars.countActive(true) === 0) {
+            //  A new batch of stars to collect
+            ST.stars.children.iterate((child) => {
+
+                child.enableBody(true, child.x, 0, true, true);
+
+            });
+
+            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+            var bomb = ST.bombs.create(x, 16, 'bomb');
+            bomb.setBounce(1);
+            bomb.setCollideWorldBounds(true);
+            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            bomb.allowGravity = false;
+        }
     }
 };
