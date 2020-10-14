@@ -9,17 +9,18 @@ class ShootingToStars extends Phaser.Scene {
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
-        var pathAssets_2 = '_design/learning-game/publish/class-1/';
         this.load.image('sky', pathAssets + 'sky.png');
         this.load.image('ground', pathAssets + 'platform.png');
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('bomb', pathAssets + 'bomb.png');
         this.load.spritesheet('dude', pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 });
 
-
         this.load.image('star', pathAssets + 'star.png');
-        this.load.image('gun', pathAssets + 'bomb.png')
-        this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
+        this.load.image('gun', pathAssets + 'neck bow tie.svg');
+        this.load.image('light', pathAssets+'light attack.svg');
+        this.load.image('bullet', pathAssets+ 'sword.svg');
+        this.load.image('life', pathAssets+'bomb.png');
+        this.load.image('enemy', pathAssets + 'happyboyanim/happy boy.svg')
 
     }
 
@@ -27,14 +28,12 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
-
         EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
         T.createInitPlayerSetting(1, 300, 450);
-
 
         //-------- Init player animation -------
         T.createInitAnimationMoving(0);
@@ -50,7 +49,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitStars();
 
          //------ Inie Item -------
-         T.createInitItem();
+        T.createInitItem();
 
         //------Init player colision-----------
         T.createPlayer(0, 16);
@@ -59,7 +58,6 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init enemy ------
         T.createInitEnemy();
 
-       
     }
 
 
@@ -70,7 +68,6 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
-
 
         EPT._enemy.updateEnemyMove(ST);
     }
