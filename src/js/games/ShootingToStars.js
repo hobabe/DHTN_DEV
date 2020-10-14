@@ -49,6 +49,9 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init stars ------
         T.createInitStars();
 
+         //------ Inie Item -------
+         T.createInitItem();
+
         //------Init player colision-----------
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
@@ -56,8 +59,7 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init enemy ------
         T.createInitEnemy();
 
-        //------ Inie Item -------
-        T.createInitItem();
+       
     }
 
 
@@ -183,17 +185,17 @@ class ShootingToStars extends Phaser.Scene {
 
         //  Collide the player and the items with the platforms
         T.physics.add.collider(ST.life, ST.platforms);
-        // T.physics.add.collider(ST.bullet, ST.platforms);
-        // T.physics.add.collider(ST.light, ST.platforms);
-        // T.physics.add.collider(ST.gun, ST.platforms);
+        T.physics.add.collider(ST.bullet, ST.platforms);
+        T.physics.add.collider(ST.light, ST.platforms);
+        T.physics.add.collider(ST.gun, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars or items, if he does call the collectStar or collectItems
         T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T);
 
-        // T.physics.add.overlap(player.sprite, ST.life, EPT._item.collectStar, null, T);
-        // T.physics.add.overlap(player.sprite, ST.gun, EPT._item.collectStar, null, T);
-        // T.physics.add.overlap(player.sprite, ST.light, EPT._item.collectStar, null, T);
-        // T.physics.add.overlap(player.sprite, ST.bullet, EPT._item.collectStar, null, T);
+        T.physics.add.overlap(player.sprite, ST.life, EPT._item.collectLife, null, T);
+        T.physics.add.overlap(player.sprite, ST.gun, EPT._item.collectGun, null, T);
+        T.physics.add.overlap(player.sprite, ST.light, EPT._item.collectLight, null, T);
+        T.physics.add.overlap(player.sprite, ST.bullet, EPT._item.collectBullet, null, T);
 
         T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
