@@ -51,6 +51,26 @@ EPT._gameSettings = {
                     }
                 }
             ],
+            items: [
+                {
+                    type: 'gun',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+                {
+                    type: 'bullet',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+                {
+                    type: 'life',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+            ],
             stars: null,
             bombs: null,
             platforms: null,

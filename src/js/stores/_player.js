@@ -1,5 +1,4 @@
 EPT._player = {
-  
     playerMove(ST, keyPlayer) {
         var player = ST.players[keyPlayer];
         var sprite = player.sprite;
@@ -27,5 +26,22 @@ EPT._player = {
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-330);
         }
+
+        // console.log(sprite.body.y)
     },
-};
+    attackEnemy(ST, keyPlayer, enemy)
+    {
+        var player = ST.players[keyPlayer];
+        var sprite = player.sprite;
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+        if (ST.cursors[joystick[joyKeys[4]]].isDown)
+        {
+            if((Math.abs(sprite.body.x - enemy.body.x)<=100) && (Math.abs(sprite.body.y- enemy.body.y)<=100))
+            {
+                EPT._enemy.beKilled(enemy);
+            }
+        }
+    },
+}
+

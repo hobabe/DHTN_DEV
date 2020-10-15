@@ -28,7 +28,7 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'SPACE']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
@@ -52,6 +52,9 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init enemy ------
         T.createInitEnemy();
 
+        //------ Init Items ------
+        // T.createItems();
+
         //------Init player colision-----------
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
@@ -68,8 +71,16 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 1);
 
         EPT._enemy.updateEnemyMove(ST);
-    }
 
+        // for(var i=0;i<2;i++)
+        // {
+            
+        // }
+        EPT._player.attackEnemy(ST, 0, ST.enemy1);
+        EPT._player.attackEnemy(ST, 0, ST.enemy2);
+        EPT._player.attackEnemy(ST, 0, ST.enemy3);
+    }
+hhhh
     //============== CREATE -------------
     cteateInitBackground() {
         //  A simple background for our game
@@ -171,9 +182,17 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
-        this.physics.add.overlap(ST.enemy1, player.sprite, EPT._enemy.beKilled, null, T);
+        // this.physics.add.overlap(ST.enemy1, player.sprite, EPT._enemy.beKilled, null, T);
+        // this.physics.add.overlap(ST.enemy2, player.sprite, EPT._enemy.beKilled, null, T);
+        // this.physics.add.overlap(ST.enemy3, player.sprite, EPT._enemy.beKilled, null, T);
+        // EPT._player.attackEnemy(ST, player, ST.enemy1);
+
 
         // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+        T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null, T);
+        T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb, null, T);
+
+
     }
 
     createInitEnemy(){
@@ -192,8 +211,6 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy1, ST.platforms);
         this.physics.add.collider(ST.enemy2, ST.platforms);
         this.physics.add.collider(ST.enemy3, ST.platforms);
-
-        console.log('be killed yet?');
     }
 
     createInitItem(player)
