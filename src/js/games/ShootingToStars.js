@@ -55,6 +55,7 @@ class ShootingToStars extends Phaser.Scene {
 
         //------ Init enemy ------
         T.createInitEnemy();
+
     }
 
 
@@ -154,7 +155,7 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(indexPlayer) {
+    createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
 
         //------ Init item -------
@@ -196,12 +197,20 @@ class ShootingToStars extends Phaser.Scene {
     {
         var x = player.info.x;
          //  The score and item
-         if (!player.scoreText) {
-            player.scoreText = T.add.text(x, 16, 'Score: '+ player.score, { fontSize: '32px', fill: '#000' });
+        if (!player.scoreText) {
+            player.scoreText = T.add.text(x, 16, 'score: '+ player.score, { fontSize: '32px', fill: '#000' });
         }
 
         if (!player.lifeText) {
             player.lifeText = T.add.text(x, 50, 'Life: '+ player.life, { fontSize: '16px', fill: '#000' });
+        }
+
+        if (!player.levelText) {
+            player.levelText = T.add.text(x, 70, 'Level: '+ player.level, { fontSize: '16px', fill: '#000' });
+        }
+
+        if (!player.weaponText) {
+            player.weaponText = T.add.text(x, 90, 'Weapon: '+ player.weapon.using, { fontSize: '16px', fill: '#000' });
         }
     }
 }

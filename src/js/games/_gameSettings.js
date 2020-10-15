@@ -4,25 +4,43 @@ EPT._gameSettings = {
             players : [ 
                 {
                     sprite: null, joystick:null, joyKeys:[],
+                    weapon: {
+                        gun: false,
+                        sword: false,
+                        using: 'sword'
+                    },
+                    level: 0,
+                    starCount: 0,
                     life: 2,
                     score: 0,
-                    info: {
-                        x: 16
-                    },
-                    // text show
+                     // text show
                     scoreText: null,
                     lifeText: null,
+                    levelText: null,
+                    weaponText: null,
+                    info: {
+                        x: 16
+                    }
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
+                    weapon: {
+                        gun: false,
+                        sword: false,
+                        using: 'sword'
+                    },
+                    level: 0,
+                    starCount: 0,
                     life: 2,
                     score: 0,
-                    info: {
-                        x: 600
-                    },
-                    // text show
+                     // text show
                     scoreText: null,
                     lifeText: null,
+                    levelText: null,
+                    weaponText: null,
+                    info: {
+                        x: 600
+                    }
                 }
             ],
             stars: null,
@@ -33,7 +51,7 @@ EPT._gameSettings = {
             enemy1: null,
             enemy2: null,
             enemy3: null,
-            gameLevel: 0
+            gameLevel: 0,
         }
     }
 }
