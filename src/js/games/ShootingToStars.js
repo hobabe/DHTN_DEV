@@ -3,10 +3,9 @@ class ShootingToStars extends Phaser.Scene {
     constructor() {
         super('ShootingToStars');
     }
-
     preload() {
 
-        ST = EPT._gameSettings.ShootingToStars(this);
+        ST = EPT._gameSettings.ShootingToStars();
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
@@ -21,6 +20,7 @@ class ShootingToStars extends Phaser.Scene {
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('gun', pathAssets + 'bomb.png')
         this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
+
     }
 
     create() {
@@ -154,13 +154,11 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(indexPlayer, x) {
+    createPlayer(indexPlayer) {
         var player = ST.players[indexPlayer];
 
-        //  The score and item
-        if (!ST.scoreText) {
-            ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        }
+        //------ Init item -------
+        T.createInitItem(player);
 
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(player.sprite, ST.platforms);
@@ -189,5 +187,14 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy1, ST.platforms);
         this.physics.add.collider(ST.enemy2, ST.platforms);
         this.physics.add.collider(ST.enemy3, ST.platforms);
+    }
+
+    createInitItem(player)
+    {
+        var x = player.info.x;
+
+        if (!player.lifeText) {
+            player.lifeText = T.add.text(x, 50, 'Life: '+ player.life, { fontSize: '16px', fill: '#000' });
+        }
     }
 }
