@@ -5,16 +5,24 @@ EPT._gameSettings = {
                 {
                     sprite: null, joystick:null, joyKeys:[],
                     life: 2,
+                    score: 0,
                     info: {
                         x: 16
-                    }
+                    },
+                    // text show
+                    scoreText: null,
+                    lifeText: null,
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
                     life: 2,
+                    score: 0,
                     info: {
                         x: 600
-                    }
+                    },
+                    // text show
+                    scoreText: null,
+                    lifeText: null,
                 }
             ],
             stars: null,

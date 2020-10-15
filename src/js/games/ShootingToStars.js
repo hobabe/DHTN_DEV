@@ -41,7 +41,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitAnimationMoving(1);
 
         //-------- Init boom ----
-        T.createInitBoom();
+        // T.createInitBoom();
 
         //  Input Events
         ST.cursors = EPT._keyboard.createInitKeyboard(ST.players);
@@ -163,20 +163,15 @@ class ShootingToStars extends Phaser.Scene {
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(player.sprite, ST.platforms);
         T.physics.add.collider(ST.stars, ST.platforms);
-        T.physics.add.collider(ST.bombs, ST.platforms);
+        // T.physics.add.collider(ST.bombs, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
-        if(indexPlayer == 0 )
-        {
-            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar, null, T)
-        }
-        if(indexPlayer == 1)
-        {
-            T.physics.add.overlap(player.sprite, ST.stars, EPT._item.collectStar_2, null, T)
-        }
+        T.physics.add.overlap(player.sprite, ST.stars, function(a,b){
+            EPT._item.collectStar(a, b);
+            EPT._item.collectStar_UpdateInfo(player, 'star');
+        }, null, T);
 
-
-        T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+        // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
 
     createInitEnemy(){
@@ -200,6 +195,10 @@ class ShootingToStars extends Phaser.Scene {
     createInitItem(player)
     {
         var x = player.info.x;
+         //  The score and item
+         if (!player.scoreText) {
+            player.scoreText = T.add.text(x, 16, 'Score: '+ player.score, { fontSize: '32px', fill: '#000' });
+        }
 
         if (!player.lifeText) {
             player.lifeText = T.add.text(x, 50, 'Life: '+ player.life, { fontSize: '16px', fill: '#000' });
