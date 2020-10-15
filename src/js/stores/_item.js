@@ -29,6 +29,7 @@ EPT._item = {
                 //check level : 3 stars increase level : max level is 5
                 if(player.starCount%3==0 && player.level < 5){
                     player.level++;
+                    player.speed.run+=20;
                     player.levelText.setText('Level: ' + player.level);
                 }
                 break;
