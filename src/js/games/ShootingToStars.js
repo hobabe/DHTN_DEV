@@ -9,18 +9,17 @@ class ShootingToStars extends Phaser.Scene {
         this['ST'] = ST;
         T = this;
         var pathAssets = 'media/img/shooting-to-stars/'
+        var pathAssets_2 = '_design/learning-game/publish/class-1/';
         this.load.image('sky', pathAssets + 'sky.png');
         this.load.image('ground', pathAssets + 'platform.png');
         this.load.image('star', pathAssets + 'star.png');
         this.load.image('bomb', pathAssets + 'bomb.png');
         this.load.spritesheet('dude', pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 });
 
+
         this.load.image('star', pathAssets + 'star.png');
-        this.load.image('gun', pathAssets + 'neck bow tie.svg');
-        this.load.image('light', pathAssets+'light attack.svg');
-        this.load.image('bullet', pathAssets+ 'sword.svg');
-        this.load.image('life', pathAssets+'bomb.png');
-        this.load.image('enemy', pathAssets + 'happyboyanim/happy boy.svg')
+        this.load.image('gun', pathAssets + 'bomb.png')
+        this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
 
     }
 
@@ -28,12 +27,14 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
+
         EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
         T.createInitPlayerSetting(1, 300, 450);
+
 
         //-------- Init player animation -------
         T.createInitAnimationMoving(0);
@@ -49,7 +50,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitStars();
 
          //------ Inie Item -------
-        T.createInitItem();
+         T.createInitItem();
 
         //------Init player colision-----------
         T.createPlayer(0, 16);
@@ -58,6 +59,7 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init enemy ------
         T.createInitEnemy();
 
+       
     }
 
 
@@ -68,6 +70,7 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
+
 
         EPT._enemy.updateEnemyMove(ST);
     }
@@ -156,7 +159,57 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(indexPlayer) {
+    createInitItem()
+    {
+        //==========Gun============
+        ST.gun = T.physics.add.group({
+            key: 'gun',
+            repeat: 0,
+        });
+
+        ST.gun.children.iterate( function (child){
+            child.setX(Math.floor(EPT._array.randomInt(0, 750)));
+            child.setY(Math.floor(EPT._array.randomInt(0, 550)));
+        });
+
+        //===========life============
+        ST.life = T.physics.add.group({
+            key: 'life',
+            repeat: 0,
+        });
+
+        ST.life.children.iterate(function (child) {
+            //  Give each star a slightly different bounce
+            child.setX(Math.floor(EPT._array.randomInt(0, 750)));
+            child.setY(Math.floor(EPT._array.randomInt(0, 550)));
+        });
+
+        //===========bullet================
+        ST.bullet = T.physics.add.group({
+            key: 'bullet',
+            repeat: 1,
+        });
+
+        ST.bullet.children.iterate(function (child) {
+            //  Give each star a slightly different bounce
+            child.setX(Math.floor(EPT._array.randomInt(0, 750)));
+            child.setY(Math.floor(EPT._array.randomInt(0, 550)));
+        });
+
+        //============light==============
+        ST.light = T.physics.add.group({
+            key: 'light',
+            repeat: 0,
+        });
+
+        ST.light.children.iterate(function (child) {
+            //  Give each star a slightly different bounce
+            child.setX(Math.floor(EPT._array.randomInt(0, 750)));
+            child.setY(Math.floor(EPT._array.randomInt(0, 550)));
+        });
+    }
+
+    createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
 
         //------ Init item -------
