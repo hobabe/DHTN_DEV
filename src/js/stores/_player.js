@@ -27,5 +27,5 @@ EPT._player = {
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-330);
         }
-    }
+    },
 };

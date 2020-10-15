@@ -45,6 +45,18 @@ EPT._enemy = {
                ST.enemy3.body.velocity.x *= 1;
             }
         }
+    },
+    beKilled(enemy, player )
+    {
+      console.log('first')
+      enemy.disableBody(true, true);
+      var x =  enemy.body.right;
+      ST.stars.children.iterate((child) => {
+
+         child.enableBody(true, x, 0, true, true);
+
+      });
+      console.log('last');
     }
 
 };

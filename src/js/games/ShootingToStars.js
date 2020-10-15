@@ -49,12 +49,12 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init stars ------
         T.createInitStars();
 
+        //------ Init enemy ------
+        T.createInitEnemy();
+
         //------Init player colision-----------
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
-
-        //------ Init enemy ------
-        T.createInitEnemy();
 
     }
 
@@ -66,7 +66,6 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
-
 
         EPT._enemy.updateEnemyMove(ST);
     }
@@ -172,6 +171,8 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
+        this.physics.add.overlap(ST.enemy1, player.sprite, EPT._enemy.beKilled, null, T);
+
         // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
 
@@ -191,6 +192,8 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy1, ST.platforms);
         this.physics.add.collider(ST.enemy2, ST.platforms);
         this.physics.add.collider(ST.enemy3, ST.platforms);
+
+        console.log('be killed yet?');
     }
 
     createInitItem(player)
