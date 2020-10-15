@@ -4,14 +4,40 @@ EPT._gameSettings = {
             players : [ 
                 {
                     sprite: null, joystick:null, joyKeys:[],
+                    weapon: {
+                        gun: false,
+                        sword: false,
+                        using: 'sword'
+                    },
+                    level: 0,
+                    starCount: 0,
                     life: 2,
+                    score: 0,
+                     // text show
+                    scoreText: null,
+                    lifeText: null,
+                    levelText: null,
+                    weaponText: null,
                     info: {
                         x: 16
                     }
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
+                    weapon: {
+                        gun: false,
+                        sword: false,
+                        using: 'sword'
+                    },
+                    level: 0,
+                    starCount: 0,
                     life: 2,
+                    score: 0,
+                     // text show
+                    scoreText: null,
+                    lifeText: null,
+                    levelText: null,
+                    weaponText: null,
                     info: {
                         x: 600
                     }
