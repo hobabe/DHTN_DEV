@@ -34,7 +34,6 @@ EPT._item = {
                 break;
         }
         
-        
         //  Add and update the score
         player.score += scoreAdd;
         player.scoreText.setText('Score: ' + player.score);
