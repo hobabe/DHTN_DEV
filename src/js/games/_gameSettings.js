@@ -13,6 +13,10 @@ EPT._gameSettings = {
                     starCount: 0,
                     life: 2,
                     score: 0,
+                    speed: {
+                        run: 160,
+                        attack: 50
+                    },
                      // text show
                     scoreText: null,
                     lifeText: null,
@@ -33,6 +37,10 @@ EPT._gameSettings = {
                     starCount: 0,
                     life: 2,
                     score: 0,
+                    speed: {
+                        run: 160,
+                        attack: 50
+                    },
                      // text show
                     scoreText: null,
                     lifeText: null,

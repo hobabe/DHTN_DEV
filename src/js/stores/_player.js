@@ -7,13 +7,13 @@ EPT._player = {
         var joyKeys = player.joyKeys;
 
         if (ST.cursors[joystick[joyKeys[0]]].isDown) {
-            sprite.setVelocityX(-160);
+            sprite.setVelocityX(-player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
-            sprite.setVelocityX(160);
+            sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
         }

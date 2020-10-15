@@ -198,7 +198,7 @@ class ShootingToStars extends Phaser.Scene {
         var x = player.info.x;
          //  The score and item
         if (!player.scoreText) {
-            player.scoreText = T.add.text(x, 16, 'score: '+ player.score, { fontSize: '32px', fill: '#000' });
+            player.scoreText = T.add.text(x, 16, 'Score: '+ player.score, { fontSize: '32px', fill: '#000' });
         }
 
         if (!player.lifeText) {
