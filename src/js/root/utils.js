@@ -7,16 +7,11 @@ EPT.Sfx = {
         EPT.Storage.initUnset("EPT-" + type, true);
         EPT.Sfx.status = EPT.Sfx.status || [];
         EPT.Sfx.status[type] = EPT.Storage.get("EPT-" + type);
-        if (type == "sound") {
+
+        if(!EPT.Sfx.sounds){
           EPT.Sfx.sounds = [];
-          EPT.Sfx.sounds["click"] = game.sound.add("sound-click");
-        } else {
-          // music
-          if (!EPT.Sfx.music || !EPT.Sfx.music.isPlaying) {
-            EPT.Sfx.music = game.sound.add("music-theme");
-            EPT.Sfx.music.volume = 0;
-          }
         }
+        EPT.Sfx.sounds[type] = game.sound.add(type);
         break;
       }
       case "on": {
@@ -48,7 +43,13 @@ EPT.Sfx = {
 
     EPT.Storage.set("EPT-" + type, EPT.Sfx.status[type]);
   },
-  play: function(audio) {
+  play: function(audio, timeout) {
+    setTimeout(() => {
+      EPT.Sfx.sounds[audio].play();
+    }, timeout ?? 0);
+    
+
+    return;
     if (audio == "music") {
       if (
         EPT.Sfx.status["music"] &&

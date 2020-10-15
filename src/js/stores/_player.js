@@ -11,11 +11,13 @@ EPT._player = {
 
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
+            EPT.Sfx.play('sound-running',100);
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
+            EPT.Sfx.play('sound-running',100);
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
