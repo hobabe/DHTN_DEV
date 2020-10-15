@@ -1,20 +1,31 @@
 EPT._gameSettings = {
     ShootingToStars(scene) {
         return {
-            players : [ {sprite: null, joystick:null, joyKeys:[]}, {sprite: null, joystick:null, joyKeys:[]}],
+            players : [ 
+                {
+                    sprite: null, joystick:null, joyKeys:[],
+                    life: 2,
+                    info: {
+                        x: 16
+                    }
+                }, 
+                {
+                    sprite: null, joystick:null, joyKeys:[],
+                    life: 2,
+                    info: {
+                        x: 600
+                    }
+                }
+            ],
             stars: null,
             bombs: null,
             platforms: null,
             cursors: null,
-            score : 0,
             gameOver : false,
-            scoreText: null,
             enemy1: null,
             enemy2: null,
             enemy3: null,
-            scoreText: null,
-            lifeText: null,
-            life_qty: 1
+            gameLevel: 0,
         }
     }
 }

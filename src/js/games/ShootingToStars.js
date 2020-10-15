@@ -55,9 +55,6 @@ class ShootingToStars extends Phaser.Scene {
 
         //------ Init enemy ------
         T.createInitEnemy();
-
-        //------ Init item -------
-        T.createInitItem();
     }
 
 
@@ -157,13 +154,11 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(indexPlayer, x) {
+    createPlayer(indexPlayer) {
         var player = ST.players[indexPlayer];
 
-        //  The score and item
-        if (!ST.scoreText) {
-            ST.scoreText = T.add.text(x, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        }
+        //------ Init item -------
+        T.createInitItem(player);
 
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(player.sprite, ST.platforms);
@@ -194,10 +189,12 @@ class ShootingToStars extends Phaser.Scene {
         this.physics.add.collider(ST.enemy3, ST.platforms);
     }
 
-    createInitItem()
+    createInitItem(player)
     {
-        if (!ST.lifeText) {
-            ST.lifeText = T.add.text(16, 50, 'Life: '+ ST.life_qty, { fontSize: '16px', fill: '#000' });
+        var x = player.info.x;
+
+        if (!player.lifeText) {
+            player.lifeText = T.add.text(x, 50, 'Life: '+ player.life, { fontSize: '16px', fill: '#000' });
         }
     }
 }
