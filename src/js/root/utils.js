@@ -43,26 +43,10 @@ EPT.Sfx = {
 
     EPT.Storage.set("EPT-" + type, EPT.Sfx.status[type]);
   },
-  play: function(audio, timeout) {
-    setTimeout(() => {
-      EPT.Sfx.sounds[audio].play();
-    }, timeout ?? 0);
-    
-
-    return;
-    if (audio == "music") {
-      if (
-        EPT.Sfx.status["music"] &&
-        EPT.Sfx.music &&
-        !EPT.Sfx.music.isPlaying
-      ) {
-        EPT.Sfx.music.play({ loop: true });
-      }
-    } else {
-      // sound
-      if (EPT.Sfx.status["sound"] && EPT.Sfx.sounds && EPT.Sfx.sounds[audio]) {
-        EPT.Sfx.sounds[audio].play();
-      }
+  play: function(audio, loop, volume) {
+    var sound = EPT.Sfx.sounds[audio];
+    if (EPT.Sfx.status[audio] && EPT.Sfx.sounds && sound && !sound.isPlaying) {
+      sound.play({ loop: loop, volume: volume?? 0.5 });
     }
   },
   update: function(type, button, label) {

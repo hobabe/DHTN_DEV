@@ -1,5 +1,8 @@
 EPT._player = {
-  
+    
+    setTint(sprite, color){
+        sprite.setTint(color);
+    },
     playerMove(ST, keyPlayer) {
         var player = ST.players[keyPlayer];
         var sprite = player.sprite;
@@ -11,13 +14,13 @@ EPT._player = {
 
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
-            EPT.Sfx.play('sound-running',100);
+            EPT.Sfx.play('running', false);
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
-            EPT.Sfx.play('sound-running',100);
+            EPT.Sfx.play('running', false);
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
@@ -27,7 +30,7 @@ EPT._player = {
         }
 
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
-            sprite.setVelocityY(-330);
+            sprite.setVelocityY(-350);
         }
     }
 };

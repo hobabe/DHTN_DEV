@@ -4,7 +4,7 @@ EPT._enemy = {
         var ST = this.ST;
         this.physics.pause();
 
-        player.setTint(0xff0000);
+        EPT._player.setTint(player.sprite, 0xff0000)
 
         player.anims.play('down');
 

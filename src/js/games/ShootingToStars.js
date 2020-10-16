@@ -145,6 +145,8 @@ class ShootingToStars extends Phaser.Scene {
     createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
 
+        //color
+        EPT._player.setTint(player.sprite, player.info.color)
         //------ Init item -------
         T.createInitItem(player);
 

@@ -14,7 +14,7 @@ EPT._gameSettings = {
                     life: 2,
                     score: 0,
                     speed: {
-                        run: 160,
+                        run: 100,
                         attack: 50
                     },
                      // text show
@@ -23,7 +23,8 @@ EPT._gameSettings = {
                     levelText: null,
                     weaponText: null,
                     info: {
-                        x: 16
+                        x: 16,
+                        color: 0x5bafc7
                     }
                 }, 
                 {
@@ -38,7 +39,7 @@ EPT._gameSettings = {
                     life: 2,
                     score: 0,
                     speed: {
-                        run: 160,
+                        run: 100,
                         attack: 50
                     },
                      // text show
@@ -47,7 +48,8 @@ EPT._gameSettings = {
                     levelText: null,
                     weaponText: null,
                     info: {
-                        x: 600
+                        x: 550,
+                        color: 0x94c75b
                     }
                 }
             ],
