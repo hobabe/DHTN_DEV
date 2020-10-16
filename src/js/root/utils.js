@@ -7,16 +7,11 @@ EPT.Sfx = {
         EPT.Storage.initUnset("EPT-" + type, true);
         EPT.Sfx.status = EPT.Sfx.status || [];
         EPT.Sfx.status[type] = EPT.Storage.get("EPT-" + type);
-        if (type == "sound") {
+
+        if(!EPT.Sfx.sounds){
           EPT.Sfx.sounds = [];
-          EPT.Sfx.sounds["click"] = game.sound.add("sound-click");
-        } else {
-          // music
-          if (!EPT.Sfx.music || !EPT.Sfx.music.isPlaying) {
-            EPT.Sfx.music = game.sound.add("music-theme");
-            EPT.Sfx.music.volume = 0;
-          }
         }
+        EPT.Sfx.sounds[type] = game.sound.add(type);
         break;
       }
       case "on": {
@@ -48,20 +43,10 @@ EPT.Sfx = {
 
     EPT.Storage.set("EPT-" + type, EPT.Sfx.status[type]);
   },
-  play: function(audio) {
-    if (audio == "music") {
-      if (
-        EPT.Sfx.status["music"] &&
-        EPT.Sfx.music &&
-        !EPT.Sfx.music.isPlaying
-      ) {
-        EPT.Sfx.music.play({ loop: true });
-      }
-    } else {
-      // sound
-      if (EPT.Sfx.status["sound"] && EPT.Sfx.sounds && EPT.Sfx.sounds[audio]) {
-        EPT.Sfx.sounds[audio].play();
-      }
+  play: function(audio, loop, volume) {
+    var sound = EPT.Sfx.sounds[audio];
+    if (EPT.Sfx.status[audio] && EPT.Sfx.sounds && sound && !sound.isPlaying) {
+      sound.play({ loop: loop, volume: volume?? 0.5 });
     }
   },
   update: function(type, button, label) {

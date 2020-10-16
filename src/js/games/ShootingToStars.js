@@ -8,19 +8,6 @@ class ShootingToStars extends Phaser.Scene {
         ST = EPT._gameSettings.ShootingToStars();
         this['ST'] = ST;
         T = this;
-        var pathAssets = 'media/img/shooting-to-stars/'
-        var pathAssets_2 = '_design/learning-game/publish/class-1/';
-        this.load.image('sky', pathAssets + 'sky.png');
-        this.load.image('ground', pathAssets + 'platform.png');
-        this.load.image('star', pathAssets + 'star.png');
-        this.load.image('bomb', pathAssets + 'bomb.png');
-        this.load.spritesheet('dude', pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 });
-
-
-        this.load.image('star', pathAssets + 'star.png');
-        this.load.image('gun', pathAssets + 'bomb.png')
-        this.load.image('enemy', pathAssets_2 + 'happy boy.svg')
-
     }
 
     create() {
@@ -158,6 +145,8 @@ class ShootingToStars extends Phaser.Scene {
     createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
 
+        //color
+        EPT._player.setTint(player.sprite, player.info.color)
         //------ Init item -------
         T.createInitItem(player);
 
