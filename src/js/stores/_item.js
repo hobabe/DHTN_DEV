@@ -2,17 +2,18 @@ EPT._item = {
     collectStar(player, star) {
         star.disableBody(true, true);
 
-        if (ST.stars.countActive(true) === 0) {
+        if (GS.stars.countActive(true) === 0) {
             //  A new batch of stars to collect
-            ST.stars.children.iterate((child) => {
+            GS.stars.children.iterate((child) => {
 
                 child.enableBody(true, child.x, 0, true, true);
 
             });
 
+            T.nextLevel();
             // var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-            // var bomb = ST.bombs.create(x, 16, 'bomb');
+            // var bomb = GS.bombs.create(x, 16, 'bomb');
             // bomb.setBounce(1);
             // bomb.setCollideWorldBounds(true);
             // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -21,7 +22,7 @@ EPT._item = {
     },
     collectStar_UpdateInfo(player, typeCollect) {
         var scoreAdd = 0;
-        var ST = this.ST;
+        var GS = this.GS;
         switch(typeCollect){
             case 'star': 
                 scoreAdd = 10;

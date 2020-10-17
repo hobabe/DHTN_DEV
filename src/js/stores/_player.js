@@ -3,34 +3,34 @@ EPT._player = {
     setTint(sprite, color){
         sprite.setTint(color);
     },
-    playerMove(ST, keyPlayer) {
-        var player = ST.players[keyPlayer];
+    playerMove(GS, keyPlayer) {
+        var player = GS.players.list[keyPlayer];
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
 
-        if (ST.cursors[joystick[joyKeys[0]]].isDown) {
+        if (GS.cursors[joystick[joyKeys[0]]].isDown) {
             sprite.setVelocityX(-player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
-            // console.log(ST.cursors);
+            // console.log(GS.cursors);
             EPT.Sfx.play('running', false);
         }
-        else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
+        else if (GS.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
         }
-        else //if (ST.cursors[joystick.down].isDown)
+        else //if (GS.cursors[joystick.down].isDown)
         {
             sprite.setVelocityX(0);
 
             sprite.anims.play(joystick[joyKeys[3]]);//'turn'
         }
 
-        if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
-            sprite.setVelocityY(-350);
+        if (GS.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
+            sprite.setVelocityY(GS.players.jumpHeight);
         }
     }
 };
