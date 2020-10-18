@@ -1,16 +1,4 @@
 EPT._enemy = {
-  
-   // hitBomb(player, bomb) {
-   //      var ST = this.ST;
-   //      this.physics.pause();
-
-   //      player.setTint(0xff0000);
-
-   //      player.anims.play('down');
-
-   //      ST.gameOver = true;
-
-   // },
    updateEnemyMove(ST){
       if (ST.enemy1.body.touching.down) {
          if (ST.enemy1.body.right >= 250) {
@@ -56,23 +44,34 @@ EPT._enemy = {
          EPT._item.createItems(x, y);
    },
    hitBomb(player, enemy) {
-         var ST = this.ST;
-         if( player.life == 0)
+         ST.checkCollider[0] = 1;
+   },
+   hitBomb_2(player, enemy) {
+      ST.checkCollider[1] = 1;   
+   },
+   killPlayer(ST, T, enemy, indexPlayer)
+   {
+      var player = ST.players[indexPlayer];
+      if(ST.checkCollider[indexPlayer] != 0)
+      {
+         if(player.life > 1)
          {
-            this.physics.pause();
-            player.setTint(0xff0000);
-            player.anims.play('down');
-            ST.gameOver = true;
+            player.sprite.disableBody(true, true);
+            player.life -= 1;
+            console.log('player'+indexPlayer+player.life);
+            player.lifeText.setText('Life: '+ player.life);
+            player.sprite.enableBody(true, player.sprite.body.x, 0, true, true);
          }
          else 
          {
-            player.disableBody(true, true);
-            player.life -=1;
-            // player.lifeText.setText('Life: '+ player.life);
-            console.log('life: '+player.life);
-            player.enableBody(true, player.body.x, 0, true, true);
-            
-         }
-   },
+            player.lifeText.setText('Life: '+ player.life);
+            player.sprite.anims.play('down');
 
+            T.physics.pause();
+            player.sprite.setTint(0xff0000);
+            ST.gameOver = true;
+         }
+         ST.checkCollider[indexPlayer] = 0;
+      }
+   }
 };

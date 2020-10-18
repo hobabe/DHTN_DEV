@@ -72,13 +72,19 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._enemy.updateEnemyMove(ST);
 
-        // for(var i=0;i<2;i++)
-        // {
-            
-        // }
+       // ------------- attack enemy -------------
         EPT._player.attackEnemy(ST, 0, ST.enemy1);
         EPT._player.attackEnemy(ST, 0, ST.enemy2);
         EPT._player.attackEnemy(ST, 0, ST.enemy3);
+        
+        // ------------ enemies hit players ----------
+        for (var i=0;i<2;i++)
+        {
+            EPT._enemy.killPlayer(ST, T, ST.enemy3, i)
+            EPT._enemy.killPlayer(ST, T, ST.enemy2, i)
+            EPT._enemy.killPlayer(ST, T, ST.enemy1, i)
+        }
+
     }
 hhhh
     //============== CREATE -------------
@@ -182,17 +188,20 @@ hhhh
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
-        // this.physics.add.overlap(ST.enemy1, player.sprite, EPT._enemy.beKilled, null, T);
-        // this.physics.add.overlap(ST.enemy2, player.sprite, EPT._enemy.beKilled, null, T);
-        // this.physics.add.overlap(ST.enemy3, player.sprite, EPT._enemy.beKilled, null, T);
-        // EPT._player.attackEnemy(ST, player, ST.enemy1);
+        if(indexPlayer==1)
+        {
+            T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb_2, null , T);
+            T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
+            T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb_2, null , T);
 
+        }
+        else if(indexPlayer==0)
+        {
+            T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb, null , T);
+            T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb, null , T);
+            T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null , T);
 
-        // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
-        T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null, T);
-        T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb, null, T);
-
-
+        }
     }
 
     createInitEnemy(){
