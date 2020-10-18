@@ -40,6 +40,8 @@ EPT._player = {
                 EPT._enemy.beKilled(enemy);
             }
         }
+
+        var ST= this.ST
     },
 }
 

@@ -21,7 +21,7 @@ EPT._item = {
     },
     collectStar_UpdateInfo(player, typeCollect) {
         var scoreAdd = 0;
-        var ST = this.ST;
+        var ST = this.SeTinggame;
         switch(typeCollect){
             case 'star': 
                 scoreAdd = 10;
