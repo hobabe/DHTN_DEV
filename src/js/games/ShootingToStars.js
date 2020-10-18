@@ -219,4 +219,7 @@ class ShootingToStars extends Phaser.Scene {
         GS.enemy2.destroy();
         GS.enemy3.destroy();
     }
+
+    clearPlayer() {
+    }
 }

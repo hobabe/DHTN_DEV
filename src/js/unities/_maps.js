@@ -1,6 +1,6 @@
 EPT._maps = {
     generateMaps(GS, T) {
-        var data = GS.map.levels[GS.gameLevel-1].m;
+        var data = JSON.parse(GS.map.levels[GS.gameLevel-1].map);
 
         //  The map.platforms group contains the ground and the 2 ledges we can jump on
 
