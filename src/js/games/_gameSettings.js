@@ -80,6 +80,7 @@ EPT._gameSettings = {
             enemy2: null,
             enemy3: null,
             gameLevel: 0,
+            checkCollider: [0,0]
         }
     }
 }
