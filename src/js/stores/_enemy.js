@@ -58,7 +58,6 @@ EPT._enemy = {
          {
             player.sprite.disableBody(true, true);
             player.life -= 1;
-            console.log('player'+indexPlayer+player.life);
             player.lifeText.setText('Life: '+ player.life);
             player.sprite.enableBody(true, player.sprite.body.x, 0, true, true);
          }
