@@ -8,6 +8,7 @@ class ShootingToStars extends Phaser.Scene {
         GS = EPT._gameSettings.ShootingToStars();
         this['GS'] = GS;
         T = this;
+        GS['T'] = T;
     }
 
     create() {
@@ -16,7 +17,7 @@ class ShootingToStars extends Phaser.Scene {
 
 
         EPT._keyboard.createInitJoystick(GS.players.list, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
-        EPT._keyboard.createInitJoystick(GS.players.list, 1, ['A', 'W', 'D', 'S', 'SPACE']);
+        EPT._keyboard.createInitJoystick(GS.players.list, 1, ['A', 'W', 'D', 'S', 'HOME']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
@@ -43,6 +44,8 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init enemy ------
         T.createInitEnemy();
 
+        //Next level
+        T.createOptions();
     }
 
 
@@ -54,13 +57,14 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(GS, 0);
         EPT._player.playerMove(GS, 1);
 
-
         EPT._enemy.updateEnemyMove(GS);
+
+        T.nextLevelKey();
     }
 
     //============== LEVEL -------------
     nextLevel() {
-        if (GS.gameLevel < GS.gameMaxLevel + 1) {
+        if (GS.gameLevel < GS.gameMaxLevel) {
             GS.gameLevel++;
             EPT._maps.generateMaps(GS, T);
             T.clearEnemy();
@@ -71,9 +75,20 @@ class ShootingToStars extends Phaser.Scene {
         }
     }
 
+    nextLevelKey(){
+        if (Phaser.Input.Keyboard.JustDown(GS.config.keyNextLevel))
+        {
+            T.nextLevel();
+        }
+    }
+
 
 
     //============== CREATE -------------
+    createOptions(){
+        GS.config.keyNextLevel = T.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    }
+
     cteateInitBackground() {
         //  A simple background for our game
         T.add.image(400, 300, 'sky');
