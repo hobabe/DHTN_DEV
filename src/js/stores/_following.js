@@ -1,5 +1,5 @@
 EPT._following = {
-    initFollowerPath(GS, T, key) {
+    initFollowerPath(GS, T, key, spriteCf) {
         var f = GS.following;
         f.graphics = T.add.graphics();//.lineStyle(1, 0x2d2d2d, 1);
 
@@ -13,7 +13,7 @@ EPT._following = {
             // f.follower = { t: 0, vec: new Phaser.Math.Vector2() };
             
             f.follower.startFollow({
-                duration: 5000,
+                duration: spriteCf.duration,
                 positionOnPath: true,
                 repeat: -1,
                 ease: 'Linear',
@@ -26,7 +26,7 @@ EPT._following = {
 
         T.tweens.add({
             targets: f.follower,
-            t: 1,
+            t: 5,
             ease: 'Sine.easeInOut',
             duration: duration,
             yoyo: true,

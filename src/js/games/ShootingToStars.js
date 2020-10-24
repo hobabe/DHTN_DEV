@@ -13,6 +13,9 @@ class ShootingToStars extends Phaser.Scene {
         EPT._initResource.resourceFrames(T, GS.bosses.cf);
 
         this.load.json('waves', 'src/json/waves.json');
+        this.load.json('shark', 'src/json/crab.json');
+        this.load.json('octopus', 'src/json/crab.json');
+        this.load.json('crab', 'src/json/crab.json');
     }
 
     create() {
@@ -94,7 +97,7 @@ class ShootingToStars extends Phaser.Scene {
                 T.createBoss(GS.bosses.indexMeetBoss);
 
                 //follow Now
-                EPT._following.followNow(T,GS,GS.bosses.duration)
+                // EPT._following.followNow(T,GS,GS.bosses)
             }
         } else {
             GS.gameOver = true;
@@ -282,7 +285,7 @@ class ShootingToStars extends Phaser.Scene {
         // this.physics.add.collider(GS.bosses.sprite, GS.map.platforms);
         GS.bosses.sprite.play(boss.name);
 
-        EPT._following.initFollowerPath(GS, T, 'waves');
+        EPT._following.initFollowerPath(GS, T, boss.name, GS.bosses);
     }
 
     //================= CLEAR ==============

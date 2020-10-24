@@ -66,18 +66,17 @@ EPT._gameSettings = {
                         {
                             name: 'shark',
                             pathId: 0, action:'shark', letter: 'shark', count: 2, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:350, y:100, duration: 9300,
-                            follow: {"type":"Path","x":0,"y":0,"autoClose":false,"curves":[{"type":"CubicBezierCurve","points":[165,144,159,199.75,139,299.25,129,349]},{"type":"CubicBezierCurve","points":[129,349,161.5,385.75,120,483,259,496]},{"type":"CubicBezierCurve","points":[259,496,352,569,464.5,526.75,533,537]},{"type":"CubicBezierCurve","points":[533,537,567,484,675,466,669,325]},{"type":"CubicBezierCurve","points":[669,325,659.75,295.25,641.25,235.75,632,206]},{"type":"CubicBezierCurve","points":[632,206,442,256,488.75,131,441,106]},{"type":"CubicBezierCurve","points":[441,106,384.5,109.5,280,51,172,121]}]}
+                            x:350, y:100, duration: 19300
                         },
                         {
                             name: 'octopus',
                             pathId: 0, action:'octopus', letter: 'octopus', count: 2, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:250, y:200, duration: 7000
+                            x:250, y:200, duration: 17000
                         },
                         {
                             name: 'crab',
                             pathId: 0, action:'crab', letter: 'crab', count: 3, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:350, y:100, duration: 5500
+                            x:350, y:100, duration: 15500
                         }
                 ],
                 sprite: null,

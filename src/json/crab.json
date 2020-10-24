@@ -1,0 +1,333 @@
+{
+    "type": "Path",
+    "x": 0,
+    "y": 0,
+    "autoClose": false,
+    "curves": [
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                100,
+                112.5,
+                100,
+                137.5,
+                100,
+                150,
+                100
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                150,
+                100,
+                162.5,
+                100,
+                187.5,
+                100,
+                200,
+                100
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                200,
+                100,
+                200,
+                125,
+                200,
+                175,
+                200,
+                200
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                200,
+                200,
+                175,
+                200,
+                125,
+                200,
+                100,
+                200
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                200,
+                100,
+                187.5,
+                100,
+                162.5,
+                100,
+                150
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                150,
+                112.5,
+                150,
+                137.5,
+                150,
+                150,
+                150
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                150,
+                150,
+                262.5,
+                237.5,
+                487.5,
+                412.5,
+                600,
+                500
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                500,
+                575,
+                500,
+                525,
+                500,
+                500,
+                500
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                500,
+                500,
+                500,
+                475,
+                500,
+                425,
+                500,
+                400
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                500,
+                400,
+                525,
+                400,
+                575,
+                400,
+                600,
+                400
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                400,
+                600,
+                412.5,
+                600,
+                437.5,
+                600,
+                450
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                450,
+                500,
+                450,
+                300,
+                450,
+                200,
+                450
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                200,
+                450,
+                187.5,
+                450,
+                162.5,
+                450,
+                150,
+                450
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                150,
+                450,
+                137.5,
+                450,
+                112.5,
+                450,
+                100,
+                450
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                450,
+                100,
+                437.5,
+                100,
+                412.5,
+                100,
+                400
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                400,
+                125,
+                400,
+                175,
+                400,
+                200,
+                400
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                200,
+                400,
+                200,
+                425,
+                200,
+                475,
+                200,
+                500
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                200,
+                500,
+                175,
+                500,
+                125,
+                500,
+                100,
+                500
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                100,
+                500,
+                225,
+                400,
+                475,
+                200,
+                600,
+                100
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                100,
+                575,
+                100,
+                525,
+                100,
+                500,
+                100
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                500,
+                100,
+                500,
+                125,
+                500,
+                175,
+                500,
+                200
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                500,
+                200,
+                525,
+                200,
+                575,
+                200,
+                600,
+                200
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                200,
+                600,
+                187.5,
+                600,
+                162.5,
+                600,
+                150
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                600,
+                150,
+                537.5,
+                150,
+                412.5,
+                150,
+                350,
+                150
+            ]
+        },
+        {
+            "type": "CubicBezierCurve",
+            "points": [
+                350,
+                150,
+                350,
+                187.5,
+                350,
+                262.5,
+                350,
+                300
+            ]
+        }
+    ]
+}
