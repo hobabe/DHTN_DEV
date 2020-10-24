@@ -25,6 +25,12 @@ EPT._gameSettings = {
                     info: {
                         x: 16,
                         color: 0x5bafc7
+                    },
+                    bullets :
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
                     }
                 }, 
                 {
@@ -50,6 +56,12 @@ EPT._gameSettings = {
                     info: {
                         x: 550,
                         color: 0x94c75b
+                    },
+                    bullets : 
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
                     }
                 }
             ],

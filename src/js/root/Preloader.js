@@ -39,6 +39,8 @@ class Preloader extends Phaser.Scene {
 				['bomb', pathAssets + 'bomb.png'],
 				['gun', pathAssets + 'gun.png'],
 				['enemy', pathAssets_happyboy +'/happy-boy.svg'],
+				['bullet', pathAssets+'dot.png'],
+
 			],
 			'spritesheet': [
 				['dude',  pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 }],

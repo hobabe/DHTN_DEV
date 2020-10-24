@@ -14,14 +14,12 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
-
         EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
         T.createInitPlayerSetting(1, 300, 450);
-
 
         //-------- Init player animation -------
         T.createInitAnimationMoving(0);
@@ -53,6 +51,10 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
+
+        
+        EPT._player.fireBullet(ST, 0);
+        EPT._player.fireBullet(ST, 1);
 
 
         EPT._enemy.updateEnemyMove(ST);
@@ -142,6 +144,7 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite.setCollideWorldBounds(true);
     }
 
+
     createPlayer(indexPlayer, x) {
         var player = ST.players[indexPlayer];
 
@@ -153,6 +156,8 @@ class ShootingToStars extends Phaser.Scene {
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(player.sprite, ST.platforms);
         T.physics.add.collider(ST.stars, ST.platforms);
+        T.physics.add.collider(player.bullets, ST.platforms);
+
         // T.physics.add.collider(ST.bombs, ST.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
@@ -161,7 +166,23 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
+        // T.createBullets(player);
         // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+    }
+
+    
+    //===================== CREATE BULLETS ===================
+    createBullets(player)
+    {
+        // var bullet = player.bullets;
+        var sprite = player.sprite;
+
+        // console.log(sprite.body.x, sprite.body.y)
+        // player.bullets.visible = true;
+
+        // player.bullets.disableBody(true, true);
+
+
     }
 
     createInitEnemy(){

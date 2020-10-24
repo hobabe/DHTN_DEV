@@ -1,5 +1,4 @@
-EPT._enemy = {
-  
+EPT._enemy = {  
     hitBomb(player, bomb) {
         var ST = this.ST;
         this.physics.pause();
@@ -46,5 +45,4 @@ EPT._enemy = {
             }
         }
     }
-
 };

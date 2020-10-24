@@ -32,5 +32,32 @@ EPT._player = {
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-350);
         }
+    },
+    fireBullet(ST, keyPlayer)
+    {
+        var player = ST.players[keyPlayer];
+        var sprite = player.sprite;
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+        // var bullet = player.bullets;
+        // console.log(bullet.body.x, bullet.body.y);
+        // console.log(player.bullets.visible)
+        if (ST.cursors[joystick[joyKeys[4]]].isDown && player.bullets.quantity > 0)
+        {
+            // player.bullets.enableBody(true, sprite.body.x, sprite.body.y, true, true);
+            // bullet.visible = true;
+            player.bullets = T.physics.add.sprite(sprite.body.x+ 10, sprite.body.y+ 20, 'bullet');
+            T.physics.add.collider(player.bullets, ST.platforms);
+            player.bullets.quantity-=1;
+            // player.bullets.physics.add.collider()
+            player.bullets.visible = true;
+        }
+       
+        if (player.bullets.visible == true)
+        {
+            player.bullets.setVelocityX(1060);
+        }
+        
+
     }
 };
