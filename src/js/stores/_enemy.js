@@ -11,6 +11,21 @@ EPT._enemy = {
         GS.gameOver = true;
 
     },
+    updateBossMove(GS){
+       if(GS.bosses.meet){
+         if (GS.bosses.sprite.body.touching.down) {
+            if (GS.bosses.sprite.body.right >= 250) {
+               GS.bosses.sprite.body.velocity.x *= -1;
+            }
+            else if (GS.bosses.sprite.body.left <= 0) {
+               GS.bosses.sprite.body.velocity.x *= -1;
+            }
+            else {
+               GS.bosses.sprite.body.velocity.x *= 1;
+            }
+         }
+      }
+    },
     updateEnemyMove(GS){
         if (GS.enemy1.body.touching.down) {
             if (GS.enemy1.body.right >= 250) {

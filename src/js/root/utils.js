@@ -80,7 +80,7 @@ EPT.fadeOutIn = function(passedCallback, context) {
 EPT.fadeOutScene = function(sceneName, context, value) {
   context.cameras.main.fadeOut(250);
   context.time.addEvent({
-    delay: 250,
+    delay: 450,
     callback: function() {
       context.scene.start(sceneName, value);
     },
