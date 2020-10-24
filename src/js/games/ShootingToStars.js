@@ -14,7 +14,7 @@ class ShootingToStars extends Phaser.Scene {
         //------ init background ----
         T.cteateInitBackground();
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'Q']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
@@ -174,18 +174,80 @@ class ShootingToStars extends Phaser.Scene {
     //===================== CREATE BULLETS ===================
     createBullets(player)
     {
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+
         // var bullet = player.bullets;
-        var sprite = player.sprite;
+        var Bullet = new Phaser.Class({
 
-        // player.bullets = this.add.group({
-        //     key: Bullet,
-        //     maxSize: 30,
-        //     // runChildUpdate: true
-        // });
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+    
+                this.speed = Phaser.Math.GetSpeed(600, 1)
 
-        player.bullets = T.add.group();
+                this.left = false;
+                this.right = false;
+            },
+    
+            fire: function (x, y)
+            {
+                this.setPosition(x, y);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                this.x += this.speed*(Math.abs(this.x)/this.x) * delta;
+                // console.log(this.velocityX);
+                if (this.x > 800 || this.x < 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
 
+                // if(this.left == true) 
+                // {
+                //     this.x -= this.speed * delta;
+                //     if (this.x < 0)
+                //     {
+                //         this.setActive(false);
+                //         this.setVisible(false);
+                //     }
 
+                // }else if( this.right == true)
+                // {
+                //     this.x += this.speed*delta;
+                //     if(this.x > 800)
+                //     {
+                //         this.setActive(false);
+                //         this.setVisible(false);
+                //     }
+                // }
+
+                // this.x += this.speed * delta* d;
+                // if (this.x > 820)
+                // {
+                //     this.setActive(false);
+                //     this.setVisible(false);
+                // }
+    
+              
+            }
+    
+        });
+    
+        player.bullets = this.add.group({
+            classType: Bullet,
+            maxSize: player.bullets.quantity,
+            runChildUpdate: true,
+        });
     }
 
     createInitEnemy(){

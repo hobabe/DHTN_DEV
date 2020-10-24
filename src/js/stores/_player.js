@@ -21,17 +21,19 @@ EPT._player = {
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
+            console.log(sprite.velocityX);
+
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
             sprite.setVelocityX(0);
-
             sprite.anims.play(joystick[joyKeys[3]]);//'turn'
         }
 
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-350);
         }
+
     },
     fireBullet(ST, keyPlayer)
     {
@@ -39,25 +41,17 @@ EPT._player = {
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
-        // var bullet = player.bullets;
-        // console.log(bullet.body.x, bullet.body.y);
-        // console.log(player.bullets.visible)
-        if (ST.cursors[joystick[joyKeys[4]]].isDown && player.bullets.quantity > 0)
-        {
-            // player.bullets = T.physics.add.sprite(sprite.body.x+ 10, sprite.body.y+ 20, 'bullet');
-            player.bullets = T.add.group();
-            player.bullets.create(sprite.body.x, sprite.body.y, 'bullet');
-            T.physics.add.collider(player.bullets, ST.platforms);
-            player.bullets.quantity-=1;
-            // player.bullets.physics.add.collider()
-            player.bullets.visible = true;
-        }
-       
-        if (player.bullets.visible == true)
-        {
-            player.bullets.setVelocityX(1060);
-        }
-        
 
+
+        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]) )        
+        {
+            var bullet = player.bullets.get();
+            if (bullet)
+            {
+                bullet.fire(sprite.body.x + 10, sprite.body.y + 20);
+
+            }
+            // bullet.quantity -= 1;
+        }
     }
 };

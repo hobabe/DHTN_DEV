@@ -12,7 +12,7 @@ EPT._enemy = {
     },
     updateEnemyMove(ST){
         if (ST.enemy1.body.touching.down) {
-            if (ST.enemy1.body.right >= 250) {
+            if (ST.enemy1.body.right >= ST.platforms) {
                ST.enemy1.body.velocity.x *= -1;
             }
             else if (ST.enemy1.body.left <= 0) {
