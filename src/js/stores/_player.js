@@ -44,9 +44,9 @@ EPT._player = {
         // console.log(player.bullets.visible)
         if (ST.cursors[joystick[joyKeys[4]]].isDown && player.bullets.quantity > 0)
         {
-            // player.bullets.enableBody(true, sprite.body.x, sprite.body.y, true, true);
-            // bullet.visible = true;
-            player.bullets = T.physics.add.sprite(sprite.body.x+ 10, sprite.body.y+ 20, 'bullet');
+            // player.bullets = T.physics.add.sprite(sprite.body.x+ 10, sprite.body.y+ 20, 'bullet');
+            player.bullets = T.add.group();
+            player.bullets.create(sprite.body.x, sprite.body.y, 'bullet');
             T.physics.add.collider(player.bullets, ST.platforms);
             player.bullets.quantity-=1;
             // player.bullets.physics.add.collider()

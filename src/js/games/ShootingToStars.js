@@ -166,7 +166,7 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
-        // T.createBullets(player);
+        T.createBullets(player);
         // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
     }
 
@@ -177,10 +177,13 @@ class ShootingToStars extends Phaser.Scene {
         // var bullet = player.bullets;
         var sprite = player.sprite;
 
-        // console.log(sprite.body.x, sprite.body.y)
-        // player.bullets.visible = true;
+        // player.bullets = this.add.group({
+        //     key: Bullet,
+        //     maxSize: 30,
+        //     // runChildUpdate: true
+        // });
 
-        // player.bullets.disableBody(true, true);
+        player.bullets = T.add.group();
 
 
     }
