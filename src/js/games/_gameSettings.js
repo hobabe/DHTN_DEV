@@ -25,7 +25,9 @@ EPT._gameSettings = {
                     info: {
                         x: 16,
                         color: 0x5bafc7
-                    }
+                    },
+                    sword: null,
+                    attack : true,
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
@@ -50,7 +52,9 @@ EPT._gameSettings = {
                     info: {
                         x: 550,
                         color: 0x94c75b
-                    }
+                    },
+                    sword: null,
+                    attack : true,
                 }
             ],
             stars: null,
