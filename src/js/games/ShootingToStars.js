@@ -162,7 +162,47 @@ class ShootingToStars extends Phaser.Scene {
         }, null, T);
 
         // T.physics.add.collider(player.sprite, ST.bombs, EPT._enemy.hitBomb, null, T);
+        T.createSword(player);
+
     }
+
+    createSword(player)
+    {
+        var Sword = new Phaser.Class({
+
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Sword (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
+    
+                this.speed = Phaser.Math.GetSpeed(600, 1);
+            },
+    
+            fire: function (x, y)
+            {
+                
+                this.setPosition(x, y);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                Phaser.Actions.RotateAround(this, { x: player.body.x, y: player.body.y }, 0.1);
+            }
+    
+        });
+    
+        player.weapon.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, Sword);
+        player.weapon.sword.disableBody(true, true);
+            
+        // spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    }
+
 
     createInitEnemy(){
         ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();

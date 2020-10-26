@@ -21,6 +21,7 @@ EPT._player = {
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
+            console.log(player.weapon.sword.body.x);
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
