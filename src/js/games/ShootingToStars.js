@@ -54,6 +54,10 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
 
+        EPT._player.slicing(ST, 0);
+        EPT._player.slicing(ST, 1);
+
+
 
         EPT._enemy.updateEnemyMove(ST);
     }
@@ -192,7 +196,7 @@ class ShootingToStars extends Phaser.Scene {
     
             update: function (time, delta)
             {
-                Phaser.Actions.RotateAround(this, { x: player.body.x, y: player.body.y }, 0.1);
+                Phaser.Actions.RotateAround(this, { x: player.sprite.body.x, y: player.sprite.body.y }, 0.1);
             }
     
         });

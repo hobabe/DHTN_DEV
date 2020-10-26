@@ -33,5 +33,25 @@ EPT._player = {
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
             sprite.setVelocityY(-350);
         }
+    },
+    slicing(ST, keyPlayer)
+    {
+        var player = ST.players[keyPlayer];
+        var sprite = player.sprite;
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+
+        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
+        {
+            console.log(player.weapon.sword.body.y);
+            player.weapon.sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);
+            var sword = player.weapon.sword.get();
+
+            if (sword)
+            {
+                sword.fire(sprite.body.x, sprite.body.y);
+            }
+        }
+
     }
 };
