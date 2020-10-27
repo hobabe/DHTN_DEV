@@ -45,20 +45,8 @@ EPT._player = {
 
         if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
         {
-            // console.log(player.weapon.sword.body.y);
-            // sword.anchor.setTo(0.5, 0.5);
-
             sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
             sword.angle = 0;
-            // var sword = player.weapon.sword.get();
-
-            // if (sword)
-            // {
-            //     sword.fire(sprite.body.x, sprite.body.y);
-            // }
-            // ST.attack = true;
-
-
         }
         console.log("angle: "+sword.angle);
 
@@ -70,7 +58,6 @@ EPT._player = {
             {
                 sword.disableBody(true, true);
                 sword.angle = 0;
-                // ST.attack = true;
             }
         }
         else if(player.attack == -1)
@@ -79,7 +66,6 @@ EPT._player = {
             {
                 sword.disableBody(true, true);
                 sword.angle = 0;
-                // ST.attack = true;
             }
         }
 

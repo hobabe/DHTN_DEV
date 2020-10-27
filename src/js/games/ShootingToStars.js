@@ -172,50 +172,15 @@ class ShootingToStars extends Phaser.Scene {
 
     createSword(player)
     {
-        // Sword = new Phaser.Class({
-
-        //     Extends: Phaser.GameObjects.Image,
-    
-        //     initialize:
-    
-        //     function Sword (scene)
-        //     {
-        //         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sword');
-    
-        //         // this.speed = Phaser.Math.GetSpeed(600, 1);
-        //     },
-    
-        //     fire: function (x, y)
-        //     {
-                
-        //         this.setPosition(x, y);
-    
-        //         this.setActive(true);
-        //         this.setVisible(true);
-        //     },
-    
-        //     update: function (time, delta)
-        //     {
-        //         Phaser.Actions.RotateAround(this, { x: player.sprite.body.x, y: player.sprite.body.y }, 0.1);
-        //     }
-    
-        // });
-    
-        // // player.weapon.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, '');
-        // // player.weapon.sword.disableBody(true, true);
-            
-        // // spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin();
-        // player.sword.anchor.lineTo(0.5, 0.5);
-        T.physics.add.overlap(player.sword, ST.enemy1, function(a,b){
-            EPT._enemy.beKilled(a, b);
-        }, null, T);
-        T.physics.add.overlap(player.sword, ST.enemy2, function(a,b){
-            EPT._enemy.beKilled(a, b);
-        }, null, T);
-        T.physics.add.overlap(player.sword, ST.enemy3, function(a,b){
-            EPT._enemy.beKilled(a, b);
-        }, null, T);
+        
+        T.physics.add.collider(player.sword, ST.enemy1, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.sword, ST.enemy2, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.sword, ST.enemy3, EPT._enemy.beKilled, null, T);
+
+
+        // T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
+
 
         player.sword.disableBody(true, true);
     }
