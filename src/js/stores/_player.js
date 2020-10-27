@@ -15,13 +15,14 @@ EPT._player = {
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
             EPT.Sfx.play('running', false);
+            player.attack = -1;
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
-            // console.log(player.weapon.sword.body.x);
+            player.attack = 1;
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
@@ -48,35 +49,38 @@ EPT._player = {
             // sword.anchor.setTo(0.5, 0.5);
 
             sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+            sword.angle = 0;
             // var sword = player.weapon.sword.get();
 
             // if (sword)
             // {
             //     sword.fire(sprite.body.x, sprite.body.y);
             // }
-            ST.attack = true;
+            // ST.attack = true;
 
 
         }
         console.log("angle: "+sword.angle);
-        if(ST.attack == true)
-        {
 
-            sword.angle += 9 ;
-            if(sword.angle == 81)
+        
+        sword.angle += 9*player.attack;
+        if(player.attack == 1)
+        {
+            if(sword.angle == 90 )
             {
                 sword.disableBody(true, true);
                 sword.angle = 0;
-                ST.attack = false;
+                // ST.attack = true;
             }
-        //     while(sword.angle <= 91)
-        //     {
-        //         sword.angle += 7;
-        //     }
-        //     sword.disableBody(true, true);
-        //     sword.angle = 0;
-        //     ST.attack = false;
-           
+        }
+        else if(player.attack == -1)
+        {
+            if(sword.angle == -90.00000000000023 )
+            {
+                sword.disableBody(true, true);
+                sword.angle = 0;
+                // ST.attack = true;
+            }
         }
 
     }

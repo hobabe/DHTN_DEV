@@ -205,10 +205,19 @@ class ShootingToStars extends Phaser.Scene {
         // // player.weapon.sword.disableBody(true, true);
             
         // // spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword');
+        player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin();
         // player.sword.anchor.lineTo(0.5, 0.5);
+        T.physics.add.overlap(player.sword, ST.enemy1, function(a,b){
+            EPT._enemy.beKilled(a, b);
+        }, null, T);
+        T.physics.add.overlap(player.sword, ST.enemy2, function(a,b){
+            EPT._enemy.beKilled(a, b);
+        }, null, T);
+        T.physics.add.overlap(player.sword, ST.enemy3, function(a,b){
+            EPT._enemy.beKilled(a, b);
+        }, null, T);
 
-        // player.sword.disableBody(true, true);
+        player.sword.disableBody(true, true);
     }
 
 

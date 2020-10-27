@@ -45,6 +45,10 @@ EPT._enemy = {
                ST.enemy3.body.velocity.x *= 1;
             }
         }
+    },
+    beKilled(sword, enemy)
+    {
+      enemy.disableBody(true, true);
     }
 
 };
