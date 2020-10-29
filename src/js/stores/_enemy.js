@@ -48,7 +48,8 @@ EPT._enemy = {
     },
     beKilled(sword, enemy)
     {
-      enemy.disableBody(true, true);
+         console.log('here');
+         enemy.disableBody(true, true);
     }
 
 };

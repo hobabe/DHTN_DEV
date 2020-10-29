@@ -15,7 +15,7 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'Q']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
