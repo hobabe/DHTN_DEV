@@ -15,14 +15,16 @@ EPT._player = {
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
             EPT.Sfx.play('running', false);
+            player.left = true;
+            player.right = false;
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
-            console.log(sprite.velocityX);
-
+            player.right = true;
+            player.left = false;
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
@@ -41,17 +43,22 @@ EPT._player = {
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
+        // console.log(player.right);
 
 
         if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]) )        
         {
-            var bullet = player.bullets.get();
-            if (bullet)
+            var bulletLeft = player.bulletsLeft.get();
+            var bulletRight = player.bulletsRight.get();
+            if (bulletRight && player.right == true)
             {
-                bullet.fire(sprite.body.x + 10, sprite.body.y + 20);
 
+                bulletRight.fire(sprite.body.x + 10, sprite.body.y + 20);
             }
-            // bullet.quantity -= 1;
+            else if(bulletLeft && player.left == true)
+            {
+                bulletLeft.fire(sprite.body.x + 10, sprite.body.y + 20);
+            }
         }
     }
 };

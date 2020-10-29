@@ -156,7 +156,7 @@ class ShootingToStars extends Phaser.Scene {
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(player.sprite, ST.platforms);
         T.physics.add.collider(ST.stars, ST.platforms);
-        T.physics.add.collider(player.bullets, ST.platforms);
+        // T.physics.add.collider(player.bullets, ST.platforms);
 
         // T.physics.add.collider(ST.bombs, ST.platforms);
 
@@ -178,7 +178,7 @@ class ShootingToStars extends Phaser.Scene {
         var joyKeys = player.joyKeys;
 
         // var bullet = player.bullets;
-        var Bullet = new Phaser.Class({
+        var BulletRight = new Phaser.Class({
 
             Extends: Phaser.GameObjects.Image,
     
@@ -190,8 +190,8 @@ class ShootingToStars extends Phaser.Scene {
     
                 this.speed = Phaser.Math.GetSpeed(600, 1)
 
-                this.left = false;
-                this.right = false;
+                // this.left = false;
+                // this.right = false;
             },
     
             fire: function (x, y)
@@ -204,48 +204,63 @@ class ShootingToStars extends Phaser.Scene {
     
             update: function (time, delta)
             {
-                this.x += this.speed*(Math.abs(this.x)/this.x) * delta;
+                this.x += this.speed * delta;
                 // console.log(this.velocityX);
                 if (this.x > 800 || this.x < 0)
                 {
                     this.setActive(false);
                     this.setVisible(false);
-                }
-
-                // if(this.left == true) 
-                // {
-                //     this.x -= this.speed * delta;
-                //     if (this.x < 0)
-                //     {
-                //         this.setActive(false);
-                //         this.setVisible(false);
-                //     }
-
-                // }else if( this.right == true)
-                // {
-                //     this.x += this.speed*delta;
-                //     if(this.x > 800)
-                //     {
-                //         this.setActive(false);
-                //         this.setVisible(false);
-                //     }
-                // }
-
-                // this.x += this.speed * delta* d;
-                // if (this.x > 820)
-                // {
-                //     this.setActive(false);
-                //     this.setVisible(false);
-                // }
-    
-              
+                } 
             }
     
         });
     
-        player.bullets = this.add.group({
-            classType: Bullet,
-            maxSize: player.bullets.quantity,
+        player.bulletsRight = this.add.group({
+            classType: BulletRight,
+            maxSize: 2,
+            runChildUpdate: true,
+        });
+
+        var BulletLeft = new Phaser.Class({
+
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+    
+                this.speed = Phaser.Math.GetSpeed(600, 1)
+
+                // this.left = false;
+                // this.right = false;
+            },
+    
+            fire: function (x, y)
+            {
+                this.setPosition(x, y);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                this.x -= this.speed * delta;
+                console.log();
+                if (this.x > 800 || this.x < 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                } 
+            }
+    
+        });
+    
+        player.bulletsLeft = this.add.group({
+            classType: BulletLeft,
+            maxSize: 2,
             runChildUpdate: true,
         });
     }

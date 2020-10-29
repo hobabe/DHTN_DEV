@@ -26,7 +26,15 @@ EPT._gameSettings = {
                         x: 16,
                         color: 0x5bafc7
                     },
-                    bullets :
+                    left: false,
+                    right: false,
+                    bulletsRight : 
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
+                    },
+                    bulletsLeft : 
                     {
                         speed : Phaser.Math.GetSpeed(600, 1),
                         visible: false,
@@ -57,7 +65,15 @@ EPT._gameSettings = {
                         x: 550,
                         color: 0x94c75b
                     },
-                    bullets : 
+                    left: false,
+                    right: false,
+                    bulletsRight : 
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
+                    },
+                    bulletsLeft : 
                     {
                         speed : Phaser.Math.GetSpeed(600, 1),
                         visible: false,
