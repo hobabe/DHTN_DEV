@@ -13,8 +13,8 @@ class ShootingToStars extends Phaser.Scene {
         EPT._initResource.resourceFrames(T, GS.bosses.cf);
 
         this.load.json('waves', 'src/json/waves.json');
-        this.load.json('shark', 'src/json/crab.json');
-        this.load.json('octopus', 'src/json/crab.json');
+        this.load.json('shark', 'src/json/shark.json');
+        this.load.json('octopus', 'src/json/octopus.json');
         this.load.json('crab', 'src/json/crab.json');
     }
 
@@ -36,7 +36,7 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitAnimationMoving(1);
 
         //-------- Init boom ----
-        // T.createInitBoom();
+        T.createInitBoom();
 
         //  Input Events
         GS.cursors = EPT._keyboard.createInitKeyboard(GS.players.list);
@@ -80,16 +80,16 @@ class ShootingToStars extends Phaser.Scene {
             EPT._maps.generateMaps(GS, T);
             T.clearEnemy();
             T.createInitEnemy();
-            GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel +1));
+            GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel + 1));
             GS.bosses.meet = false;
 
             //clear boss existed
-            if(GS.bosses.sprite){
+            if (GS.bosses.sprite) {
                 GS.bosses.sprite.destroy();
             }
-            
+
             //check boss map
-            if(GS.map.levels[GS.gameLevel-1].kind=='boss 😎'){
+            if (GS.map.levels[GS.gameLevel - 1].kind == 'boss 😎') {
                 T.camShake();
                 GS.bosses.meet = true;
                 //load boss
@@ -106,26 +106,25 @@ class ShootingToStars extends Phaser.Scene {
         }
     }
 
-    nextLevelKey(){
-        if (Phaser.Input.Keyboard.JustDown(GS.config.keyNextLevel))
-        {
+    nextLevelKey() {
+        if (Phaser.Input.Keyboard.JustDown(GS.config.keyNextLevel)) {
             T.nextLevel();
         }
     }
 
 
     //============ CAMERA ===========
-    camFade(){
+    camFade() {
         GS.cam.fadeIn(500, 0, 0, 0);
     }
-    camShake(time){
+    camShake(time) {
         GS.cam.shake(time ?? 250, 0.01);
     }
 
 
 
     //============== CREATE -------------
-    createOptions(){
+    createOptions() {
         GS.config.keyNextLevel = T.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         GS.cam = T.cameras.main;
         GS.cam.fade(0, 0, 0, 0);
@@ -271,7 +270,7 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     //------- boss create ---- 
-    createBoss(indexBoss){
+    createBoss(indexBoss) {
         var boss = GS.bosses.cf[indexBoss];
         GS.bosses.duration = boss.duration;
         // var sp = GS.bosses.sprite;
@@ -286,6 +285,18 @@ class ShootingToStars extends Phaser.Scene {
         GS.bosses.sprite.play(boss.name);
 
         EPT._following.initFollowerPath(GS, T, boss.name, GS.bosses);
+
+        T.bossSkills();
+    }
+
+    bossSkills() {
+        var x = Phaser.Math.Between(400, 600);
+        
+        var bomb = GS.bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocityX(100);
+        bomb.allowGravity = false;
     }
 
     //================= CLEAR ==============

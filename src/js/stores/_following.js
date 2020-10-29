@@ -5,7 +5,7 @@ EPT._following = {
 
         f.path = new Phaser.Curves.Path(T.cache.json.get(key));
 
-        f.path.draw(f.graphics);
+        f.path.draw(f.graphics, 64);
 
         // for (var i = 0; i < 20; i++)
         // {
@@ -16,7 +16,8 @@ EPT._following = {
                 duration: spriteCf.duration,
                 positionOnPath: true,
                 repeat: -1,
-                ease: 'Linear',
+                yoyo: true,
+                ease: 'Bounce',
                 // delay: i * 70
             });
         // }
