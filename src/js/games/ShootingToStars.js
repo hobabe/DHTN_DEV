@@ -70,12 +70,13 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
 
-        for(var i=0;i<2;i++)
-        {
-            EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, i);
-            EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, i);
-            EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, i);
-        }
+        EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, 0);
+        EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, 0);
+        EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, 0);
+
+        // EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, 1);
+        // EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, 1);
+        // EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, 1);
 
        // ------------- attack enemy -------------
         EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);

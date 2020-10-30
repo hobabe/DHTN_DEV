@@ -3,8 +3,6 @@ EPT._enemy = {
    {
       var player = ST.players[keyPlayer];
       var sprite = player.sprite;
-      var x =  sprite.body.bottom;
-      var y =  enemy.body.bottom;
 
       if (enemy.body.touching.down) {
          if (enemy.body.right >= platRight || enemy.body.left <= platLeft) {
@@ -13,7 +11,7 @@ EPT._enemy = {
          else {
 
             // enemy patrol toward the players
-            if (x == y && Math.abs(sprite.body.x - enemy.body.x) < 400) {    
+            if (sprite.body.bottom == enemy.body.bottom && Math.abs(sprite.body.x - enemy.body.x) < 400) {    
                if (sprite.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
                    enemy.body.velocity.x *= -1;
                }
@@ -21,7 +19,6 @@ EPT._enemy = {
                    enemy.body.velocity.x *= -1; 
                }
             }
-            
             enemy.body.velocity.x *= 1;
          }
       }
