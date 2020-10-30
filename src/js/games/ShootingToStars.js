@@ -172,17 +172,20 @@ class ShootingToStars extends Phaser.Scene {
 
     createSword(player)
     {
-        player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin();
-        
-        T.physics.add.collider(player.sword, ST.enemy1, EPT._enemy.beKilled, null, T);
-        T.physics.add.collider(player.sword, ST.enemy2, EPT._enemy.beKilled, null, T);
-        T.physics.add.collider(player.sword, ST.enemy3, EPT._enemy.beKilled, null, T);
+        player.swordRight = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.25, 0.75);
+        player.swordLeft = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.6, 1);
+
+        // T.physics.add.collider(player.sword, ST.enemy1, EPT._enemy.beKilled, null, T);
+        // T.physics.add.collider(player.sword, ST.enemy2, EPT._enemy.beKilled, null, T);
+        // T.physics.add.collider(player.sword, ST.enemy3, EPT._enemy.beKilled, null, T);
 
 
         // T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
 
 
-        player.sword.disableBody(true, true);
+        player.swordRight.disableBody(true, true);
+        player.swordLeft.disableBody(true, true);
+
     }
 
 

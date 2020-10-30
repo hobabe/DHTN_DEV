@@ -26,7 +26,8 @@ EPT._gameSettings = {
                         x: 16,
                         color: 0x5bafc7
                     },
-                    sword: null,
+                    swordRight: null,
+                    swordLeft: null,
                     attack : 1,
 
                 }, 
@@ -54,7 +55,8 @@ EPT._gameSettings = {
                         x: 550,
                         color: 0x94c75b
                     },
-                    sword: null,
+                    swordRight: null,
+                    swordLeft: null,
                     attack : 1,
                 }
             ],

@@ -41,31 +41,48 @@ EPT._player = {
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
-        var sword = player.sword;
+        var swordRight = player.swordRight;
+        var swordLeft = player.swordLeft;
 
         if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
         {
-            sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
-            sword.angle = 0;
+            if(player.attack == 1)
+            {
+                swordRight.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+                swordRight.angle = 0;
+            }
+            else if(player.attack == -1)
+            {
+                swordLeft.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+                swordLeft.angle = 0;
+            }
+            // sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+            // sword.angle = 0;
         }
-        console.log("angle: "+sword.angle);
+        // console.log("angle: "+sword.angle);
 
         
-        sword.angle += 9*player.attack;
+        // sword.angle -= 9*player.attack;  
         if(player.attack == 1)
         {
-            if(sword.angle == 90 )
+            swordRight.angle += 9*player.attack;  
+
+            if(swordRight.angle <= 100  && swordRight.angle > 85)
             {
-                sword.disableBody(true, true);
-                sword.angle = 0;
+                swordRight.disableBody(true, true);
+                swordRight.angle = 0;
             }
         }
         else if(player.attack == -1)
         {
-            if(sword.angle == -90.00000000000023 )
+            swordLeft.angle += 9*player.attack;  
+
+            if(swordLeft.angle >= -100  && swordLeft.angle < -85)
             {
-                sword.disableBody(true, true);
-                sword.angle = 0;
+                // swordLeft.angle -= 9*player.attack;  
+
+                swordLeft.disableBody(true, true);
+                swordLeft.angle = 0;
             }
         }
 
