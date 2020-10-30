@@ -28,7 +28,7 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'SPACE']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'Q']);
         EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
 
         //------ Player init setting -----
@@ -70,12 +70,17 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
 
-        EPT._enemy.updateEnemyMove(ST);
+        for(var i=0;i<2;i++)
+        {
+            EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, i);
+            EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, i);
+            EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, i);
+        }
 
        // ------------- attack enemy -------------
-        EPT._player.attackEnemy(ST, 0, ST.enemy1);
-        EPT._player.attackEnemy(ST, 0, ST.enemy2);
-        EPT._player.attackEnemy(ST, 0, ST.enemy3);
+        EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
+        EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
+        EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
         
         // ------------ enemies hit players ----------
         for (var i=0;i<2;i++)

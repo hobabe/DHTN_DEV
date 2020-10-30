@@ -1,47 +1,42 @@
 EPT._enemy = {
-   updateEnemyMove(ST){
-      if (ST.enemy1.body.touching.down) {
-         if (ST.enemy1.body.right >= 250) {
-            ST.enemy1.body.velocity.x *= -1;
-         }
-         else if (ST.enemy1.body.left <= 0) {
-            ST.enemy1.body.velocity.x *= -1;
-         }
-         else {
-            ST.enemy1.body.velocity.x *= 1;
-         }
-      }
-      if (ST.enemy2.body.touching.down) {
-         if (ST.enemy2.body.right >= 800) {
-            ST.enemy2.body.velocity.x *= -1;
-         }
-         else if (ST.enemy2.body.left <= 390) {
-            ST.enemy2.body.velocity.x *= -1;
-         }
-         else {
-            ST.enemy2.body.velocity.x *= 1;
-         }
-      }
-      if (ST.enemy3.body.touching.down) {
-         if (ST.enemy3.body.right >= 800) {
-            ST.enemy3.body.velocity.x *= -1;
-         }
-         else if (ST.enemy3.body.left <= 0) {
-            ST.enemy3.body.velocity.x *= -1;
-         }
-         else {
-            ST.enemy3.body.velocity.x *= 1;
-         }
-      }
-      
-      // console.log('enemy2: '+ST.enemy2.body.y)
-   },
-   beKilled(enemy)
+   updateEnemyMove_2(enemy, platRight, platLeft, keyPlayer)
    {
-         enemy.disableBody(true, true);
-         var x =  enemy.body.right;
-         var y =  enemy.body.bottom;
-         EPT._item.createItems(x, y);
+      var player = ST.players[keyPlayer];
+      var sprite = player.sprite;
+      var x =  sprite.body.bottom;
+      var y =  enemy.body.bottom;
+
+      if (enemy.body.touching.down) {
+         if (enemy.body.right >= platRight || enemy.body.left <= platLeft) {
+            enemy.body.velocity.x *= -1;
+         }
+         else {
+
+            // enemy patrol toward the players
+            if (x == y && Math.abs(sprite.body.x - enemy.body.x) < 400) {    
+               if (sprite.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
+                   enemy.body.velocity.x *= -1;
+               }
+               else if (sprite.body.x > enemy.body.x && enemy.body.velocity.x < 0) {
+                   enemy.body.velocity.x *= -1; 
+               }
+            }
+            
+            enemy.body.velocity.x *= 1;
+         }
+      }
+   },
+  
+   beKilled(enemy, keyEnemyLife)
+   {
+         if( ST.enemyLife[keyEnemyLife] > 0)
+         {
+            enemy.disableBody(true, true);
+            ST.enemyLife[keyEnemyLife] -= 1;
+            var x =  enemy.body.right;
+            var y =  enemy.body.bottom;
+            EPT._item.createItems(x, y);
+         }
    },
    hitBomb(player, enemy) {
          ST.checkCollider[0] = 1;

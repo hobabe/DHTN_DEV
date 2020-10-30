@@ -27,7 +27,7 @@ EPT._player = {
             sprite.setVelocityY(-330);
         }
     },
-    attackEnemy(ST, keyPlayer, enemy)
+    attackEnemy(ST, keyPlayer, enemy, keyEnemyLife)
     {
         var player = ST.players[keyPlayer];
         var sprite = player.sprite;
@@ -37,7 +37,7 @@ EPT._player = {
         {
             if((Math.abs(sprite.body.x - enemy.body.x)<=50) && (Math.abs(sprite.body.y- enemy.body.y)<=100))
             {
-                EPT._enemy.beKilled(enemy);
+                EPT._enemy.beKilled(enemy, keyEnemyLife);
             }
         }
 
