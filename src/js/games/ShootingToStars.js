@@ -76,13 +76,16 @@ class ShootingToStars extends Phaser.Scene {
         EPT._enemy.updateEnemyMove(ST.enemy3, 800, 0);
 
         // ------------- attack enemy -------------
-        EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
-        EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
-        EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
+        // EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
+        // EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
+        // EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
 
-        EPT._player.attackEnemy(ST, 1, ST.enemy1, 0);
-        EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
-        EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
+        // EPT._player.attackEnemy(ST, 1, ST.enemy1, 0);
+        // EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
+        // EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
+
+        EPT._player.slicing(ST, 0);
+        EPT._player.slicing(ST, 1);
         
         // ----------- enemies hit players ----------
         for (var i=0;i<2;i++)
@@ -214,18 +217,25 @@ class ShootingToStars extends Phaser.Scene {
 
     createSword(player)
     {
-        player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin();
-        
-        T.physics.add.collider(player.sword, ST.enemy1, EPT._enemy.beKilled, null, T);
-        T.physics.add.collider(player.sword, ST.enemy2, EPT._enemy.beKilled, null, T);
-        T.physics.add.collider(player.sword, ST.enemy3, EPT._enemy.beKilled, null, T);
+        player.swordRight = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.25, 0.75);
+        player.swordLeft = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.6, 1);
+
+        T.physics.add.collider(player.swordRight, ST.enemy1, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.swordRight, ST.enemy2, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.swordRight, ST.enemy3, EPT._enemy.beKilled, null, T);
+
+        T.physics.add.collider(player.swordLeft, ST.enemy1, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.swordLeft, ST.enemy2, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.swordLeft, ST.enemy3, EPT._enemy.beKilled, null, T);
 
 
         // T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
 
+        player.swordRight.disableBody(true, true);
+        player.swordLeft.disableBody(true, true);
 
-        player.sword.disableBody(true, true);
     }
+
 
     createInitEnemy(){
         ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();

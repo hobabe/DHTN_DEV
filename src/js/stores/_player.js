@@ -34,12 +34,42 @@ EPT._player = {
     attackEnemy(ST, keyPlayer, enemy, keyEnemyLife)
     {
         var player = ST.players[keyPlayer];
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+        var swordRight = player.swordRight;
+        var swordLeft = player.swordLeft;
+        if (ST.cursors[joystick[joyKeys[4]]].isDown)
+        {
+            if((Math.abs(swordRight.body.x - enemy.body.x)<=20) && (Math.abs(swordRight.body.y- enemy.body.y)<=60))
+            {
+                EPT._enemy.beKilled(enemy, keyEnemyLife);
+            }
+        }
+        if (ST.cursors[joystick[joyKeys[4]]].isDown)
+        {
+            if((Math.abs(swordLeft.body.x - enemy.body.x)<=20) && (Math.abs(swordLeft.body.y- enemy.body.y)<=60))
+            {
+                EPT._enemy.beKilled(enemy, keyEnemyLife);
+            }
+        }
+
+        var ST= this.ST
+    },
+
+        // EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
+        // EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
+        // EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
+
+        // EPT._player.attackEnemy(ST, 1, ST.enemy1, 0);
+        // EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
+        // EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
+
+    slicing(ST, keyPlayer)
+    {
+        var player = ST.players[keyPlayer];
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
-<<<<<<< HEAD
-        if (ST.cursors[joystick[joyKeys[4]]].isDown)
-=======
         var swordRight = player.swordRight;
         var swordLeft = player.swordLeft;
 
@@ -58,16 +88,34 @@ EPT._player = {
         }
 
         if(player.attack == 1)
->>>>>>> slicing
         {
-            if((Math.abs(sprite.body.x - enemy.body.x)<=50) && (Math.abs(sprite.body.y- enemy.body.y)<=100))
+            swordRight.angle += 9*player.attack;  
+
+            if(swordRight.angle <= 100  && swordRight.angle > 85)
             {
-                EPT._enemy.beKilled(enemy, keyEnemyLife);
+                swordRight.disableBody(true, true);
+                swordRight.angle = 0;
+            }
+        }
+        else if(player.attack == -1)
+        {
+            swordLeft.angle += 9*player.attack;  
+
+            if(swordLeft.angle >= -100  && swordLeft.angle < -85)
+            {
+                swordLeft.disableBody(true, true);
+                swordLeft.angle = 0;
             }
         }
 
-<<<<<<< HEAD
-        var ST= this.ST
+        EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
+        EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
+        EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
+
+        EPT._player.attackEnemy(ST, 1, ST.enemy1, 0);
+        EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
+        EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
+
     },
     gameOver(ST, T)
     {
@@ -80,12 +128,4 @@ EPT._player = {
        }
     },
 }
-=======
-            if(swordLeft.angle >= -100  && swordLeft.angle < -85)
-            {
-                swordLeft.disableBody(true, true);
-                swordLeft.angle = 0;
-            }
-        }
->>>>>>> slicing
 
