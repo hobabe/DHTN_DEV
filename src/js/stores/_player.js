@@ -22,7 +22,7 @@ EPT._player = {
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
-            // sprite.setVelocityX(0);
+            sprite.setVelocityX(0);
 
             sprite.anims.play(joystick[joyKeys[3]]);//'turn'
         }
