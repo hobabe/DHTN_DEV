@@ -56,13 +56,8 @@ EPT._player = {
                 swordLeft.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
                 swordLeft.angle = 0;
             }
-            // sword.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
-            // sword.angle = 0;
         }
-        // console.log("angle: "+sword.angle);
 
-        
-        // sword.angle -= 9*player.attack;  
         if(player.attack == 1)
         {
             swordRight.angle += 9*player.attack;  
@@ -79,8 +74,6 @@ EPT._player = {
 
             if(swordLeft.angle >= -100  && swordLeft.angle < -85)
             {
-                // swordLeft.angle -= 9*player.attack;  
-
                 swordLeft.disableBody(true, true);
                 swordLeft.angle = 0;
             }
