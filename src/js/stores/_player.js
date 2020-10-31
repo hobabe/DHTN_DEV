@@ -10,11 +10,15 @@ EPT._player = {
 
             sprite.anims.play(joystick[joyKeys[0]], true);//'left'
             // console.log(ST.cursors);
+            EPT.Sfx.play('running', false);
+            player.attack = -1;
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
 
             sprite.anims.play(joystick[joyKeys[2]], true);//right
+            EPT.Sfx.play('running', false);
+            player.attack = 1;
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
@@ -24,7 +28,7 @@ EPT._player = {
         }
 
         if (ST.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
-            sprite.setVelocityY(-330);
+            sprite.setVelocityY(-350);
         }
     },
     attackEnemy(ST, keyPlayer, enemy, keyEnemyLife)
