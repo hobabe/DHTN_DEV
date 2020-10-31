@@ -118,7 +118,7 @@ class ShootingToStars extends Phaser.Scene {
         GS.cam.fadeIn(500, 0, 0, 0);
     }
     camShake(time) {
-        GS.cam.shake(time ?? 250, 0.01);
+        GS.cam.shake(time ? time : 250, 0.01);
     }
 
 

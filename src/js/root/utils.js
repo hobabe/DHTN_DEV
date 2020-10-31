@@ -46,7 +46,7 @@ EPT.Sfx = {
   play: function(audio, loop, volume) {
     var sound = EPT.Sfx.sounds[audio];
     if (EPT.Sfx.status[audio] && EPT.Sfx.sounds && sound && !sound.isPlaying) {
-      sound.play({ loop: loop, volume: volume?? 0.5 });
+      sound.play({ loop: loop, volume: volume? volume: 0.5 });
     }
   },
   update: function(type, button, label) {
