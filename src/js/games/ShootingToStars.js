@@ -208,6 +208,23 @@ class ShootingToStars extends Phaser.Scene {
             T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null , T);
 
         }
+
+        T.createSword(player);
+    }
+
+    createSword(player)
+    {
+        player.sword = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin();
+        
+        T.physics.add.collider(player.sword, ST.enemy1, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.sword, ST.enemy2, EPT._enemy.beKilled, null, T);
+        T.physics.add.collider(player.sword, ST.enemy3, EPT._enemy.beKilled, null, T);
+
+
+        // T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
+
+
+        player.sword.disableBody(true, true);
     }
 
     createInitEnemy(){

@@ -37,7 +37,28 @@ EPT._player = {
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
+<<<<<<< HEAD
         if (ST.cursors[joystick[joyKeys[4]]].isDown)
+=======
+        var swordRight = player.swordRight;
+        var swordLeft = player.swordLeft;
+
+        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
+        {
+            if(player.attack == 1)
+            {
+                swordRight.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+                swordRight.angle = 0;
+            }
+            else if(player.attack == -1)
+            {
+                swordLeft.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
+                swordLeft.angle = 0;
+            }
+        }
+
+        if(player.attack == 1)
+>>>>>>> slicing
         {
             if((Math.abs(sprite.body.x - enemy.body.x)<=50) && (Math.abs(sprite.body.y- enemy.body.y)<=100))
             {
@@ -45,6 +66,7 @@ EPT._player = {
             }
         }
 
+<<<<<<< HEAD
         var ST= this.ST
     },
     gameOver(ST, T)
@@ -58,4 +80,12 @@ EPT._player = {
        }
     },
 }
+=======
+            if(swordLeft.angle >= -100  && swordLeft.angle < -85)
+            {
+                swordLeft.disableBody(true, true);
+                swordLeft.angle = 0;
+            }
+        }
+>>>>>>> slicing
 
