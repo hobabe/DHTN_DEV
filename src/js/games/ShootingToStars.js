@@ -79,6 +79,10 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
         EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
         EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
+
+        EPT._player.attackEnemy(ST, 1, ST.enemy1, 0);
+        EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
+        EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
         
         // ----------- enemies hit players ----------
         for (var i=0;i<2;i++)
