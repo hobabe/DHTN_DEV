@@ -68,7 +68,7 @@ class ShootingToStars extends Phaser.Scene {
         }
 
         EPT._player.playerMove(ST, 0);
-        EPT._player.playerMove(ST, 1);
+        EPT._player.playerMove(ST, 1); 
 
         // ------ enemies patrol toward player --------
         EPT._enemy.updateEnemyMove(ST.enemy1, 250, 0);

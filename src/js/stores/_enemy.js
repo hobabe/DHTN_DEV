@@ -11,7 +11,6 @@ EPT._enemy = {
             enemy.body.velocity.x *= -1;
          }
          else {
-
             // enemy patrol toward the players
             if ((sprite1.body.bottom == enemy.body.bottom && Math.abs(sprite1.body.x - enemy.body.x) < 400)) {    
                if (sprite1.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
@@ -54,23 +53,26 @@ EPT._enemy = {
    killPlayer(ST, T, enemy, indexPlayer)
    {
       var player = ST.players[indexPlayer];
+      var sprite = player.sprite;
       if(ST.checkCollider[indexPlayer] != 0)
       {
-         if(player.life > 1)
+         if(player.life > 0)
          {
-            player.sprite.disableBody(true, true);
+            sprite.disableBody(true, true);
             player.life -= 1;
             player.lifeText.setText('Life: '+ player.life);
-            player.sprite.enableBody(true, player.sprite.body.x, 0, true, true);
+            sprite.enableBody(true, player.sprite.body.x, 0, true, true);
          }
          else 
          {
             player.lifeText.setText('Life: '+ player.life);
-            player.sprite.anims.play('down');
+            sprite.disableBody(true, false);
 
-            T.physics.pause();
-            player.sprite.setTint(0xff0000);
-            ST.gameOver = true;
+            sprite.body.setX = 0;
+            sprite.body.setY = 0;
+            sprite.anims.play('down');
+            sprite.setTint(0xff0000);
+            EPT._player.gameOver(ST, T)
          }
          ST.checkCollider[indexPlayer] = 0;
       }

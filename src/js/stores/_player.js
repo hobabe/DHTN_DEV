@@ -43,5 +43,15 @@ EPT._player = {
 
         var ST= this.ST
     },
+    gameOver(ST, T)
+    {
+       var player1 = ST.players[0];
+       var player2 = ST.players[1];
+       if(player1.life == 0 && player2.life == 0)
+       {
+            T.physics.pause();
+            ST.gameOver == true;
+       }
+    },
 }
 
