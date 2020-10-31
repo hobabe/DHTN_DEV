@@ -70,15 +70,11 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 0);
         EPT._player.playerMove(ST, 1);
 
-        EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, 0);
-        EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, 0);
-        EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, 0);
+        EPT._enemy.updateEnemyMove(ST.enemy1, 250, 0);
+        EPT._enemy.updateEnemyMove(ST.enemy2, 800, 390);
+        EPT._enemy.updateEnemyMove(ST.enemy3, 800, 0);
 
-        // EPT._enemy.updateEnemyMove_2(ST.enemy1, 250, 0, 1);
-        // EPT._enemy.updateEnemyMove_2(ST.enemy2, 800, 390, 1);
-        // EPT._enemy.updateEnemyMove_2(ST.enemy3, 800, 0, 1);
-
-       // ------------- attack enemy -------------
+        // ------------- attack enemy -------------
         EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);
         EPT._player.attackEnemy(ST, 0, ST.enemy2, 1);
         EPT._player.attackEnemy(ST, 0, ST.enemy3, 2);
@@ -90,9 +86,8 @@ class ShootingToStars extends Phaser.Scene {
             EPT._enemy.killPlayer(ST, T, ST.enemy2, i)
             EPT._enemy.killPlayer(ST, T, ST.enemy1, i)
         }
-
     }
-hhhh
+
     //============== CREATE -------------
     cteateInitBackground() {
         //  A simple background for our game

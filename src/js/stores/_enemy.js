@@ -1,8 +1,10 @@
 EPT._enemy = {
-   updateEnemyMove_2(enemy, platRight, platLeft, keyPlayer)
+   updateEnemyMove(enemy, platRight, platLeft)
    {
-      var player = ST.players[keyPlayer];
-      var sprite = player.sprite;
+      var player1 = ST.players[0];
+      var player2 = ST.players[1];
+      var sprite1 = player1.sprite;
+      var sprite2 = player2.sprite;
 
       if (enemy.body.touching.down) {
          if (enemy.body.right >= platRight || enemy.body.left <= platLeft) {
@@ -11,11 +13,19 @@ EPT._enemy = {
          else {
 
             // enemy patrol toward the players
-            if (sprite.body.bottom == enemy.body.bottom && Math.abs(sprite.body.x - enemy.body.x) < 400) {    
-               if (sprite.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
+            if ((sprite1.body.bottom == enemy.body.bottom && Math.abs(sprite1.body.x - enemy.body.x) < 400)) {    
+               if (sprite1.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
                    enemy.body.velocity.x *= -1;
                }
-               else if (sprite.body.x > enemy.body.x && enemy.body.velocity.x < 0) {
+               else if (sprite1.body.x > enemy.body.x && enemy.body.velocity.x < 0) {
+                   enemy.body.velocity.x *= -1; 
+               }
+            }
+            if ((sprite2.body.bottom == enemy.body.bottom && Math.abs(sprite2.body.x - enemy.body.x) < 400)) {    
+               if (sprite2.body.x < enemy.body.x && enemy.body.velocity.x > 0) {
+                   enemy.body.velocity.x *= -1;
+               }
+               else if (sprite2.body.x > enemy.body.x && enemy.body.velocity.x < 0) {
                    enemy.body.velocity.x *= -1; 
                }
             }
