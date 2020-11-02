@@ -29,12 +29,20 @@ EPT._gameSettings = {
                     swordRight: null,
                     swordLeft: null,
                     attack : 1,
-                    bullets : 
+                    left: false,
+                    right: false,
+                    bulletsRight : 
                     {
                         speed : Phaser.Math.GetSpeed(600, 1),
                         visible: false,
                         quantity: 2,
                     },
+                    bulletsLeft : 
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
+                    }
                 }, 
                 {
                     sprite: null, joystick:null, joyKeys:[],
@@ -63,12 +71,20 @@ EPT._gameSettings = {
                     swordRight: null,
                     swordLeft: null,
                     attack : 1,
-                    bullets : 
+                    left: false,
+                    right: false,
+                    bulletsRight : 
                     {
                         speed : Phaser.Math.GetSpeed(600, 1),
                         visible: false,
                         quantity: 2,
                     },
+                    bulletsLeft : 
+                    {
+                        speed : Phaser.Math.GetSpeed(600, 1),
+                        visible: false,
+                        quantity: 2,
+                    }
                 }
             ],
             items: [

@@ -12,6 +12,8 @@ EPT._player = {
             // console.log(ST.cursors);
             EPT.Sfx.play('running', false);
             player.attack = -1;
+            player.right = false;
+            player.left = true;
         }
         else if (ST.cursors[joystick[joyKeys[2]]].isDown) {
             sprite.setVelocityX(player.speed.run);
@@ -19,6 +21,8 @@ EPT._player = {
             sprite.anims.play(joystick[joyKeys[2]], true);//right
             EPT.Sfx.play('running', false);
             player.attack = 1;
+            player.right = true;
+            player.left = false;
         }
         else //if (ST.cursors[joystick.down].isDown)
         {
@@ -132,8 +136,9 @@ EPT._player = {
         var joyKeys = player.joyKeys;
         // console.log(player.right);
 
+        // if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
 
-        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[5]]]) )        
+        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[5]]]))        
         {
             var bulletLeft = player.bulletsLeft.get();
             var bulletRight = player.bulletsRight.get();
