@@ -216,6 +216,7 @@ class ShootingToStars extends Phaser.Scene {
         // }
 
         T.createSword(player);
+        T.createBullets(player);
     }
 
     createSword(player)
