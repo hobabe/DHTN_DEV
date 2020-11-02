@@ -123,6 +123,30 @@ EPT._player = {
         EPT._player.attackEnemy(ST, 1, ST.enemy2, 1);
         EPT._player.attackEnemy(ST, 1, ST.enemy3, 2);
 
+    }, 
+    fireBullet(ST, keyPlayer)
+    {
+        var player = ST.players[keyPlayer];
+        var sprite = player.sprite;
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+        // console.log(player.right);
+
+
+        if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[5]]]) )        
+        {
+            var bulletLeft = player.bulletsLeft.get();
+            var bulletRight = player.bulletsRight.get();
+            if (bulletRight && player.right == true)
+            {
+
+                bulletRight.fire(sprite.body.x + 10, sprite.body.y + 20);
+            }
+            else if(bulletLeft && player.left == true)
+            {
+                bulletLeft.fire(sprite.body.x + 10, sprite.body.y + 20);
+            }
+        }
     },
     gameOver(ST, T)
     {

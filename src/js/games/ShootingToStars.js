@@ -28,8 +28,8 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
-        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'Q']);
-        EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE']);
+        EPT._keyboard.createInitJoystick(ST.players, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'Q', 'Z']);
+        EPT._keyboard.createInitJoystick(ST.players, 1, ['A', 'W', 'D', 'S', 'SPACE', 'M']);
 
         //------ Player init setting -----
         T.createInitPlayerSetting(0, 100, 450);
@@ -87,6 +87,9 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._player.slicing(ST, 0);
         EPT._player.slicing(ST, 1);
+
+        EPT._player.fireBullet(ST, 0);
+        EPT._player.fireBullet(ST, 1);
         
         // ----------- enemies hit players ----------
         for (var i=0;i<2;i++)
@@ -236,6 +239,99 @@ class ShootingToStars extends Phaser.Scene {
 
     }
 
+    createBullets(player)
+    {
+        //ưerw
+        var joystick = player.joystick;
+        var joyKeys = player.joyKeys;
+
+        // var bullet = player.bullets;
+        var BulletRight = new Phaser.Class({
+
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+    
+                this.speed = Phaser.Math.GetSpeed(600, 1)
+
+                // this.left = false;
+                // this.right = false;
+            },
+    
+            fire: function (x, y)
+            {
+                this.setPosition(x, y);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                this.x += this.speed * delta;
+                // console.log(this.velocityX);
+                if (this.x > 800 || this.x < 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                } 
+            }
+    
+        });
+    
+        player.bulletsRight = this.add.group({
+            classType: BulletRight,
+            maxSize: 2,
+            runChildUpdate: true,
+        });
+
+        var BulletLeft = new Phaser.Class({
+
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+    
+                this.speed = Phaser.Math.GetSpeed(600, 1)
+
+                // this.left = false;
+                // this.right = false;
+            },
+    
+            fire: function (x, y)
+            {
+                this.setPosition(x, y);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                this.x -= this.speed * delta;
+                console.log();
+                if (this.x > 800 || this.x < 0)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                } 
+            }
+    
+        });
+    
+        player.bulletsLeft = this.add.group({
+            classType: BulletLeft,
+            maxSize: 2,
+            runChildUpdate: true,
+        });
+    }
 
     createInitEnemy(){
         ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
