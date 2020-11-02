@@ -174,6 +174,7 @@ class ShootingToStars extends Phaser.Scene {
     //===================== CREATE BULLETS ===================
     createBullets(player)
     {
+        //ưerw
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
 
