@@ -55,7 +55,7 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init Items ------
         // T.createItems();
 
-        //------Init player colision-----------
+        //------Init player colission-----------
         T.createPlayer(0, 16);
         T.createPlayer(1, 260);
 
@@ -71,6 +71,7 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(ST, 1); 
 
         // ------ enemies patrol toward player --------
+
         EPT._enemy.updateEnemyMove(ST.enemy1, 250, 0);
         EPT._enemy.updateEnemyMove(ST.enemy2, 800, 390);
         EPT._enemy.updateEnemyMove(ST.enemy3, 800, 0);
@@ -197,20 +198,19 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star');
         }, null, T);
 
-        if(indexPlayer==1)
-        {
-            T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb_2, null , T);
-            T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
-            T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb_2, null , T);
+        // if(indexPlayer==1)
+        // {
+        //     T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb_2, null , T);
+        //     T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
+        //     T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb_2, null , T);
 
-        }
-        else if(indexPlayer==0)
-        {
-            T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb, null , T);
-            T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb, null , T);
-            T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null , T);
-
-        }
+        // }
+        // else if(indexPlayer==0)
+        // {
+        //     T.physics.add.collider(player.sprite, ST.enemy3, EPT._enemy.hitBomb, null , T);
+        //     T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb, null , T);
+        //     T.physics.add.collider(player.sprite, ST.enemy1, EPT._enemy.hitBomb, null , T);
+        // }
 
         T.createSword(player);
     }

@@ -46,7 +46,6 @@ EPT._item = {
     createItems(_x, _y)
     {
         var indexItem = EPT._array.randomInt(1, 0);
-        console.log('run here');
         ST.items[indexItem] = T.physics.add.group({
             key: ST.items[indexItem].type,
             repeat: 0,

@@ -38,20 +38,20 @@ EPT._player = {
         var joyKeys = player.joyKeys;
         var swordRight = player.swordRight;
         var swordLeft = player.swordLeft;
-        if (ST.cursors[joystick[joyKeys[4]]].isDown)
-        {
-            if((Math.abs(swordRight.body.x - enemy.body.x)<=20) && (Math.abs(swordRight.body.y- enemy.body.y)<=60))
-            {
-                EPT._enemy.beKilled(enemy, keyEnemyLife);
-            }
-        }
-        if (ST.cursors[joystick[joyKeys[4]]].isDown)
-        {
-            if((Math.abs(swordLeft.body.x - enemy.body.x)<=20) && (Math.abs(swordLeft.body.y- enemy.body.y)<=60))
-            {
-                EPT._enemy.beKilled(enemy, keyEnemyLife);
-            }
-        }
+        // if (ST.cursors[joystick[joyKeys[4]]].isDown)
+        // {
+        //     if((Math.abs(swordRight.body.x - enemy.body.x)<=50) && (Math.abs(swordRight.body.y- enemy.body.y)<=100))
+        //     {
+        //         EPT._enemy.beKilled(enemy, keyEnemyLife);
+        //     }
+        // }
+        // if (ST.cursors[joystick[joyKeys[4]]].isDown)
+        // {
+        //     if((Math.abs(swordLeft.body.x - enemy.body.x)<=50) && (Math.abs(swordLeft.body.y- enemy.body.y)<=100))
+        //     {
+        //         EPT._enemy.beKilled(enemy, keyEnemyLife);
+        //     }
+        // }
 
         var ST= this.ST
     },
@@ -75,6 +75,8 @@ EPT._player = {
 
         if (Phaser.Input.Keyboard.JustDown(ST.cursors[joystick[joyKeys[4]]]))
         {
+            // console.log("sword "+ swordRight.body.right);
+            // console.log(sprite.body.x)
             if(player.attack == 1)
             {
                 swordRight.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
@@ -90,14 +92,16 @@ EPT._player = {
         if(player.attack == 1)
         {
             swordRight.angle += 9*player.attack;  
-
             if(swordRight.angle <= 100  && swordRight.angle > 85)
             {
                 swordRight.disableBody(true, true);
                 swordRight.angle = 0;
             }
         }
-        else if(player.attack == -1)
+        else {
+            swordRight.disableBody(true, true);
+        }
+        if(player.attack == -1)
         {
             swordLeft.angle += 9*player.attack;  
 
@@ -106,6 +110,9 @@ EPT._player = {
                 swordLeft.disableBody(true, true);
                 swordLeft.angle = 0;
             }
+        }
+        else {
+            swordLeft.disableBody(true, true);
         }
 
         EPT._player.attackEnemy(ST, 0, ST.enemy1, 0);

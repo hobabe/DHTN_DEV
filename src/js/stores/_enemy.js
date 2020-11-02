@@ -6,7 +6,8 @@ EPT._enemy = {
       var sprite1 = player1.sprite;
       var sprite2 = player2.sprite;
 
-      if (enemy.body.touching.down) {
+   
+      if (enemy.body && enemy.body.touching.down) {
          if (enemy.body.right >= platRight || enemy.body.left <= platLeft) {
             enemy.body.velocity.x *= -1;
          }
@@ -33,16 +34,32 @@ EPT._enemy = {
       }
    },
   
-   beKilled(enemy, keyEnemyLife)
+   // beKilled(enemy, keyEnemyLife)
+   // {
+   //    // enemy.disableBody(true, true);
+   //    enemy.destroy();
+
+   //       if( ST.enemyLife[keyEnemyLife] > 0)
+   //       {
+   //          ST.enemyLife[keyEnemyLife] -= 1;
+   //          var x =  enemy.body.right;
+   //          var y =  enemy.body.bottom;
+   //          EPT._item.createItems(x, y);
+   //       }
+   //       console.log('qqqqqqq');
+   // },
+   beKilled(sword, enemy)
    {
-         if( ST.enemyLife[keyEnemyLife] > 0)
-         {
-            enemy.disableBody(true, true);
-            ST.enemyLife[keyEnemyLife] -= 1;
-            var x =  enemy.body.right;
-            var y =  enemy.body.bottom;
-            EPT._item.createItems(x, y);
-         }
+      // enemy.disableBody(true, true);
+     
+      // ST.enemyLife[keyEnemyLife] -= 1;
+      var a =  enemy.body.right;
+      var b =  enemy.body.bottom;
+      var c = enemy.body.x;
+      enemy.destroy();
+      // console.log("enemy "+c);
+      EPT._item.createItems(a, b);
+
    },
    hitBomb(player, enemy) {
          ST.checkCollider[0] = 1;
