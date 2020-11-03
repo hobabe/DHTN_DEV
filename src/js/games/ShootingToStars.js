@@ -27,8 +27,8 @@ class ShootingToStars extends Phaser.Scene {
         EPT._keyboard.createInitJoystick(GS.players.list, 1, ['A', 'W', 'D', 'S', 'HOME']);
 
         //------ Player init setting -----
-        T.createInitPlayerSetting(0, 100, 450);
-        T.createInitPlayerSetting(1, 300, 450);
+        T.createInitPlayerSetting(0, 300, 450);
+        T.createInitPlayerSetting(1, 100, 450);
 
 
         //-------- Init player animation -------
@@ -45,8 +45,8 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitStars();
 
         //------Init player colision-----------
-        T.createPlayer(0, 16);
-        T.createPlayer(1, 260);
+        T.createPlayer(0, 260);
+        T.createPlayer(1, 16);
 
         //------ Init enemy ------
         T.createInitEnemy();
@@ -86,6 +86,8 @@ class ShootingToStars extends Phaser.Scene {
             //clear boss existed
             if (GS.bosses.sprite) {
                 GS.bosses.sprite.destroy();
+
+                clearInterval(GS.bosses.funcUseSkill);
             }
 
             //check boss map
@@ -206,7 +208,7 @@ class ShootingToStars extends Phaser.Scene {
         player.sprite = T.physics.add.sprite(x, y, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
-        player.sprite.setBounce(0.2);
+        // player.sprite.setBounce(0.2);
         player.sprite.setCollideWorldBounds(true);
     }
 
@@ -286,17 +288,13 @@ class ShootingToStars extends Phaser.Scene {
 
         EPT._following.initFollowerPath(GS, T, boss.name, GS.bosses);
 
-        T.bossSkills();
+        T.bossSkills(boss);
     }
 
-    bossSkills() {
-        var x = Phaser.Math.Between(400, 600);
-        
-        var bomb = GS.bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocityX(100);
-        bomb.allowGravity = false;
+    bossSkills(bossCf) {
+
+        //load skill
+        EPT._enemy.drawSkill(GS.bosses.sprite, bossCf.skill);
     }
 
     //================= CLEAR ==============

@@ -31,6 +31,7 @@ class Preloader extends Phaser.Scene {
 		var pathAssets = 'media/img/shooting-to-stars/root/';
 		var pathAssets_happyboy =  'media/img/shooting-to-stars/happy-boy/';
 		var bossPath =  'media/img/shooting-to-stars/boss/';
+		var weaponPath =  'media/img/shooting-to-stars/weapon/';
 
 		var resources = {
 			'image': [
@@ -38,8 +39,12 @@ class Preloader extends Phaser.Scene {
 				['ground', pathAssets + 'platform.png'],
 				['star', pathAssets + 'star.png'],
 				['bomb', pathAssets + 'bomb.png'],
-				['gun', pathAssets + 'gun.png'],
 				['enemy', pathAssets_happyboy +'happy-boy.svg'],
+
+				['bullet', weaponPath +'bullet.svg'],
+				['gun', weaponPath +'gun.svg'],
+				['light-attack', weaponPath +'light-attack.svg'],
+				['sword', weaponPath +'sword.svg'],
 
 				['shark1', bossPath +'shark01.svg'],
 				['shark2', bossPath +'shark02.svg'],

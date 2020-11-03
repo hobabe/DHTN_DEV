@@ -66,21 +66,37 @@ EPT._gameSettings = {
                         {
                             name: 'shark',
                             pathId: 0, action:'shark', letter: 'shark', count: 2, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:350, y:100, duration: 19300
+                            x:350, y:100, duration: 19300,
+                            life: 5,
+                            skill : {
+                                keyArt: 'bomb', timePerAttack: 2000, delayGravity: 500,
+                                scale: 1, angle : 0
+                            }
                         },
                         {
                             name: 'octopus',
                             pathId: 0, action:'octopus', letter: 'octopus', count: 2, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:250, y:200, duration: 17000
+                            x:250, y:200, duration: 17000,
+                            life: 7,
+                            skill : {
+                                keyArt: 'bullet', timePerAttack: 1500, delayGravity: 500,
+                                scale: 0.4, angle : 90
+                            }
                         },
                         {
                             name: 'crab',
                             pathId: 0, action:'crab', letter: 'crab', count: 3, frameWidth:30, frameHeight:40, frameRate: 7, repeat: -1,
-                            x:350, y:100, duration: 15500
+                            x:350, y:100, duration: 15500,
+                            life: 9,
+                            skill : {
+                                keyArt: 'sword', timePerAttack: 1000, delayGravity: 500,
+                                scale: 0.4, angle : 180
+                            }
                         }
                 ],
                 sprite: null,
                 durationActive: 1000,
+                isActiveSkill: false,
                 meet: false
             },
             following: {
