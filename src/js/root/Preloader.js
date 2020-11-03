@@ -43,6 +43,8 @@ class Preloader extends Phaser.Scene {
 				['enemy', pathAssets_happyboy +'/happy-boy.svg'],
 				['sword', pathAssets_weapon +'sword.svg'],
 
+				['car', 'media/img/shooting-to-stars/car.png'],
+
 			],
 			'spritesheet': [
 				['dude',  pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 }],

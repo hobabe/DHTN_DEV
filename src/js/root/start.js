@@ -31,7 +31,7 @@ var gameConfig = {
       default: 'arcade',
       arcade: {
           gravity: { y: 300 },
-          debug: false
+          debug: true
       }
   },
   scale: {
@@ -41,4 +41,5 @@ var gameConfig = {
   scene: [Preloader, ShootingToStars]
 };
 game = new Phaser.Game(gameConfig);
+EPT['G'] = game;
 window.focus();

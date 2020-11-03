@@ -3,6 +3,7 @@ class ShootingToStars extends Phaser.Scene {
     constructor() {
         super('ShootingToStars');
     }
+
     preload() {
 
         ST = EPT._gameSettings.ShootingToStars();
@@ -182,6 +183,8 @@ class ShootingToStars extends Phaser.Scene {
         //  Player physics properties. Give the little guy a slight bounce.
         player.sprite.setBounce(0.2);
         player.sprite.setCollideWorldBounds(true);
+
+        player.sprite.setInteractive(new Phaser.Geom.Polygon([ 0, 143, 0, 92, 110, 40, 244, 4, 330, 0, 458, 12, 574, 18, 600, 79, 594, 153, 332, 152, 107, 157 ]), Phaser.Geom.Polygon.Contains);
     }
 
     createPlayer(indexPlayer, x) {
@@ -221,8 +224,15 @@ class ShootingToStars extends Phaser.Scene {
 
     createSword(player)
     {
-        player.swordRight = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.25, 0.75);
+        
         player.swordLeft = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.6, 1);
+        player.swordRight = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword').setOrigin(0.25, 0.75);
+
+        player.swordLeft.setBodySize(14,136).setOffset(100,20);
+        player.swordRight.setBodySize(14,136).setOffset(100,20);
+
+        // player.swordLeft.setDisplaySize(44, 64);
+        // player.swordRight.setDisplaySize(44, 64);
 
         T.physics.add.collider(player.swordRight, ST.enemy1, EPT._enemy.beKilled, null, T);
         T.physics.add.collider(player.swordRight, ST.enemy2, EPT._enemy.beKilled, null, T);
@@ -235,8 +245,8 @@ class ShootingToStars extends Phaser.Scene {
 
         // T.physics.add.collider(player.sprite, ST.enemy2, EPT._enemy.hitBomb_2, null , T);
 
-        player.swordRight.disableBody(true, true);
-        player.swordLeft.disableBody(true, true);
+        // player.swordRight.disableBody(true, true);
+        // player.swordLeft.disableBody(true, true);
 
     }
 
