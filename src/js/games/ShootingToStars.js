@@ -176,35 +176,18 @@ class ShootingToStars extends Phaser.Scene {
     createInitEnemy(){
         ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-        // for(var i=0;i<ST.enemy.sprites[0].length; i++)
-        // {
-        //     var enemy = ST.enemy.sprites[0][i];
-        //     var sprite = enemy.sprite;
-
-        //     sprite = this.physics.add.sprite(0, 0, 'enemy');
-        //     sprite.setScale(0.5).refreshBody();
-        //     sprite.setVelocityX(100);
-
-        //     this.physics.add.collider(sprite, ST.platforms);
-        //     console.log(i+" "+sprite)
-        // }
-
-        // var enemy = ST.enemy.sprites[0][1];
-        // var sprite = enemy.sprite;
-
-        ST.enemy.sprites[0][1].sprite = this.physics.add.sprite(0, 0, 'enemy');
-        ST.enemy.sprites[0][1].sprite.setScale(0.5).refreshBody();
-        ST.enemy.sprites[0][1].sprite.setVelocityX(100);
-
-        this.physics.add.collider(ST.enemy.sprites[0][1].sprite, ST.platforms);
-
-
-
-
-        // console.log(i+" "+sprite)
-        // var enemy = ST.enemy.sprites[0][2];
-        // console.log(ST.enemy.sprites[0][2])
-
+        for(var j=0;j<ST.enemy.sprites.length; j++)
+        {
+            for(var i=0;i<ST.enemy.sprites[j].length; i++)
+            {
+                ST.enemy.sprites[j][i].sprite = this.physics.add.sprite(0, 0, 'enemy');
+                ST.enemy.sprites[j][i].sprite.setScale(0.5).refreshBody();
+                ST.enemy.sprites[j][i].sprite.setVelocityX( ST.enemy.speed[j][i]);
+        
+                this.physics.add.collider(ST.enemy.sprites[j][i].sprite, ST.platforms);
+            }
+        }
+      
 
         // ST.enemy1 = this.physics.add.sprite(0, 0, 'enemy');
         // ST.enemy1.setScale(0.5).refreshBody();

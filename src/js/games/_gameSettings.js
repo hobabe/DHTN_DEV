@@ -15,11 +15,14 @@ EPT._gameSettings = {
             enemy:
             {
                 sprites : [
-                    [{x: 80, y: 70, min: 80, max: 100, sprite:null}, {x: 60, y: 70, min: 80, max: 100, sprite: null}, {x: 80, y: 70, min: 80, max: 100, sprite:null}], //lv1
-                    [{x: 80, y: 70, min: 80, max: 100, sprite:null}, {x: 80, y: 70, min: 80, max: 100, sprite: null}, {x: 80, y: 70, min: 80, max: 100, sprite:null}], //lv1
-                    [{x: 80, y: 70, min: 80, max: 100, sprite:null}, {x: 80, y: 70, min: 80, max: 100, sprite: null}, {x: 80, y: 70, min: 80, max: 100, sprite:null}], //lv1
+                    [{x: 80, y: 70, min: 0, max: 800, sprite:null}, {x: 60, y: 70, min: 0, max: 250, sprite: null}, {x: 80, y: 70, min: 400, max: 800, sprite:null}], //lv1
+                    // [{x: 80, y: 70, min: 80, max: 100, sprite:null}, {x: 80, y: 70, min: 80, max: 100, sprite: null}, {x: 80, y: 70, min: 80, max: 100, sprite:null}], //lv1
+                    // [{x: 80, y: 70, min: 80, max: 100, sprite:null}, {x: 80, y: 70, min: 80, max: 100, sprite: null}, {x: 80, y: 70, min: 80, max: 100, sprite:null}], //lv1
                ],
-               speed:[],
+               speed:[
+                   [100, 100, 300],
+
+               ],
             },
             scoreText: null,
         }

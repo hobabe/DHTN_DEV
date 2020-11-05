@@ -13,38 +13,25 @@ EPT._enemy = {
     },
     updateEnemyMove(ST){
 
-      // for(var i=0;i<ST.enemy.sprites[0].length;i++)
-      // {
-      //    var enemy = ST.enemy.sprites[0][i];
-      //    var sprite = enemy.sprite;
-
-      //    if (sprite.body.touching.down) {
-      //       if (sprite.body.right >= enemy.max) {
-      //          sprite.body.velocity.x *= -1;
-      //       }
-      //       else if (sprite.body.left <= enemy.min) {
-      //          sprite.body.velocity.x *= -1;
-      //       }
-      //       else {
-      //          sprite.body.velocity.x *= 1;
-      //       }
-      //   }
-      // }
-
-      // var enemy = ST.enemy.sprites[0][1];
-      // var sprite = enemy.sprite;
-
-      if (ST.enemy.sprites[0][1].sprite.body.touching.down) {
-         if (ST.enemy.sprites[0][1].sprite.body.right >= ST.enemy.sprites[0][1].max) {
-            ST.enemy.sprites[0][1].sprite.body.velocity.x *= -1;
-         }
-         else if (ST.enemy.sprites[0][1].sprite.body.left <= ST.enemy.sprites[0][1].min) {
-            ST.enemy.sprites[0][1].sprite.body.velocity.x *= -1;
-         }
-         else {
-            ST.enemy.sprites[0][1].sprite.body.velocity.x *= 1;
+      for(var j=0;j<ST.enemy.sprites.length; j++)
+      {
+         for(var i=0;i<ST.enemy.sprites[j].length;i++)
+         {
+            if (ST.enemy.sprites[j][i].sprite.body.touching.down) {
+               if (ST.enemy.sprites[j][i].sprite.body.right >= ST.enemy.sprites[j][i].max) {
+                  ST.enemy.sprites[j][i].sprite.body.velocity.x *= -1;
+               }
+               else if (ST.enemy.sprites[j][i].sprite.body.left <= ST.enemy.sprites[j][i].min) {
+                  ST.enemy.sprites[j][i].sprite.body.velocity.x *= -1;
+               }
+               else {
+                  ST.enemy.sprites[j][i].sprite.body.velocity.x *= 1;
+               }
+            }
          }
       }
+     
+
       //   if (ST.enemy1.body.touching.down) {
       //       if (ST.enemy1.body.right >= 250) {
       //          ST.enemy1.body.velocity.x *= -1;
