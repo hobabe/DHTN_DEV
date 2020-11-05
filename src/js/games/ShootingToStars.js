@@ -16,6 +16,10 @@ class ShootingToStars extends Phaser.Scene {
         this.load.json('shark', 'src/json/shark.json');
         this.load.json('octopus', 'src/json/octopus.json');
         this.load.json('crab', 'src/json/crab.json');
+
+        // Load the export Tiled JSON
+        this.load.image('tiles', 'media/img/shooting-to-stars/platform-sheet.png');
+        this.load.tilemapTiledJSON('map', 'src/json/map.json');
     }
 
     create() {
@@ -80,7 +84,7 @@ class ShootingToStars extends Phaser.Scene {
             EPT._maps.generateMaps(GS, T);
             T.clearEnemy();
             T.createInitEnemy();
-            GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel + 1));
+            GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel));
             GS.bosses.meet = false;
 
             //clear boss existed
@@ -99,10 +103,14 @@ class ShootingToStars extends Phaser.Scene {
                 //follow Now
                 // EPT._following.followNow(T,GS,GS.bosses)
             }
-        } else {
-            GS.gameOver = true;
 
-            T.camShake(1000);
+            //check last map
+            if(GS.gameLevel == GS.gameMaxLevel)
+            {
+                GS.gameOver = true;
+                T.camShake(1000);
+            }
+
         }
     }
 
@@ -136,7 +144,11 @@ class ShootingToStars extends Phaser.Scene {
         //  A simple background for our game
         T.add.image(400, 300, 'sky');
 
-        //  Game level
+        
+        GS.map.mapPhaser = T.make.tilemap({ key: 'map' });
+        GS.map.tileset = GS.map.mapPhaser.addTilesetImage('platform', 'tiles');
+        
+        // //  Game level
         if (!GS.map.levelText) {
             GS.map.levelText = T.add.text(GS.config.width / 2 - 50, 16, 'LEVEL: ' + GS.gameLevel, { fontSize: '32px', fill: '#ffee23' });
         }
