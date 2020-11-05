@@ -176,18 +176,50 @@ class ShootingToStars extends Phaser.Scene {
     createInitEnemy(){
         ST.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-        ST.enemy1 = this.physics.add.sprite(0, 0, 'enemy');
-        ST.enemy1.setScale(0.5).refreshBody();
-        ST.enemy1.setVelocityX(100);
-        ST.enemy2 = this.physics.add.sprite(350, 250, 'enemy');
-        ST.enemy2.setScale(0.5).refreshBody();
-        ST.enemy2.setVelocityX(100);
-        ST.enemy3 = this.physics.add.sprite(400, 300, 'enemy');
-        ST.enemy3.setScale(0.5).refreshBody();
-        ST.enemy3.setVelocityX(-100);
+        // for(var i=0;i<ST.enemy.sprites[0].length; i++)
+        // {
+        //     var enemy = ST.enemy.sprites[0][i];
+        //     var sprite = enemy.sprite;
 
-        this.physics.add.collider(ST.enemy1, ST.platforms);
-        this.physics.add.collider(ST.enemy2, ST.platforms);
-        this.physics.add.collider(ST.enemy3, ST.platforms);
+        //     sprite = this.physics.add.sprite(0, 0, 'enemy');
+        //     sprite.setScale(0.5).refreshBody();
+        //     sprite.setVelocityX(100);
+
+        //     this.physics.add.collider(sprite, ST.platforms);
+        //     console.log(i+" "+sprite)
+        // }
+
+        // var enemy = ST.enemy.sprites[0][1];
+        // var sprite = enemy.sprite;
+
+        ST.enemy.sprites[0][1].sprite = this.physics.add.sprite(0, 0, 'enemy');
+        ST.enemy.sprites[0][1].sprite.setScale(0.5).refreshBody();
+        ST.enemy.sprites[0][1].sprite.setVelocityX(100);
+
+        this.physics.add.collider(ST.enemy.sprites[0][1].sprite, ST.platforms);
+
+
+
+
+        // console.log(i+" "+sprite)
+        // var enemy = ST.enemy.sprites[0][2];
+        // console.log(ST.enemy.sprites[0][2])
+
+
+        // ST.enemy1 = this.physics.add.sprite(0, 0, 'enemy');
+        // ST.enemy1.setScale(0.5).refreshBody();
+        // ST.enemy1.setVelocityX(100);
+        // ST.enemy2 = this.physics.add.sprite(350, 250, 'enemy');
+        // ST.enemy2.setScale(0.5).refreshBody();
+        // ST.enemy2.setVelocityX(100);
+        // ST.enemy3 = this.physics.add.sprite(400, 300, 'enemy');
+        // ST.enemy3.setScale(0.5).refreshBody();
+        // ST.enemy3.setVelocityX(-100);
+
+        
+
+        // this.physics.add.collider(ST.enemy1, ST.platforms);
+        // this.physics.add.collider(ST.enemy2, ST.platforms);
+        // this.physics.add.collider(ST.enemy3, ST.platforms);
     }
 }
