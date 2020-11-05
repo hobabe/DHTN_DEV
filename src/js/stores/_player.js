@@ -29,7 +29,7 @@ EPT._player = {
             sprite.anims.play(joystick[joyKeys[3]]);//'turn'
         }
 
-        if (GS.cursors[joystick[joyKeys[1]]].isDown && sprite.body.touching.down) {
+        if (GS.cursors[joystick[joyKeys[1]]].isDown && sprite.body.onFloor()) {
             sprite.setVelocityY(GS.players.jumpHeight);
         }
     }
