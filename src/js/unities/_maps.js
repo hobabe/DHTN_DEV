@@ -48,18 +48,31 @@ EPT._maps = {
 
     initCollision(){
         GS.players.list.filter((player)=>{
-            T.physics.add.collider(player.sprite, GS.map.platforms);
+            T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
         })
 
         //enemy
-        T.physics.add.collider(GS.enemy1, GS.map.platforms);
-        T.physics.add.collider(GS.enemy2, GS.map.platforms);
-        T.physics.add.collider(GS.enemy3, GS.map.platforms);
+        GS.enemy.list.filter((e) => {
+            T.physics.add.collider(e.sprite, GS.map.platforms);
+
+            GS.players.list.filter((player)=>{
+                T.physics.add.collider(player.swordLeft, GS.map.platforms);
+                T.physics.add.collider(player.swordRight, GS.map.platforms);
+            })
+        });
+        // T.physics.add.collider(GS.enemy1, GS.map.platforms);
+        // T.physics.add.collider(GS.enemy2, GS.map.platforms);
+        // T.physics.add.collider(GS.enemy3, GS.map.platforms);
 
         
 
         //  Collide the player and the stars with the platforms
         T.physics.add.collider(GS.stars, GS.map.platforms);
         // T.physics.add.collider(GS.bombs, GS.platforms);
+    },
+    enemyTouchWall(a,b){
+        if(a.body.onWall()){
+            console.log('touch');
+        }
     }
 };

@@ -22,7 +22,7 @@ EPT._item = {
     },
     collectStar_UpdateInfo(player, typeCollect, T, indexPlayer) {
         var scoreAdd = 0;
-        var ST = this.SeTinggame;
+        var GS = this.SeTinggame;
         switch(typeCollect){
             case 'star': 
                 scoreAdd = 10;
@@ -49,18 +49,19 @@ EPT._item = {
     createItems(_x, _y)
     {
         var indexItem = EPT._array.randomInt(1, 0);
-        ST.items[indexItem] = T.physics.add.group({
-            key: ST.items[indexItem].type,
+        GS.items[indexItem] = T.physics.add.group({
+            key: GS.items[indexItem].type,
             repeat: 0,
-            setXY: { x: _x, y: _y-20}
+            setXY: { x: _x, y: _y-20},
+            setScale: { x: 0.2, y: 0.2}
         });
         
-        ST.items[indexItem].children.iterate((child) => {
+        GS.items[indexItem].children.iterate((child) => {
 
             //  Give each star a slightly different bounce
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
         });
-        T.physics.add.collider(ST.items[indexItem], ST.platforms);
+        T.physics.add.collider(GS.items[indexItem], GS.map.platforms);
     }
 };
