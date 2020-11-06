@@ -7,7 +7,7 @@ EPT._gameSettings = {
                     weapon: {
                         gun: false,
                         sword: false,
-                        using: 'sword'
+                        using: 'gun'
                     },
                     level: 0,
                     starCount: 0,
@@ -24,6 +24,9 @@ EPT._gameSettings = {
                     weaponText: null,
                     swordRight: null,
                     swordLeft: null,
+                    swordRange: 100,
+                    playerPointAttack: 0,
+                    directionAttack : 1,
                     info: {
                         x: 16,
                         color: 0x5bafc7
@@ -51,6 +54,9 @@ EPT._gameSettings = {
                     weaponText: null,
                     swordRight: null,
                     swordLeft: null,
+                    swordRange: 100,
+                    playerPointAttack: 0,
+                    directionAttack : 1,
                     info: {
                         x: 550,
                         color: 0x94c75b
@@ -119,9 +125,33 @@ EPT._gameSettings = {
             bombs: null,
             cursors: null,
             gameOver: false,
-            enemy1: null,
-            enemy2: null,
-            enemy3: null,
+            items: [
+                {
+                    type: 'gun',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+                {
+                    type: 'bullet',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+                {
+                    type: 'life',
+                    text: null,
+                    quantity: 0,
+                    body: null
+                },
+            ],
+            enemy: {
+                list: [
+                    // {x: 100, y: 0, scale: 0.5, sprite: null, key: 'enemy'}, 
+                    // {x: 350, y: 250, scale: 0.5, sprite: null, key: 'enemy'}, 
+                    {x: 400, y: 300, scale: 0.5, sprite: null, key: 'enemy'}
+                ],
+            },
             gameLevel: 1,
             gameMaxLevel: 0,
             checkCollider: [0,0]

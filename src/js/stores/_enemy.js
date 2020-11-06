@@ -66,39 +66,20 @@ EPT._enemy = {
       }
    },
     updateEnemyMove(GS){
-        if (GS.enemy1.body.touching.down) {
-            if (GS.enemy1.body.right >= 250) {
-               GS.enemy1.body.velocity.x *= -1;
+
+      GS.enemy.list.filter((e) => {
+         if (e.sprite.body && e.sprite.body.touching.down) {
+            if (e.sprite.body.right = 250) {
+               e.sprite.body.velocity.x *= -1;
             }
-            else if (GS.enemy1.body.left <= 0) {
-               GS.enemy1.body.velocity.x *= -1;
-            }
-            else {
-               GS.enemy1.body.velocity.x *= 1;
-            }
-        }
-        if (GS.enemy2.body.touching.down) {
-            if (GS.enemy2.body.right >= 800) {
-               GS.enemy2.body.velocity.x *= -1;
-            }
-            else if (GS.enemy2.body.left <= 390) {
-               GS.enemy2.body.velocity.x *= -1;
+            else if (e.sprite.body.left <= 0) {
+               e.sprite.body.velocity.x *= -1;
             }
             else {
-               GS.enemy2.body.velocity.x *= 1;
+               e.sprite.body.velocity.x *= 1;
             }
         }
-        if (GS.enemy3.body.touching.down) {
-            if (GS.enemy3.body.right >= 800) {
-               GS.enemy3.body.velocity.x *= -1;
-            }
-            else if (GS.enemy3.body.left <= 0) {
-               GS.enemy3.body.velocity.x *= -1;
-            }
-            else {
-               GS.enemy3.body.velocity.x *= 1;
-            }
-        }
+     });
     }
 
 };
