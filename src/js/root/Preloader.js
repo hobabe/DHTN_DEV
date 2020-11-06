@@ -31,6 +31,9 @@ class Preloader extends Phaser.Scene {
 		var pathAssets = 'media/img/shooting-to-stars/root/';
 		var pathAssets_happyboy =  'media/img/shooting-to-stars/happy-boy/';
 		var bossPath =  'media/img/shooting-to-stars/boss/';
+		var weaponPath =  'media/img/shooting-to-stars/weapon/';
+		var sheetPath =  'media/img/shooting-to-stars/sheet/';
+		var heroPath =  sheetPath + '/CharacterLevelDesign/';
 
 		var resources = {
 			'image': [
@@ -38,8 +41,13 @@ class Preloader extends Phaser.Scene {
 				['ground', pathAssets + 'platform.png'],
 				['star', pathAssets + 'star.png'],
 				['bomb', pathAssets + 'bomb.png'],
-				['gun', pathAssets + 'gun.png'],
 				['enemy', pathAssets_happyboy +'happy-boy.svg'],
+
+				
+				['bullet', weaponPath + 'bullet.svg'],
+				['gun', weaponPath + 'gun.svg'],
+				['light-attack', weaponPath + 'light-attack.svg'],
+				['sword', weaponPath + 'sword.svg'],
 
 				['shark1', bossPath +'shark01.svg'],
 				['shark2', bossPath +'shark02.svg'],
@@ -53,6 +61,13 @@ class Preloader extends Phaser.Scene {
 			],
 			'spritesheet': [
 				['dude',  pathAssets + 'dude.png', { frameWidth: 32, frameHeight: 48 }],
+				['tiles', sheetPath+'platform.png', { frameWidth: 40, frameHeight: 40 }],
+
+				['hero-level-1',  heroPath + 'full1.png', { frameWidth: 64, frameHeight: 64 }],
+				['hero-level-2',  heroPath + 'full2.png', { frameWidth: 64, frameHeight: 64 }],
+				['hero-level-3',  heroPath + 'full3.png', { frameWidth: 64, frameHeight: 64 }],
+				['hero-level-4',  heroPath + 'full4.png', { frameWidth: 64, frameHeight: 64 }],
+				['hero-level-5',  heroPath + 'full5.png', { frameWidth: 64, frameHeight: 64 }],
 			],
 			'audio': [
 				['shoot', ['media/sfx/shoot.mp3']],

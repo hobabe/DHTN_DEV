@@ -11,17 +11,12 @@ EPT._maps = {
             const level = 'level-' + (GS.gameLevel);
             //console.log(level);
             GS.map.platforms = GS.map.mapPhaser.createDynamicLayer(level, GS.map.tileset, 0, 0);
-
-            GS.players.list.filter((player)=>{
-                T.physics.add.collider(player.sprite, GS.map.platforms);
-            })
-
         } else {
             // setting create
             GS.map.platforms = GS.map.mapPhaser.createDynamicLayer('level-' + GS.gameLevel, GS.map.tileset, 0, 0);
-
         }
 
+        this.initCollision();
         GS.map.platforms.setCollisionByExclusion(-1, true);
         //=========== MY tool
         //
@@ -49,5 +44,22 @@ EPT._maps = {
         //  GS.map.platforms.create(600, 400, 'ground').setTint(0xff9659);
         //  GS.map.platforms.create(50, 250, 'ground').setTint(0xff59eb);
         //  GS.map.platforms.create(750, 220, 'ground').setTint(0x7259ff);
+    },
+
+    initCollision(){
+        GS.players.list.filter((player)=>{
+            T.physics.add.collider(player.sprite, GS.map.platforms);
+        })
+
+        //enemy
+        T.physics.add.collider(GS.enemy1, GS.map.platforms);
+        T.physics.add.collider(GS.enemy2, GS.map.platforms);
+        T.physics.add.collider(GS.enemy3, GS.map.platforms);
+
+        
+
+        //  Collide the player and the stars with the platforms
+        T.physics.add.collider(GS.stars, GS.map.platforms);
+        // T.physics.add.collider(GS.bombs, GS.platforms);
     }
 };
