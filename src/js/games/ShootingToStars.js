@@ -27,12 +27,18 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
-        EPT._keyboard.createInitJoystick(GS.players.list, 0, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
-        EPT._keyboard.createInitJoystick(GS.players.list, 1, ['A', 'W', 'D', 'S', 'HOME']);
+        //------ Init map & collision -----
+        T.createInitMap();
+
+        //keyboard
+
+        EPT._keyboard.createInitJoystick(GS.players.list, 0, ['A', 'W', 'D', 'S', 'SPACE']);
+        EPT._keyboard.createInitJoystick(GS.players.list, 1, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
 
         //------ Player init setting -----
-        T.createInitPlayerSetting(0, 100, 450);
-        T.createInitPlayerSetting(1, 300, 450);
+
+        T.createInitPlayerSetting(0, 300, 450);
+        T.createInitPlayerSetting(1, 100, 450);
 
 
         //-------- Init player animation -------
@@ -49,14 +55,24 @@ class ShootingToStars extends Phaser.Scene {
         T.createInitStars();
 
         //------Init player colision-----------
-        T.createPlayer(0, 16);
-        T.createPlayer(1, 260);
+        T.createPlayer(0);
+        T.createPlayer(1);
 
         //------ Init enemy ------
         T.createInitEnemy();
 
+        //------ Create Weapon ------
+        T.createPlayerWeapon(0);
+        T.createPlayerWeapon(1);
+
         //------ Init Options -------
         T.createOptions();
+
+        //------ Init Items Setting-------
+        T.initItemSettings();
+
+        //------ Init Collision -----
+        T.createColision();
     }
 
 
@@ -65,31 +81,37 @@ class ShootingToStars extends Phaser.Scene {
             return;
         }
 
-        EPT._player.playerMove(GS, 0);
-        EPT._player.playerMove(GS, 1);
-
-        EPT._enemy.updateEnemyMove(GS);
-        // EPT._enemy.updateBossMove(GS);
-
+        EPT._player.playerMove(GS, T, 0);
+        EPT._player.playerMove(GS, T, 1);
 
         T.nextLevelKey();
 
         EPT._following.updateRender(GS);
+
+        // ------------------------------------------
+        EPT._player.updateWeapon(GS, T);
     }
 
     //============== LEVEL -------------
     nextLevel() {
         if (GS.gameLevel < GS.gameMaxLevel) {
             GS.gameLevel++;
+            GS.enemy.killedCount = 0;
+
+            // Init sprite
             EPT._maps.generateMaps(GS, T);
             T.clearEnemy();
             T.createInitEnemy();
+
+            T.createColision();
+            
             GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel));
             GS.bosses.meet = false;
 
             //clear boss existed
             if (GS.bosses.sprite) {
                 GS.bosses.sprite.destroy();
+                clearInterval(GS.bosses.funcUseSkill);
             }
 
             //check boss map
@@ -98,19 +120,21 @@ class ShootingToStars extends Phaser.Scene {
                 GS.bosses.meet = true;
                 //load boss
                 GS.bosses.indexMeetBoss++;
+                GS.map.type = 'boss';
                 T.createBoss(GS.bosses.indexMeetBoss);
 
                 //follow Now
                 // EPT._following.followNow(T,GS,GS.bosses)
+            } else {
+                GS.map.type = 'enemy';
+                T.setBossBar(0, true);
             }
 
             //check last map
-            if(GS.gameLevel == GS.gameMaxLevel)
-            {
+            if (GS.gameLevel == GS.gameMaxLevel) {
                 GS.gameOver = true;
                 T.camShake(1000);
             }
-
         }
     }
 
@@ -133,26 +157,44 @@ class ShootingToStars extends Phaser.Scene {
 
     //============== CREATE -------------
     createOptions() {
-        GS.config.keyNextLevel = T.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        GS.config.keyNextLevel = T.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
         GS.cam = T.cameras.main;
         GS.cam.fade(0, 0, 0, 0);
         GS.gameMaxLevel = GS.map.levels.length;
         T.camFade();
     }
 
+    createColision() {
+
+        //init collision
+        GS.enemy.list.filter((enemy) => {
+            GS.players.list.filter((player) => {
+                //player vs enemy
+                T.createInitEnemyCollision(player, enemy, GS, T);
+
+                //enemy vs weapon
+                T.createBulletsCollision(player, enemy, GS, T);
+                T.createSwordCollision(player, enemy, GS, T);
+            })
+        });
+    }
+
     cteateInitBackground() {
         //  A simple background for our game
         T.add.image(400, 300, 'sky');
 
-        
+
         GS.map.mapPhaser = T.make.tilemap({ key: 'map' });
         GS.map.tileset = GS.map.mapPhaser.addTilesetImage('platform', 'tiles');
-        
+
         // //  Game level
         if (!GS.map.levelText) {
             GS.map.levelText = T.add.text(GS.config.width / 2 - 50, 16, 'LEVEL: ' + GS.gameLevel, { fontSize: '32px', fill: '#ffee23' });
         }
 
+    }
+
+    createInitMap() {
         EPT._maps.generateMaps(GS, T);
     }
 
@@ -171,113 +213,107 @@ class ShootingToStars extends Phaser.Scene {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
         });
+
+        //  Collide the player and the stars with the platforms
+        T.physics.add.collider(GS.stars, GS.map.platforms);
     }
 
     createInitBoom() {
         GS.bombs = T.physics.add.group();
     }
 
+    getKeyLevel(indexPlayer) {
+        var player = GS.players.list[indexPlayer];
+        return GS.players.keySheet + (player.value.level + 1);
+    }
+
     createInitAnimationMoving(indexPlayer) {
         var player = GS.players.list[indexPlayer];
-        var joystick = player.joystick;
         var joyKeys = player.joyKeys;
+        var textureLevel = this.getKeyLevel(indexPlayer);
+        var keyPlay = 'p-' + indexPlayer + '_' + textureLevel + '_';
 
         //  Our player animations, turning, walking left and walking right.
         T.anims.create({//left
-            key: joystick[joyKeys[0]],
-            frames: T.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            key: keyPlay + joyKeys[0],
+            frames: T.anims.generateFrameNumbers(textureLevel, { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });
 
         T.anims.create({//up
-            key: joystick[joyKeys[1]],
-            frames: [{ key: 'dude', frame: 4 }],
+            key: keyPlay + joyKeys[1],
+            frames: [{ key: textureLevel, frame: 4 }],
             frameRate: 20
         });
 
         T.anims.create({//right
-            key: joystick[joyKeys[2]],
-            frames: T.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            key: keyPlay + joyKeys[2],
+            frames: T.anims.generateFrameNumbers(textureLevel, { start: 5, end: 8 }),
             frameRate: 10,
             repeat: -1
         });
 
         T.anims.create({//down
-            key: joystick[joyKeys[3]],
-            frames: [{ key: 'dude', frame: 4 }],
+            key: keyPlay + joyKeys[3],
+            frames: [{ key: textureLevel, frame: 4 }],
             frameRate: 20
         });
     }
 
     createInitPlayerSetting(indexPlayer, x, y) {
         var player = GS.players.list[indexPlayer];
-        var sprite = player.sprite;
 
         // The player and its settings
-        player.sprite = T.physics.add.sprite(x, y, 'dude');
+        player.sprite = T.physics.add.sprite(x, y).setBodySize(26, 40).setOffset(16, 26);;
 
         //  Player physics properties. Give the little guy a slight bounce.
         player.sprite.setBounce(0.2);
         player.sprite.setCollideWorldBounds(true);
     }
 
-    createPlayer(indexPlayer, x) {
-        var player = GS.players.list[indexPlayer];
+    createInitEnemy() {
+        var keyEnemy = GS.enemy.nextLevels[GS.gameLevel];
+        GS.enemy.oldKey = keyEnemy? keyEnemy: GS.enemy.oldKey;
+        GS.enemy.list.filter((enemy) => {
+            enemy.sprite = this.physics.add.sprite(enemy.x, enemy.y, GS.enemy.oldKey);
+            enemy.sprite.setScale(enemy.scale).refreshBody();
+            enemy.sprite.setBodySize(60, 80)
+            enemy.sprite.setBounce(1, 0);
+            enemy.sprite.setCollideWorldBounds(true);
+            enemy.sprite.setVelocityX(100);
 
-        //color
-        EPT._player.setTint(player.sprite, player.info.color)
-        //------ Init item -------
-        T.createInitItem(player);
+            //flatform
+            T.physics.add.collider(enemy.sprite, GS.map.platforms);
+        })
 
-        //  Collide the player and the stars with the map.platforms
-        T.physics.add.collider(player.sprite, GS.map.platforms);
-        T.physics.add.collider(GS.stars, GS.map.platforms);
-        // T.physics.add.collider(GS.bombs, GS.map.platforms);
-
-        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
-        T.physics.add.overlap(player.sprite, GS.stars, function (a, b) {
-            EPT._item.collectStar(a, b);
-            EPT._item.collectStar_UpdateInfo(player, 'star');
-        }, null, T);
-
-        // T.physics.add.collider(player.sprite, GS.bombs, EPT._enemy.hitBomb, null, T);
+        GS.enemy.killedCount = 0;
     }
 
-    createInitEnemy() {
-
-        GS.enemy1 = this.physics.add.sprite(0, 0, 'enemy');
-        GS.enemy1.setScale(0.5).refreshBody();
-        GS.enemy1.setVelocityX(100);
-        GS.enemy2 = this.physics.add.sprite(350, 250, 'enemy');
-        GS.enemy2.setScale(0.5).refreshBody();
-        GS.enemy2.setVelocityX(100);
-        GS.enemy3 = this.physics.add.sprite(400, 300, 'enemy');
-        GS.enemy3.setScale(0.5).refreshBody();
-        GS.enemy3.setVelocityX(-100);
-
-        this.physics.add.collider(GS.enemy1, GS.map.platforms);
-        this.physics.add.collider(GS.enemy2, GS.map.platforms);
-        this.physics.add.collider(GS.enemy3, GS.map.platforms);
+    createInitEnemyCollision(player, enemy, GS, T) {
+        T.physics.add.collider(player.sprite, enemy.sprite, function () {
+            EPT._player.beKilled(player, enemy, GS, T);
+        });
     }
 
     createInitItem(player) {
-        var x = player.info.x;
+        var x = player.text.x;
+
         //  The score and item
-        if (!player.scoreText) {
-            player.scoreText = T.add.text(x, 16, 'Score: ' + player.score, { fontSize: '32px', fill: '#000' });
+        if (!player.text.scoreText) {
+            player.text.scoreText = T.add.text(x, 16, 'Score: ' + player.value.score, { fontSize: '32px', fill: '#000' });
         }
 
-        if (!player.lifeText) {
-            player.lifeText = T.add.text(x, 50, 'Life: ' + player.life, { fontSize: '16px', fill: '#000' });
+        if (!player.text.lifeText) {
+            player.text.lifeText = T.add.text(x, 50, 'Life: ' + player.value.life, { fontSize: '16px', fill: '#000' });
         }
 
-        if (!player.levelText) {
-            player.levelText = T.add.text(x, 70, 'Level: ' + player.level, { fontSize: '16px', fill: '#000' });
+        if (!player.text.levelText) {
+            player.text.levelText = T.add.text(x, 70, 'Level: ' + player.value.level, { fontSize: '16px', fill: '#000' });
         }
 
-        if (!player.weaponText) {
-            player.weaponText = T.add.text(x, 90, 'Weapon: ' + player.weapon.using, { fontSize: '16px', fill: '#000' });
+        if (!player.text.weaponText) {
+            player.text.weaponText = T.add.text(x, 90, 'Weapon: ' + player.weapon.using, { fontSize: '16px', fill: '#000' });
         }
     }
 
@@ -286,40 +322,212 @@ class ShootingToStars extends Phaser.Scene {
         var boss = GS.bosses.cf[indexBoss];
         GS.bosses.duration = boss.duration;
         // var sp = GS.bosses.sprite;
-        // sp = this.physics.add.sprite(0, 0, boss.name);
-        // sp.setScale(0.5).refreshBody();
-        // sp.setVelocityX(100);
-        // GS.bosses.sprite = this.physics.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
-        GS.bosses.sprite = T.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
+        GS.bosses.sprite = T.physics.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
         // GS.bosses.sprite.setVelocityX(100);
         GS.bosses.sprite.setDepth(1)
         // this.physics.add.collider(GS.bosses.sprite, GS.map.platforms);
         GS.bosses.sprite.play(boss.name);
 
+        GS.bosses.sprite.setCircle(170, 140, 300);
+        GS.bosses.sprite.body.allowGravity = false;
+
+        //-------- health --------
+
+        GS.bosses.healthMax = boss.health;
+        GS.bosses.healthReal = boss.health;
+        T.setBossBar(boss.health);
+
         EPT._following.initFollowerPath(GS, T, boss.name, GS.bosses);
 
-        T.bossSkills();
+        GS.players.list.filter((player) => {
+            T.physics.add.overlap(player.sprite, GS.bosses.sprite, function (a, b) {
+                EPT._player.beKilled(player, GS.bosses, GS, T);
+            }, null, T);
+
+            GS.bosses.sprite.play(player.name);
+            var enemy = GS.bosses;
+            //weapon
+            T.physics.add.overlap(GS.bosses.sprite, player.bulletsLeft, function (eSprite, weapon) {
+                EPT._enemy.beKilled(enemy, weapon, 'gun', GS, T);
+            });
+
+            T.physics.add.overlap(GS.bosses.sprite, player.bulletsRight, function (a, weapon) {
+                EPT._enemy.beKilled(enemy, weapon, 'gun', GS, T);
+            });
+
+            T.physics.add.overlap(GS.bosses.sprite, player.swordRight, function (a, weapon) {
+                EPT._enemy.beKilled(enemy, weapon, 'sword', GS, T);
+            }, null, T);
+
+            T.physics.add.overlap(GS.bosses.sprite, player.swordLeft, function (a, weapon) {
+                EPT._enemy.beKilled(enemy, weapon, 'sword', GS, T);
+            }, null, T);
+        });
+
+        T.bossSkills(boss, GS, T);
     }
 
-    bossSkills() {
-        var x = Phaser.Math.Between(400, 600);
-        
-        var bomb = GS.bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocityX(100);
-        bomb.allowGravity = false;
+    bossSkills(bossCf, GS, T) {
+        //load skill
+        EPT._enemy.drawSkill(GS.bosses.sprite, bossCf.skill, GS, T);
     }
 
-    //================= CLEAR ==============
+    //------- player create -----
+
+    createPlayer(indexPlayer) {
+        var player = GS.players.list[indexPlayer];
+
+        //------ Init item -------
+        T.createInitItem(player);
+        EPT._player.setTint(player.sprite, player.value.tInt);
+
+        //  Collide the player and the stars with the platforms
+        T.physics.add.collider(player.sprite, GS.platforms);
+
+        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
+        T.physics.add.overlap(player.sprite, GS.stars, function (a, b) {
+            EPT._item.collectStar(a, b);
+            EPT._item.collectStar_UpdateInfo(player, 'star', GS, T);
+        }, null, T);
+
+        T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
+    }
+
+    createPlayerWeapon(indexPlayer) {
+        var player = GS.players.list[indexPlayer];
+
+        T.createSword(player, GS, T);
+        T.createBullets(player, GS, T);
+    }
+
+    createSword(player) {
+
+        player.swordLeft = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword');
+        player.swordRight = T.physics.add.sprite(player.sprite.body.x, player.sprite.body.y, 'sword');
+
+        player.swordLeft.angle = 270;
+        player.swordRight.angle = 90;
+        player.swordLeft.flipX = true;
+
+        player.swordLeft.setBodySize(136, 14).setOffset(0, 90);
+        player.swordRight.setBodySize(136, 14).setOffset(0, 90);
+
+        player.swordLeft.body.allowGravity = false;
+        player.swordRight.body.allowGravity = false;
+        // player.swordRight.setGravity(0)
+
+        player.swordLeft.disableBody(true, true);
+        player.swordRight.disableBody(true, true);
+    }
+
+    createSwordCollision(player, enemy, GS, T) {
+        T.physics.add.overlap(player.swordRight, enemy.sprite, function (a, weapon) {
+            EPT._enemy.beKilled(enemy, weapon, 'sword', GS, T);
+        }, null, T);
+
+        T.physics.add.overlap(player.swordLeft, enemy.sprite, function (a, weapon) {
+            EPT._enemy.beKilled(enemy, weapon, 'sword', GS, T);
+        }, null, T);
+    }
+
+    createBullets(player, GS, T) {
+        player.bulletsRight = T.add.group({
+            classType: EPT._weapon.Bullet(1, 'bullet'),
+            maxSize: player.weapon.bulletCount,
+            runChildUpdate: true,
+        });
+
+        player.bulletsLeft = T.add.group({
+            classType: EPT._weapon.Bullet(-1, 'bullet'),
+            maxSize: player.weapon.bulletCount,
+            runChildUpdate: true,
+        });
+
+    }
+
+    createBulletsCollision(player, enemy, GS, T) {
+        //enemy vs bullet
+        T.physics.add.collider(enemy.sprite, player.bulletsLeft, function (a, weapon) {
+            EPT._enemy.beKilled(enemy, weapon, 'gun', GS, T)
+        });
+
+        T.physics.add.collider(enemy.sprite, player.bulletsRight, function (a, weapon) {
+            EPT._enemy.beKilled(enemy, weapon, 'gun', GS, T)
+        });
+    }
+
+    initItemSettings() {
+        GS.items.group = this.physics.add.group({
+            bounceX: 0,
+            bounceY: 0,
+            collideWorldBounds: true
+        });
+
+        T.physics.add.collider(GS.items.group, GS.map.platforms);
+    }
+
+    checkGameOver(GS) {
+
+        var countDeath = 0;
+        GS.players.list.filter((player) => {
+            if (player.value.life == 0) {
+                countDeath++;
+                console.log(player.index + ' death');
+            }
+        });
+
+        if (countDeath == GS.players.list.length) {
+            T.add.text(GS.config.width / 2 - 200, GS.config.height / 2, 'GAME OVER', { fontSize: '62px', fill: '#ffee23' });
+        }
+    }
+
+    //================= CLEAR ==============//
 
 
     clearEnemy() {
-        GS.enemy1.destroy();
-        GS.enemy2.destroy();
-        GS.enemy3.destroy();
+
+        GS.enemy.list.filter((e) => {
+            e.sprite.destroy();
+        });
     }
 
     clearPlayer() {
+    }
+
+    setBossBar(count, isClear) {
+        var text = '';
+        if (!GS.bosses.healthBar) {
+            GS.bosses.healthBar = T.add.text(GS.config.width / 2 - 200, 50, GS.map.type != 'boss' ? '' : T.healthCreate(GS.bosses), { fontSize: '32px', fill: '#ffee23' });
+            return;
+        }
+
+        if (count > 0) {
+            text = T.healthCreate(GS.bosses);
+        }
+
+        if (isClear) {
+            GS.bosses.healthBar.setText('');
+        } else {
+            GS.bosses.healthBar.setText(text);
+        }
+    }
+    healthCreate(bossGS) {
+        var text = '';
+        for (var i = 0; i < bossGS.healthMax; i++) {
+            if (i > bossGS.healthReal) {
+                text += ''
+            } else {
+                text += '█'
+            }
+        }
+
+        return 'BOSS:[' + text + ']';
+    }
+    isNextLevel(GS) {
+        const condi1 = GS.map.type == 'boss' && GS.bosses.healthReal == 0 && GS.enemy.list.length == GS.enemy.killedCount;
+        const condi2 = GS.map.type == 'enemy';
+        const condi3 = GS.enemy.list.length == GS.enemy.killedCount
+
+        return condi1 && condi3 || condi2 && condi3;
     }
 }
