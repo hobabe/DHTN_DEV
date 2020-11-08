@@ -52,7 +52,7 @@ class ShootingToStars extends Phaser.Scene {
         GS.cursors = EPT._keyboard.createInitKeyboard(GS.players.list);
 
         //------ Init stars ------
-        T.createInitStars();
+        // T.createInitStars();
 
         //------Init player colision-----------
         T.createPlayer(0);
