@@ -27,6 +27,11 @@ class ShootingToStars extends Phaser.Scene {
         T.cteateInitBackground();
 
 
+        //------ Init map & collision -----
+        T.createInitMap();
+
+        //keyboard
+
         EPT._keyboard.createInitJoystick(GS.players.list, 0, ['A', 'W', 'D', 'S', 'SPACE']);
         EPT._keyboard.createInitJoystick(GS.players.list, 1, ['LEFT', 'UP', 'RIGHT', 'DOWN', 'END']);
 
@@ -63,8 +68,8 @@ class ShootingToStars extends Phaser.Scene {
         //------ Init Options -------
         T.createOptions();
 
-        //------ Init map & collision -----
-        T.createInitMap();
+        //------ Init Items Setting-------
+        T.initItemSettings();
     }
 
 
@@ -76,7 +81,7 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.playerMove(GS,T, 0);
         EPT._player.playerMove(GS,T, 1);
 
-        EPT._enemy.updateEnemyMove(GS);
+        // EPT._enemy.updateEnemyMove(GS);
         // EPT._enemy.updateBossMove(GS);
 
 
@@ -88,10 +93,10 @@ class ShootingToStars extends Phaser.Scene {
         EPT._player.updateWeapon(GS, T);
         
         // ----------- enemies hit players ----------
-        GS.enemy.list.filter((e) => {
-            EPT._enemy.killPlayer(GS, T, e.sprite, 0);
-            EPT._enemy.killPlayer(GS, T, e.sprite, 1);
-        });
+        // GS.enemy.list.filter((e) => {
+        //     EPT._enemy.killPlayer(GS, T, e.sprite, 0);
+        //     EPT._enemy.killPlayer(GS, T, e.sprite, 1);
+        // });
         // for (var i=0;i<2;i++)
         // {
         //     EPT._enemy.killPlayer(GS, T, GS.enemy3, i)
@@ -104,6 +109,8 @@ class ShootingToStars extends Phaser.Scene {
     nextLevel() {
         if (GS.gameLevel < GS.gameMaxLevel) {
             GS.gameLevel++;
+            GS.enemy.killedCount = 0;
+            EPT._maps.generateMaps(GS, T);
             T.clearEnemy();
             T.createInitEnemy();
             GS.map.levelText.setText('LEVEL: ' + (GS.gameLevel));
@@ -120,10 +127,14 @@ class ShootingToStars extends Phaser.Scene {
                 GS.bosses.meet = true;
                 //load boss
                 GS.bosses.indexMeetBoss++;
+                GS.map.type = 'boss';
                 T.createBoss(GS.bosses.indexMeetBoss);
 
                 //follow Now
                 // EPT._following.followNow(T,GS,GS.bosses)
+            } else {
+                GS.map.type = 'enemy';
+                T.setBossBar(0, true);
             }
 
             //check last map
@@ -132,9 +143,6 @@ class ShootingToStars extends Phaser.Scene {
                 GS.gameOver = true;
                 T.camShake(1000);
             }
-
-            
-            EPT._maps.generateMaps(GS, T);
         }
     }
 
@@ -198,6 +206,9 @@ class ShootingToStars extends Phaser.Scene {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
         });
+
+        //  Collide the player and the stars with the platforms
+        T.physics.add.collider(GS.stars, GS.map.platforms);
     }
 
     createInitBoom() {
@@ -206,12 +217,11 @@ class ShootingToStars extends Phaser.Scene {
 
     getKeyLevel(indexPlayer){
         var player = GS.players.list[indexPlayer];
-        return  GS.players.keySheet + (player.level+1);
+        return  GS.players.keySheet + (player.value.level+1);
     }
 
     createInitAnimationMoving(indexPlayer) {
         var player = GS.players.list[indexPlayer];
-        var joystick = player.joystick;
         var joyKeys = player.joyKeys;
         var textureLevel = this.getKeyLevel(indexPlayer);
         var keyPlay = 'p-' +indexPlayer+ '_'+ textureLevel + '_';
@@ -246,7 +256,6 @@ class ShootingToStars extends Phaser.Scene {
 
     createInitPlayerSetting(indexPlayer, x, y) {
         var player = GS.players.list[indexPlayer];
-        var sprite = player.sprite;
 
         // The player and its settings
         player.sprite = T.physics.add.sprite(x, y).setBodySize(26, 40).setOffset(16,26);;
@@ -257,31 +266,57 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     createInitEnemy() {
+        GS.enemy.list.filter((enemy) => {
+            enemy.sprite = this.physics.add.sprite(enemy.x, enemy.y, enemy.key);
+            enemy.sprite.setScale(enemy.scale).refreshBody();
+            enemy.sprite.setBodySize(70, 200)
+            enemy.sprite.setBounce(1,0);
+            enemy.sprite.setCollideWorldBounds(true);
+            enemy.sprite.setVelocityX(100);
 
-        GS.enemy.list.filter((e) => {
-            e.sprite = this.physics.add.sprite(e.x, e.y, e.key);
-            e.sprite.setScale(e.scale).refreshBody();
-            e.sprite.setVelocityX(100);
+            //flatform
+            T.physics.add.collider(enemy.sprite, GS.map.platforms);
+
+            //player
+            GS.players.list.filter((player)=>{
+
+                //player vs enemy
+                T.physics.add.collider(player.sprite, enemy.sprite, function(){
+                    EPT._player.beKilled(player, enemy, T);
+                });
+
+                //enemy vs bullet
+                T.physics.add.collider(enemy.sprite, player.bulletsLeft, function(a, weapon){
+                    EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T)
+                });
+    
+                T.physics.add.collider(enemy.sprite, player.bulletsRight, function(a, weapon){
+                    EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T)
+                });
+            })
         })
+
+        GS.enemy.killedCount = 0;
     }
 
     createInitItem(player) {
-        var x = player.info.x;
+        var x = player.text.x;
+
         //  The score and item
-        if (!player.scoreText) {
-            player.scoreText = T.add.text(x, 16, 'Score: ' + player.score, { fontSize: '32px', fill: '#000' });
+        if (!player.text.scoreText) {
+            player.text.scoreText = T.add.text(x, 16, 'Score: ' + player.value.score, { fontSize: '32px', fill: '#000' });
         }
 
-        if (!player.lifeText) {
-            player.lifeText = T.add.text(x, 50, 'Life: ' + player.life, { fontSize: '16px', fill: '#000' });
+        if (!player.text.lifeText) {
+            player.text.lifeText = T.add.text(x, 50, 'Life: ' + player.value.life, { fontSize: '16px', fill: '#000' });
         }
 
-        if (!player.levelText) {
-            player.levelText = T.add.text(x, 70, 'Level: ' + player.level, { fontSize: '16px', fill: '#000' });
+        if (!player.text.levelText) {
+            player.text.levelText = T.add.text(x, 70, 'Level: ' + player.value.level, { fontSize: '16px', fill: '#000' });
         }
 
-        if (!player.weaponText) {
-            player.weaponText = T.add.text(x, 90, 'Weapon: ' + player.weapon.using, { fontSize: '16px', fill: '#000' });
+        if (!player.text.weaponText) {
+            player.text.weaponText = T.add.text(x, 90, 'Weapon: ' + player.weapon.using, { fontSize: '16px', fill: '#000' });
         }
     }
 
@@ -290,17 +325,48 @@ class ShootingToStars extends Phaser.Scene {
         var boss = GS.bosses.cf[indexBoss];
         GS.bosses.duration = boss.duration;
         // var sp = GS.bosses.sprite;
-        // sp = this.physics.add.sprite(0, 0, boss.name);
-        // sp.setScale(0.5).refreshBody();
-        // sp.setVelocityX(100);
-        // GS.bosses.sprite = this.physics.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
-        GS.bosses.sprite = T.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
+        GS.bosses.sprite = T.physics.add.sprite(boss.x, boss.y, boss.name).setScale(0.5);
         // GS.bosses.sprite.setVelocityX(100);
         GS.bosses.sprite.setDepth(1)
         // this.physics.add.collider(GS.bosses.sprite, GS.map.platforms);
         GS.bosses.sprite.play(boss.name);
 
+        GS.bosses.sprite.setCircle(170, 140,300);
+        GS.bosses.sprite.body.allowGravity = false;
+
+        //-------- health --------
+        
+        GS.bosses.healthMax = boss.health;
+        GS.bosses.healthReal = boss.health;
+        T.setBossBar(boss.health);
+
         EPT._following.initFollowerPath(GS, T, boss.name, GS.bosses);
+
+        GS.players.list.filter((player)=>{
+            T.physics.add.overlap(player.sprite, GS.bosses.sprite, function(a,b){
+                EPT._player.beKilled(player, GS.bosses, T);
+            }, null, T);
+
+            GS.bosses.sprite.play(player.name);
+            var enemy = GS.bosses;
+            //weapon
+            T.physics.add.overlap(GS.bosses.sprite, player.bulletsLeft, function(eSprite, weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T);
+            });
+
+            T.physics.add.overlap(GS.bosses.sprite, player.bulletsRight, function(a, weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T);
+            });
+
+            T.physics.add.overlap(GS.bosses.sprite, player.swordRight, function(a,weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'sword' , GS, T);
+            }, null, T);
+
+            T.physics.add.overlap(GS.bosses.sprite, player.swordLeft, function(a,weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'sword' , GS, T);
+            }, null, T);
+        });
+
 
         T.bossSkills();
     }
@@ -332,6 +398,7 @@ class ShootingToStars extends Phaser.Scene {
             EPT._item.collectStar_UpdateInfo(player, 'star', T, indexPlayer);
         }, null, T);
 
+        T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
         // if(indexPlayer==1)
         // {
         //     T.physics.add.collider(player.sprite, GS.enemy3, EPT._enemy.hitBomb_2, null , T);
@@ -350,8 +417,8 @@ class ShootingToStars extends Phaser.Scene {
     createPlayerWeapon(indexPlayer){
         var player = GS.players.list[indexPlayer];
 
-        T.createSword(player);
-        T.createBullets(player);
+        T.createSword(player, T);
+        T.createBullets(player, T);
     }
 
     createSword(player)
@@ -371,52 +438,52 @@ class ShootingToStars extends Phaser.Scene {
         player.swordRight.body.allowGravity = false;
         // player.swordRight.setGravity(0)
 
-        // player.swordLeft.setDisplaySize(44, 64);
-        // player.swordRight.setDisplaySize(44, 64);
-
-        // T.physics.add.collider(player.swordRight, GS.enemy1, EPT._enemy.beKilled, null, T);
-        // T.physics.add.collider(player.swordRight, GS.enemy2, EPT._enemy.beKilled, null, T);
-        // T.physics.add.collider(player.swordRight, GS.enemy3, EPT._enemy.beKilled, null, T);
-
-        // T.physics.add.collider(player.swordLeft, GS.enemy1, EPT._enemy.beKilled, null, T);
-        // T.physics.add.collider(player.swordLeft, GS.enemy2, EPT._enemy.beKilled, null, T);
-        // T.physics.add.collider(player.swordLeft, GS.enemy3, EPT._enemy.beKilled, null, T);
+        player.swordLeft.disableBody(true, true);
+        player.swordRight.disableBody(true, true);
 
         GS.enemy.list.filter((e) => {
-            T.physics.add.overlap(player.swordRight, e.sprite, function(a,b){
-                EPT._enemy.beKilled(player.swordRight, e.sprite);
+            T.physics.add.overlap(player.swordRight, e.sprite, function(a,weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'sword' , GS, T);
+            }, null, T);
+
+            T.physics.add.overlap(player.swordLeft, e.sprite, function(a,weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'sword' , GS, T);
             }, null, T);
         });
-        
 
-        // T.physics.add.collider(player.sprite, GS.enemy2, EPT._enemy.hitBomb_2, null , T);
 
-        // player.swordRight.disableBody(true, true);
-        // player.swordLeft.disableBody(true, true);
-
+        //weapon
+        // T.physics.add.collider(player.swordLeft, GS.map.platforms);
+        // T.physics.add.collider(player.swordRight, GS.map.platforms);
     }
 
-    createBullets(player)
+    createBullets(player, T)
     {
-        //ưerw
-        var joystick = player.joystick;
-        var joyKeys = player.joyKeys;
-    
-        player.bulletsRight = this.add.group({
-            classType: T.Bullet(1),
-            maxSize: 100,
+        player.bulletsRight = T.add.group({
+            classType: T.Bullet(1, 'bullet'),
+            maxSize: player.weapon.bulletCount,
             runChildUpdate: true,
-            setScale: { x: 2, y: 2}
         });
     
-        player.bulletsLeft = this.add.group({
-            classType: T.Bullet(-1),
-            maxSize: 100,
+        player.bulletsLeft = T.add.group({
+            classType: T.Bullet(-1, 'bullet'),
+            maxSize: player.weapon.bulletCount,
             runChildUpdate: true,
-            setScale: { x: 2, y: 2}
         });
+
+        // player.bulletsRight.setBodySize(100,100);
+
+        GS.enemy.list.filter((enemy)=>{
+            T.physics.add.overlap(enemy.sprite, player.bulletsLeft, function(a, weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T);
+            });
+
+            T.physics.add.overlap(enemy.sprite, player.bulletsRight, function(a, weapon){
+                EPT._enemy.beKilled(enemy, weapon, 'gun' , GS, T);
+            });
+        })
     }
-    Bullet(direction){
+    Bullet(direction, key){
         
         return new Phaser.Class({
 
@@ -426,19 +493,28 @@ class ShootingToStars extends Phaser.Scene {
     
             function Bullet (scene)
             {
-                Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+                Phaser.GameObjects.Image.call(this, scene, 0, 0, key);
     
                 this.speed = Phaser.Math.GetSpeed(300, 1)
                 this.direction = direction;
-
+                if(direction==-1){
+                    this.angle = 180;
+                }
+                
+                scene.physics.add.existing(this, 0);
                 // this.left = false;
                 // this.right = false;
+                this.setVisible(100,100);
+                const scale = 0.3;
+                this.setScale(scale);
+                this.body.setSize(60+60*scale, 10+10*scale)
+                this.body.allowGravity = false;
             },
     
             fire: function (x, y)
             {
                 this.setPosition(x, y);
-                this.setScale(0.2);
+
                 this.setActive(true);
                 this.setVisible(true);
             },
@@ -457,7 +533,28 @@ class ShootingToStars extends Phaser.Scene {
         });
     }
 
-    //================= CLEAR ==============
+
+    initItemSettings(){
+        GS.items.group = this.physics.add.group({
+            bounceX: 0,
+            bounceY: 0,
+            collideWorldBounds: true
+        });
+
+        T.physics.add.collider(GS.items.group, GS.map.platforms);
+    }
+
+    checkGameOver(){
+        
+        if(GS.player.list.filter((player)=>{
+            if(player.value.life){
+                T.add.text(GS.config.width /2 -100, GS.config.height/2, 'GAME OVER', { fontSize: '62px', fill: '#ffee23' });
+            }
+        })
+       
+    }
+
+    //================= CLEAR ==============//
 
 
     clearEnemy() {
@@ -468,5 +565,42 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     clearPlayer() {
+    }
+
+    setBossBar(count, isClear){
+        var text= '';
+        if (!GS.bosses.healthBar) {
+            GS.bosses.healthBar = T.add.text(GS.config.width / 2-200, 50, GS.map.type!='boss'? '':T.healthCreate(GS.bosses), { fontSize: '32px', fill: '#ffee23' });
+            return;
+        } 
+
+        if(count>0){
+            text = T.healthCreate(GS.bosses);
+        }
+
+        if(isClear){
+            GS.bosses.healthBar.setText('');    
+        } else {
+            GS.bosses.healthBar.setText(text);
+        }
+    }
+    healthCreate(bossGS){
+        var text ='';
+        for(var i=0;i < bossGS.healthMax;i++){
+            if(i>bossGS.healthReal){
+                text+=''
+            } else {
+                text+='█'
+            }
+        }
+
+        return 'BOSS:[' + text+']';
+    }
+    isNextLevel(GS){
+        const condi1 = GS.map.type == 'boss' && GS.bosses.healthReal == 0 && GS.enemy.list.length == GS.enemy.killedCount;
+        const condi2 = GS.map.type == 'enemy';
+        const condi3 = GS.enemy.list.length == GS.enemy.killedCount
+
+        return condi1 && condi3 || condi2 && condi3;
     }
 }

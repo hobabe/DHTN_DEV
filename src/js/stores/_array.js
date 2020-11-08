@@ -1,6 +1,6 @@
 EPT._array = {
     randomInt(max, min) {
-        return min + Math.floor((max - min) * Math.random());
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     initFramesWithKey(key, count) {
         var arr = [];

@@ -10,19 +10,19 @@ EPT._player = {
         var joyKeys = player.joyKeys;
         var keyPlay = 'p-' +indexPlayer+ '_'+ T.getKeyLevel(indexPlayer) + '_';
         if (GS.cursors[joystick[joyKeys[0]]].isDown) {
-            sprite.setVelocityX(-player.speed.run);
+            sprite.setVelocityX(-player.value.speed.run);
 
             sprite.anims.play(keyPlay + joyKeys[0], true);//'left'
             // console.log(GS.cursors);
             EPT.Sfx.play('running', false);
-            player.directionAttack = -1;
+            player.value.directionAttack = -1;
         }
         else if (GS.cursors[joystick[joyKeys[2]]].isDown) {
-            sprite.setVelocityX(player.speed.run);
+            sprite.setVelocityX(player.value.speed.run);
 
             sprite.anims.play(keyPlay + joyKeys[2], true);//right
             EPT.Sfx.play('running', false);
-            player.directionAttack = 1;
+            player.value.directionAttack = 1;
         }
         else //if (GS.cursors[joystick.down].isDown)
         {
@@ -38,36 +38,14 @@ EPT._player = {
 
     updateWeapon(GS, T){
         GS.players.list.filter((player)=>{
-            if(player.weapon.using=='sword'){
-                EPT._player.slicing(GS, player);
-            } else {
-                EPT._player.fireBullet(GS,player);  
+            if(player.value.life> 0){
+                if(player.weapon.using=='sword'){
+                    EPT._player.slicing(GS, player);
+                } else {
+                    EPT._player.fireBullet(GS,player);  
+                }
             }
         });
-    },
-    attackEnemy(GS, keyPlayer, enemy, keyEnemyLife)
-    {
-        var player = GS.players.list[keyPlayer];
-        var joystick = player.joystick;
-        var joyKeys = player.joyKeys;
-        var swordRight = player.swordRight;
-        var swordLeft = player.swordLeft;
-        // if (GS.cursors[joystick[joyKeys[4]]].isDown)
-        // {
-        //     if((Math.abs(swordRight.body.x - enemy.body.x)<=50) && (Math.abs(swordRight.body.y- enemy.body.y)<=100))
-        //     {
-        //         EPT._enemy.beKilled(enemy, keyEnemyLife);
-        //     }
-        // }
-        // if (GS.cursors[joystick[joyKeys[4]]].isDown)
-        // {
-        //     if((Math.abs(swordLeft.body.x - enemy.body.x)<=50) && (Math.abs(swordLeft.body.y- enemy.body.y)<=100))
-        //     {
-        //         EPT._enemy.beKilled(enemy, keyEnemyLife);
-        //     }
-        // }
-
-        var GS= this.GS
     },
 
     slicing(GS, player)
@@ -85,23 +63,23 @@ EPT._player = {
             // console.log(sprite.body.x)
 
             swordRight.x = sprite.body.x;
-            player.playerPointAttack = sprite.body.x;
+            player.value.playerPointAttack = sprite.body.x;
 
-            if(player.directionAttack == 1)
+            if(player.value.directionAttack == 1)
             {
                 swordRight.enableBody(true, sprite.body.x, sprite.body.y, true, true);  
             }
-            else if(player.directionAttack == -1)
+            else if(player.value.directionAttack == -1)
             {
                 swordLeft.enableBody(true, sprite.body.x, sprite.body.y, true, true);   
             }
         }
 
-        if(swordLeft.body.enable){
-            if(player.directionAttack == -1)
+        if(swordLeft.body && swordLeft.body.enable){
+            if(player.value.directionAttack == -1)
             {
                 swordLeft.x -= 5;
-                const maxLeft = player.playerPointAttack - player.swordRange;  
+                const maxLeft = player.value.playerPointAttack - player.weapon.swordRange;  
                 if(swordLeft.x < maxLeft)
                 {
                     swordLeft.disableBody(true, true);
@@ -113,11 +91,11 @@ EPT._player = {
             }
         }
 
-        if(swordRight.body.enable){
-            if(player.directionAttack == 1)
+        if(swordRight.body && swordRight.body.enable){
+            if(player.value.directionAttack == 1)
             {
                 swordRight.x += 5;  
-                const maxRight = player.playerPointAttack + player.swordRange;
+                const maxRight = player.value.playerPointAttack + player.weapon.swordRange;
                 if(swordRight.x > maxRight)
                 {
                     swordRight.disableBody(true, true);
@@ -129,18 +107,45 @@ EPT._player = {
             }
         }
 
-        // GS.enemy.list.filter((e) => {
-        //     EPT._player.attackEnemy(GS, 0, e.sprite, 0);
-        // });
-        // EPT._player.attackEnemy(GS, 0, GS.enemy1, 0);
-        // EPT._player.attackEnemy(GS, 0, GS.enemy2, 1);
-        // EPT._player.attackEnemy(GS, 0, GS.enemy3, 2);
-
-        // EPT._player.attackEnemy(GS, 1, GS.enemy1, 0);
-        // EPT._player.attackEnemy(GS, 1, GS.enemy2, 1);
-        // EPT._player.attackEnemy(GS, 1, GS.enemy3, 2);
-
     }, 
+    
+    beKilled(player, enemy, T)
+    {
+        //check
+        if(player.isUred){
+            return;
+        }
+
+        //re-active run
+        enemy.sprite.setVelocityX(100);
+        
+        var sprite = player.sprite;
+        if(player.value.life > 0)
+        {
+            sprite.disableBody(true, true);
+            player.value.life -= 1;
+            player.text.lifeText.setText('Life: '+ player.value.life);
+            sprite.enableBody(true, player.sprite.body.x, 0, true, true);
+
+            this.blinkEffect(player, T);
+
+            //reset level
+            player.value.level = 0;
+            player.value.speed.run = 100;
+            player.weapon.bulletCount = 1;
+            T.createBullets(player, T)
+        }
+        else 
+        {
+            player.text.lifeText.setText('Life: <Death>');
+            sprite.disableBody(true, true);
+            // sprite.body.setX = 0;
+            // sprite.body.setY = 0;
+            // sprite.anims.play('down');
+            // sprite.setTint(0xff0000);
+            // EPT._player.gameOver(GS, T)
+        }
+    },
     fireBullet(GS, player)
     {
         var sprite = player.sprite;
@@ -154,11 +159,11 @@ EPT._player = {
         {
             var bulletLeft = player.bulletsLeft.get();
             var bulletRight = player.bulletsRight.get();
-            if (bulletRight && player.directionAttack == 1)
+            if (bulletRight && player.value.directionAttack == 1)
             {
                 bulletRight.fire(sprite.body.x + 10, sprite.body.y + 20);
             }
-            else if(bulletLeft && player.directionAttack == -1)
+            else if(bulletLeft && player.value.directionAttack == -1)
             {
                 bulletLeft.fire(sprite.body.x + 10, sprite.body.y + 20);
             }
@@ -174,4 +179,16 @@ EPT._player = {
             GS.gameOver == true;
        }
     },
+    blinkEffect(player, T){
+        player.sprite.setAlpha(0);
+        T.tweens.add({
+            targets: player.sprite,
+            alpha: 1,
+            duration: 100,
+            ease: 'Linear',
+            repeat: 20,
+            onStart : ()=>{player.isUred = true;},
+            onComplete: ()=>{player.isUred = false;},
+        });
+    }
 };

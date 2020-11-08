@@ -25,59 +25,64 @@ EPT._enemy = {
          }
       }
     },
-    beKilled(sword, enemy)
+    beKilled(enemy, weapon, type , GS, T)
     {
-       // enemy.disableBody(true, true);
+      var sprite = enemy.sprite;
       
-       // GS.enemyLife[keyEnemyLife] -= 1;
-       var a =  enemy.body.right;
-       var b =  enemy.body.bottom;
-       var c = enemy.body.x;
-       enemy.destroy();
-       // console.log("enemy "+c);
-       EPT._item.createItems(a, b);
- 
-    },
-    killPlayer(GS, T, enemy, indexPlayer)
-   {
-      var player = GS.players.list[indexPlayer];
-      var sprite = player.sprite;
-      if(GS.checkCollider[indexPlayer] != 0)
-      {
-         if(player.life > 0)
-         {
-            sprite.disableBody(true, true);
-            player.life -= 1;
-            player.lifeText.setText('Life: '+ player.life);
-            sprite.enableBody(true, player.sprite.body.x, 0, true, true);
-         }
-         else 
-         {
-            player.lifeText.setText('Life: '+ player.life);
-            sprite.disableBody(true, false);
+      //get position player to set drop item
+       var r =  sprite.body.right;
+       var b =  sprite.body.bottom;
+      //  sprite.destroy();
 
-            sprite.body.setX = 0;
-            sprite.body.setY = 0;
-            sprite.anims.play('down');
-            sprite.setTint(0xff0000);
-            EPT._player.gameOver(GS, T)
-         }
-         GS.checkCollider[indexPlayer] = 0;
+      //check weapon
+      switch (type) {
+         case 'gun':
+            weapon.destroy();
+            break;
+         
+         default:
+            weapon.disableBody(true, true);
+            break;
       }
-   },
-    updateEnemyMove(GS){
+      
+      //check enemy type
+      switch (enemy.type) {
+         case 'boss': //check boss
+            if(enemy.healthReal > 0) {
+               enemy.healthReal--;
+            } else {
+               sprite.disableBody(true, true);
+               EPT._item.createItems(r, b, T);
+            }
+            T.setBossBar(enemy.healthReal);
+            break;
+      
+         default:
+            GS.enemy.killedCount++;
+            sprite.disableBody(true, true);
+            EPT._item.createItems(r, b, T);
+            
+            //check next level
+            break;
+      }
 
+      if(T.isNextLevel(GS)){
+         T.nextLevel();
+      }
+     
+    },
+    updateEnemyMove(GS){
       GS.enemy.list.filter((e) => {
-         if (e.sprite.body && e.sprite.body.touching.down) {
+         if (e.sprite.body) {// && e.sprite.body.touching.down
             if (e.sprite.body.right = 250) {
                e.sprite.body.velocity.x *= -1;
             }
             else if (e.sprite.body.left <= 0) {
                e.sprite.body.velocity.x *= -1;
             }
-            else {
-               e.sprite.body.velocity.x *= 1;
-            }
+            // else {
+            //    e.sprite.body.velocity.x *= 1;
+            // }
         }
      });
     }
