@@ -106,17 +106,24 @@ EPT._gameSettings = {
             },
             enemy: {
                 list: [
-                    { x: 100, y: 0, scale: 0.5, sprite: null, key: 'enemy', type: 'enemy' },
-                    { x: 350, y: 250, scale: 0.5, sprite: null, key: 'enemy', type: 'enemy' },
-                    { x: 400, y: 300, scale: 0.5, sprite: null, key: 'enemy', type: 'enemy' }
+                    { x: 100, y: 0, scale: 0.5, sprite: null, key: 'enemy-lv1', type: 'enemy' },
+                    { x: 350, y: 250, scale: 0.5, sprite: null, key: 'enemy-lv1', type: 'enemy' },
+                    { x: 400, y: 300, scale: 0.5, sprite: null, key: 'enemy-lv1', type: 'enemy' }
                 ],
+                nextLevels: {
+                    '4':'enemy-lv2',
+                    '8':'enemy-lv3',
+                    '12':'enemy-lv4'
+                },
                 killedCount: 0,
+                oldKey: 'enemy-lv1',
             },
             gameLevel: 1,
             isAllEnemyDeath: false,
             isAllBossesDeath: false,
             gameMaxLevel: 0,
-            checkCollider: [0, 0]
+            checkCollider: [0, 0],
+            
         }
 
     },

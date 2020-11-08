@@ -33,6 +33,7 @@ class Preloader extends Phaser.Scene {
 		var bossPath =  'media/img/shooting-to-stars/boss/';
 		var weaponPath =  'media/img/shooting-to-stars/weapon/';
 		var sheetPath =  'media/img/shooting-to-stars/sheet/';
+		var enemyNew =  'media/img/shooting-to-stars/enemy/';
 		var heroPath =  sheetPath + '/CharacterLevelDesign/';
 
 		var resources = {
@@ -43,6 +44,11 @@ class Preloader extends Phaser.Scene {
 				['bomb', pathAssets + 'bomb.png'],
 				['enemy', pathAssets_happyboy +'happy-boy.svg'],
 
+				//enemy new
+				['enemy-lv1', enemyNew +'jellyfish.svg'],
+				['enemy-lv2', enemyNew +'maybug.svg'],
+				['enemy-lv3', enemyNew +'orange-beetle.svg'],
+				['enemy-lv4', enemyNew +'spider.svg'],
 				
 				['bullet', weaponPath + 'bullet.svg'],
 				['gun', weaponPath + 'gun.svg'],

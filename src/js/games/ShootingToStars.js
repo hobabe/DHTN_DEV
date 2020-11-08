@@ -273,10 +273,12 @@ class ShootingToStars extends Phaser.Scene {
     }
 
     createInitEnemy() {
+        var keyEnemy = GS.enemy.nextLevels[GS.gameLevel];
+        GS.enemy.oldKey = keyEnemy? keyEnemy: GS.enemy.oldKey;
         GS.enemy.list.filter((enemy) => {
-            enemy.sprite = this.physics.add.sprite(enemy.x, enemy.y, enemy.key);
+            enemy.sprite = this.physics.add.sprite(enemy.x, enemy.y, GS.enemy.oldKey);
             enemy.sprite.setScale(enemy.scale).refreshBody();
-            enemy.sprite.setBodySize(50, 140)
+            enemy.sprite.setBodySize(60, 80)
             enemy.sprite.setBounce(1, 0);
             enemy.sprite.setCollideWorldBounds(true);
             enemy.sprite.setVelocityX(100);
