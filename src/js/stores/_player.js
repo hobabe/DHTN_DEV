@@ -38,7 +38,7 @@ EPT._player = {
 
     updateWeapon(GS, T){
         GS.players.list.filter((player)=>{
-            if(player.value.life >= 0){
+            if(!player.isDeath){
                 if(player.weapon.using=='sword'){
                     EPT._player.slicing(GS, player);
                 } else {
@@ -142,6 +142,7 @@ EPT._player = {
         }
         else 
         {
+            player.isDeath = true;
             player.text.lifeText.setText('Life: <Death>');
             sprite.disableBody(true, true);
             T.checkGameOver(GS);

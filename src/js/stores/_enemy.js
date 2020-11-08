@@ -10,6 +10,27 @@ EPT._enemy = {
         GS.gameOver = true;
 
     },
+    drawSkill(sprite, skillCf, GS, T) {
+       GS.bosses.funcUseSkill = setInterval(() => {
+          //time per attack skill
+          var bomb = GS.bombs.create(sprite.x, sprite.y, skillCf.keyArt);
+          bomb.setScale(skillCf.scale);//.setBounce(1)
+          bomb.setTint(bomb, 0xa6ff6f).setDepth(2);
+          bomb.angle = skillCf.angle;
+          // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+ 
+         GS.players.list.filter((player) => {
+               //player vs enemy
+               T.physics.add.collider(player.sprite, bomb, function () {
+                  EPT._player.beKilled(player, {sprite: bomb}, GS, T);
+              });
+         })
+          //timeout of Gravity
+          setTimeout(() => {
+             bomb.allowGravity = false;
+          }, skillCf.delayGravity ? skillCf.delayGravity : 0);
+       }, skillCf.timePerAttack);
+    },
     updateBossMove(GS){
        if(GS.bosses.meet){
          if (GS.bosses.sprite.body.touching.down) {

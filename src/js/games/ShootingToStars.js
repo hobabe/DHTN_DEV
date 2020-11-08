@@ -111,6 +111,7 @@ class ShootingToStars extends Phaser.Scene {
             //clear boss existed
             if (GS.bosses.sprite) {
                 GS.bosses.sprite.destroy();
+                clearInterval(GS.bosses.funcUseSkill);
             }
 
             //check boss map
@@ -275,7 +276,7 @@ class ShootingToStars extends Phaser.Scene {
         GS.enemy.list.filter((enemy) => {
             enemy.sprite = this.physics.add.sprite(enemy.x, enemy.y, enemy.key);
             enemy.sprite.setScale(enemy.scale).refreshBody();
-            enemy.sprite.setBodySize(70, 200)
+            enemy.sprite.setBodySize(50, 140)
             enemy.sprite.setBounce(1, 0);
             enemy.sprite.setCollideWorldBounds(true);
             enemy.sprite.setVelocityX(100);
@@ -361,17 +362,12 @@ class ShootingToStars extends Phaser.Scene {
             }, null, T);
         });
 
-        T.bossSkills();
+        T.bossSkills(boss, GS, T);
     }
 
-    bossSkills() {
-        var x = Phaser.Math.Between(400, 600);
-
-        var bomb = GS.bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocityX(100);
-        bomb.allowGravity = false;
+    bossSkills(bossCf, GS, T) {
+        //load skill
+        EPT._enemy.drawSkill(GS.bosses.sprite, bossCf.skill, GS, T);
     }
 
     //------- player create -----
