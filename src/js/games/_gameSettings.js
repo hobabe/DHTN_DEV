@@ -2,7 +2,7 @@ EPT._gameSettings = {
     ShootingToStars(scene) {
         return {
             players: {
-                list: [this.player(0, 16), this.player(1,600)],
+                list: [this.player(0, 16, '0x8effef'), this.player(1,600, '0xffd700')],
                 jumpHeight: -280,
                 keySheet: 'hero-level-'
             },
@@ -75,12 +75,19 @@ EPT._gameSettings = {
             items: {
                 infoList:[
                     {
-                        type: 'gun', scale : 0.2
+                        type: 'gun', scale : 0.3
+                    },
+                    {
+                        type: 'sword', scale : 0.3
                     },
                     {
                         type: 'star', scale : 1
                     },
+                    {
+                        type: 'bullet', scale : 0.3
+                    },
                 ],
+                percents: [1,1,1,1,0,0,2,2,3,1,1],
                 group: null
             },
             enemy: {
@@ -99,7 +106,7 @@ EPT._gameSettings = {
         }
 
     },
-    player(index, x) {
+    player(index, x, tInt) {
         return {
             name: 'player_'+index,
             sprite: null, joystick: null, joyKeys: [],
@@ -107,7 +114,7 @@ EPT._gameSettings = {
             weapon: {
                 swordRight: null,
                 swordLeft: null,
-                using: 'gun',
+                using: 'sword',
                 bulletCount: 1,
                 swordRange: 100,
                 playerPointAttack: 0,
@@ -121,7 +128,9 @@ EPT._gameSettings = {
                 speed: {
                     run: 100,
                     attack: 50
-                }
+                },
+                revivalX: 20,
+                tInt: tInt
             },
             text: {
                 x: x,

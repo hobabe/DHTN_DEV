@@ -109,7 +109,7 @@ EPT._player = {
 
     }, 
     
-    beKilled(player, enemy, T)
+    beKilled(player, enemy, GS, T)
     {
         //check
         if(player.isUred){
@@ -122,10 +122,13 @@ EPT._player = {
         var sprite = player.sprite;
         if(player.value.life > 0)
         {
+            player.weapon.using = 'sword';
             sprite.disableBody(true, true);
             player.value.life -= 1;
             player.text.lifeText.setText('Life: '+ player.value.life);
-            sprite.enableBody(true, player.sprite.body.x, 0, true, true);
+
+            sprite.enableBody(true, player.value.revivalX, 400, true, true);
+            EPT._player.setTint(sprite, player.value.tInt);
 
             this.blinkEffect(player, T);
 
@@ -133,7 +136,8 @@ EPT._player = {
             player.value.level = 0;
             player.value.speed.run = 100;
             player.weapon.bulletCount = 1;
-            T.createBullets(player, T)
+            
+            T.createBullets(player, GS, T);
         }
         else 
         {
@@ -144,6 +148,8 @@ EPT._player = {
             // sprite.anims.play('down');
             // sprite.setTint(0xff0000);
             // EPT._player.gameOver(GS, T)
+
+            T.checkGameOver(GS);
         }
     },
     fireBullet(GS, player)
