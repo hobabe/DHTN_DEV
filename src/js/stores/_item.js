@@ -19,15 +19,16 @@ EPT._item = {
             // bomb.allowGravity = false;
         }
     },
-    collectItem(player, item, itemRan, T) {
-        this.collectStar_UpdateInfo(player, itemRan.type, T)
+    collectItem(player, item, itemRan, GS, T) {
+        this.collectStar_UpdateInfo(player, itemRan.type, GS, T)
 
         item.destroy();
 
         // if (GS.stars.countActive(true) === 0)
     },
-    collectStar_UpdateInfo(player, typeCollect, T) {
+    collectStar_UpdateInfo(player, typeCollect, GS, T) {
         var scoreAdd = 0;
+        console.log(typeCollect);
         switch (typeCollect) {
             case 'star':
                 player.value.starCount++;
@@ -43,12 +44,29 @@ EPT._item = {
             case 'gun':
                 player.weapon.using = typeCollect;
                 player.weapon.bulletCount++;
-                T.createBullets(player, T)
+                T.createBullets(player, GS, T);
+
+                GS.enemy.list.filter((enemy) => {
+                    T.createBulletsCollision(player, enemy, GS, T);
+                })
+
+                player.swordLeft.disableBody(true, true);
+                player.swordRight.disableBody(true, true);
+                break;
             case 'sword':
                 player.weapon.using = typeCollect;
-            case 'life':
+                // player.weapon.bulletCount = 1;
+
+                // T.createBullets(player, GS, T);
+                // GS.enemy.list.filter((enemy) => {
+                //     T.createBulletsCollision(player, enemy, GS, T);
+                // })
+                break;
+            case 'bullet':
                 player.value.life++;
                 player.text.lifeText.setText('Life: ' + player.value.life)
+                break;
+            default:
                 break;
         }
         //  Add and update the score
@@ -57,16 +75,17 @@ EPT._item = {
         player.text.scoreText.setText('Score: ' + player.value.score);
     },
     createItems(x, y, T) {
-        var itemIndex = EPT._array.randomInt(1, 0);
-        console.log(itemIndex)
-        var itemRan = GS.items.infoList[itemIndex];
+        var itemIndex = EPT._array.randomPercentInt(GS.items.percents, 0);
+        const itemRan = GS.items.infoList[itemIndex];
 
-        var itemCreated = GS.items.group.create(x, y, itemRan.type).setScale(itemRan.scale);
+        var itemCreated = GS.items.group.create(x, y-10, itemRan.type).setScale(itemRan.scale);
+        T.physics.add.collider(itemCreated, GS.map.platforms);
+
         //player
         var _this = this;
         GS.players.list.filter((player) => {
             T.physics.add.overlap(player.sprite, itemCreated, function(a, itemCollect){
-                _this.collectItem(player, itemCreated, itemRan, T)
+                _this.collectItem(player, itemCollect, itemRan, GS, T)
             });
         });
     }
