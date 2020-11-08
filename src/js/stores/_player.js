@@ -38,7 +38,7 @@ EPT._player = {
 
     updateWeapon(GS, T){
         GS.players.list.filter((player)=>{
-            if(player.value.life> 0){
+            if(player.value.life >= 0){
                 if(player.weapon.using=='sword'){
                     EPT._player.slicing(GS, player);
                 } else {
@@ -136,6 +136,7 @@ EPT._player = {
             player.value.level = 0;
             player.value.speed.run = 100;
             player.weapon.bulletCount = 1;
+            player.text.levelText.setText('Level: ' + player.value.level);
             
             T.createBullets(player, GS, T);
         }
@@ -143,12 +144,6 @@ EPT._player = {
         {
             player.text.lifeText.setText('Life: <Death>');
             sprite.disableBody(true, true);
-            // sprite.body.setX = 0;
-            // sprite.body.setY = 0;
-            // sprite.anims.play('down');
-            // sprite.setTint(0xff0000);
-            // EPT._player.gameOver(GS, T)
-
             T.checkGameOver(GS);
         }
     },
@@ -195,6 +190,18 @@ EPT._player = {
             repeat: 20,
             onStart : ()=>{player.isUred = true;},
             onComplete: ()=>{player.isUred = false;},
+        });
+    },
+    blinkLevelUp(player, T){
+        player.sprite.setTint(0xffffff);
+        T.tweens.add({
+            targets: player.sprite,
+            tint : 0x279ee2,
+            duration: 100,
+            ease: 'Linear',
+            repeat: 20,
+            onStart : ()=>{player.isUred = true;},
+            onComplete: ()=>{player.isUred = false;player.sprite.setTint(player.text.color);},
         });
     }
 };

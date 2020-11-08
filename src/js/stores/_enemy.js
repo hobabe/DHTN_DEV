@@ -27,6 +27,11 @@ EPT._enemy = {
     },
     beKilled(enemy, weapon, type , GS, T)
     {
+        //check
+      if(enemy.isUred){
+         return;
+      }
+
       var sprite = enemy.sprite;
       
       //get position player to set drop item
@@ -48,6 +53,8 @@ EPT._enemy = {
       //check enemy type
       switch (enemy.type) {
          case 'boss': //check boss
+            this.blinkEffect(enemy, T);
+
             if(enemy.healthReal > 0) {
                enemy.healthReal--;
             } else {
@@ -85,6 +92,18 @@ EPT._enemy = {
             // }
         }
      });
-    }
+    },
+    blinkEffect(enemy, T){
+      enemy.sprite.setAlpha(0);
+      T.tweens.add({
+          targets: enemy.sprite,
+          alpha: 1,
+          duration: 100,
+          ease: 'Linear',
+          repeat: 20,
+          onStart : ()=>{enemy.isUred = true;},
+          onComplete: ()=>{enemy.isUred = false;},
+      });
+  },
 
 };
