@@ -31,7 +31,7 @@ var gameConfig = {
       default: 'arcade',
       arcade: {
           gravity: { y: 300 },
-          debug: true
+          debug: false
       }
   },
   scale: {
