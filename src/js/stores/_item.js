@@ -10,7 +10,6 @@ EPT._item = {
 
             });
 
-            T.nextLevel();
             // var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
             // var bomb = GS.bombs.create(x, 16, 'bomb');
@@ -20,48 +19,55 @@ EPT._item = {
             // bomb.allowGravity = false;
         }
     },
-    collectStar_UpdateInfo(player, typeCollect, T, indexPlayer) {
-        var scoreAdd = 0;
-        var GS = this.SeTinggame;
-        switch(typeCollect){
-            case 'star': 
-                scoreAdd = 10;
-                player.starCount++;
-                //check level : 3 stars increase level : max level is 5
-                if(player.starCount%3==0 && player.level < 5){
-                    player.level++;
-                    player.speed.run+=20;
-                    player.levelText.setText('Level: ' + player.level);
+    collectItem(player, item, itemRan, T) {
+        this.collectStar_UpdateInfo(player, itemRan.type, T)
 
-                    T.createInitAnimationMoving(indexPlayer);
+        item.destroy();
+
+        // if (GS.stars.countActive(true) === 0)
+    },
+    collectStar_UpdateInfo(player, typeCollect, T) {
+        var scoreAdd = 0;
+        switch (typeCollect) {
+            case 'star':
+                player.value.starCount++;
+                //check level : 3 stars increase level : max level is 5
+                if (player.value.starCount % 3 == 0 && player.value.level < 5) {
+                    player.value.level++;
+                    player.value.speed.run += 20;
+                    player.text.levelText.setText('Level: ' + player.value.level);
+
+                    T.createInitAnimationMoving(player.index);
                 }
                 break;
-            case 'life': 
-                scoreAdd = 10;
-                player.life++;
-                player.lifeText.setText('Life: '+ player.life)
-            break;
+            case 'gun':
+                player.weapon.using = typeCollect;
+                player.weapon.bulletCount++;
+                T.createBullets(player, T)
+            case 'sword':
+                player.weapon.using = typeCollect;
+            case 'life':
+                player.value.life++;
+                player.text.lifeText.setText('Life: ' + player.value.life)
+                break;
         }
         //  Add and update the score
-        player.score += scoreAdd;
-        player.scoreText.setText('Score: ' + player.score);
+        scoreAdd = 10;
+        player.value.score += scoreAdd;
+        player.text.scoreText.setText('Score: ' + player.value.score);
     },
-    createItems(_x, _y)
-    {
-        var indexItem = EPT._array.randomInt(1, 0);
-        GS.items[indexItem] = T.physics.add.group({
-            key: GS.items[indexItem].type,
-            repeat: 0,
-            setXY: { x: _x, y: _y-20},
-            setScale: { x: 0.2, y: 0.2}
-        });
-        
-        GS.items[indexItem].children.iterate((child) => {
+    createItems(x, y, T) {
+        var itemIndex = EPT._array.randomInt(1, 0);
+        console.log(itemIndex)
+        var itemRan = GS.items.infoList[itemIndex];
 
-            //  Give each star a slightly different bounce
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-
+        var itemCreated = GS.items.group.create(x, y, itemRan.type).setScale(itemRan.scale);
+        //player
+        var _this = this;
+        GS.players.list.filter((player) => {
+            T.physics.add.overlap(player.sprite, itemCreated, function(a, itemCollect){
+                _this.collectItem(player, itemCreated, itemRan, T)
+            });
         });
-        T.physics.add.collider(GS.items[indexItem], GS.map.platforms);
     }
 };

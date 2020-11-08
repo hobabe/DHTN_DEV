@@ -11,12 +11,11 @@ EPT._maps = {
             const level = 'level-' + (GS.gameLevel);
             //console.log(level);
             GS.map.platforms = GS.map.mapPhaser.createDynamicLayer(level, GS.map.tileset, 0, 0);
+            this.initCollision();
         } else {
             // setting create
             GS.map.platforms = GS.map.mapPhaser.createDynamicLayer('level-' + GS.gameLevel, GS.map.tileset, 0, 0);
         }
-
-        this.initCollision();
         GS.map.platforms.setCollisionByExclusion(-1, true);
         //=========== MY tool
         //
@@ -51,15 +50,16 @@ EPT._maps = {
             T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
         })
 
+        T.physics.add.collider(GS.items.group, GS.map.platforms);
         //enemy
-        GS.enemy.list.filter((e) => {
-            T.physics.add.collider(e.sprite, GS.map.platforms);
+        // GS.enemy.list.filter((e) => {
+        //     T.physics.add.collider(e.sprite, GS.map.platforms);
 
-            GS.players.list.filter((player)=>{
-                T.physics.add.collider(player.swordLeft, GS.map.platforms);
-                T.physics.add.collider(player.swordRight, GS.map.platforms);
-            })
-        });
+        //     GS.players.list.filter((player)=>{
+        //         T.physics.add.collider(player.swordLeft, GS.map.platforms);
+        //         T.physics.add.collider(player.swordRight, GS.map.platforms);
+        //     })
+        // });
         // T.physics.add.collider(GS.enemy1, GS.map.platforms);
         // T.physics.add.collider(GS.enemy2, GS.map.platforms);
         // T.physics.add.collider(GS.enemy3, GS.map.platforms);
@@ -67,7 +67,7 @@ EPT._maps = {
         
 
         //  Collide the player and the stars with the platforms
-        T.physics.add.collider(GS.stars, GS.map.platforms);
+        // T.physics.add.collider(GS.stars, GS.map.platforms);
         // T.physics.add.collider(GS.bombs, GS.platforms);
     },
     enemyTouchWall(a,b){
