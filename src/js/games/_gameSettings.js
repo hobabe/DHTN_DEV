@@ -21,17 +21,17 @@ EPT._gameSettings = {
                     {
                         name: 'shark',
                         pathId: 0, action: 'shark', letter: 'shark', count: 2, frameWidth: 30, frameHeight: 40, frameRate: 7, repeat: -1,
-                        x: 350, y: 100, duration: 19300, health: 5
+                        x: 350, y: 100, duration: 19300, health: 4, isUred: false
                     },
                     {
                         name: 'octopus',
                         pathId: 0, action: 'octopus', letter: 'octopus', count: 2, frameWidth: 30, frameHeight: 40, frameRate: 7, repeat: -1,
-                        x: 250, y: 200, duration: 17000, health: 10
+                        x: 250, y: 200, duration: 17000, health: 7, isUred: false
                     },
                     {
                         name: 'crab',
                         pathId: 0, action: 'crab', letter: 'crab', count: 3, frameWidth: 30, frameHeight: 40, frameRate: 7, repeat: -1,
-                        x: 350, y: 100, duration: 15500, health: 15
+                        x: 350, y: 100, duration: 15500, health: 9, isUred: false
                     }
                 ],
                 sprite: null,
@@ -41,7 +41,8 @@ EPT._gameSettings = {
                 healthMax: 0,
                 healthReal: 0,
                 type: 'boss',
-                isDeath: false
+                isDeath: false,
+                isUred: false
             },
             following: {
                 follower: null,
