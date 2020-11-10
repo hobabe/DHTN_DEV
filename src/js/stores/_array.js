@@ -4,7 +4,7 @@ EPT._array = {
     },
     randomPercentInt(percents, pecent) {
         var indexGet = Math.floor(Math.random() * (percents.length - 1 - 0 + 1)) + 0
-        return 2;//percents[indexGet];
+        return percents[indexGet];
     },
     initFramesWithKey(key, count) {
         var arr = [];

@@ -33,7 +33,7 @@ EPT._item = {
             case 'star':
                 player.value.starCount++;
                 //check level : 3 stars increase level : max level is 5
-                if (player.value.starCount % 3 == 0 && player.value.level < 5) {
+                if (player.value.starCount % 3 == 0 && player.value.level < 4) {
                     player.value.level++;
                     player.value.speed.run += 20;
                     player.text.levelText.setText('Level: ' + player.value.level);
