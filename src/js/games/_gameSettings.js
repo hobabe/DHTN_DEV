@@ -102,6 +102,7 @@ EPT._gameSettings = {
                     },
                 ],
                 percents: [1,1,1,1,0,0,2,2,3,1,1],
+                // percents: [2,2,2,2,2,2,2,2,2,2,2],
                 group: null
             },
             enemy: {

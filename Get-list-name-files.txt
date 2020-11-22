@@ -1,0 +1,15 @@
+.vscode
+favicon.ico
+folder-gen-short.bat
+fonts
+Get-list-name-files.bat
+Get-list-name-files.txt
+index.html
+LICENSE
+media
+README.md
+src
+_design
+_dev
+_doc
+_server

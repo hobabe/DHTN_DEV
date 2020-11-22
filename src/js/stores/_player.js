@@ -3,12 +3,31 @@ EPT._player = {
     setTint(sprite, color){
         sprite.setTint(color);
     },
+    
+    createPlayer(indexPlayer, GS, T) {
+        var player = GS.players.list[indexPlayer];
+
+        //------ Init item -------
+        T.createInitItem(player);
+        EPT._player.setTint(player.sprite, player.value.tInt);
+
+        //  Collide the player and the stars with the platforms
+        T.physics.add.collider(player.sprite, GS.platforms);
+
+        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar 
+        T.physics.add.overlap(player.sprite, GS.stars, function (a, b) {
+            EPT._item.collectStar(a, b);
+            EPT._item.collectStar_UpdateInfo(player, 'star', GS, T);
+        }, null, T);
+
+        T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
+    },
     playerMove(GS, T, indexPlayer) {
         var player = GS.players.list[indexPlayer];
         var sprite = player.sprite;
         var joystick = player.joystick;
         var joyKeys = player.joyKeys;
-        var keyPlay = 'p-' +indexPlayer+ '_'+ T.getKeyLevel(indexPlayer) + '_';
+        var keyPlay = 'p-' +indexPlayer+ '_'+ EPT._keyboard.getKeyLevel(indexPlayer, GS, TextTrack) + '_';
         if (GS.cursors[joystick[joyKeys[0]]].isDown) {
             sprite.setVelocityX(-player.value.speed.run);
 
@@ -130,7 +149,7 @@ EPT._player = {
             sprite.enableBody(true, player.value.revivalX, 400, true, true);
             EPT._player.setTint(sprite, player.value.tInt);
 
-            this.blinkEffect(player, T);
+            EPT._sprites.blinkEffect(player, T);
 
             //reset level
             player.value.level = 0;
@@ -138,14 +157,14 @@ EPT._player = {
             player.weapon.bulletCount = 1;
             player.text.levelText.setText('Level: ' + player.value.level);
             
-            T.createBullets(player, GS, T);
+            EPT._weapon.createBullets(player, GS, T);
         }
         else 
         {
             player.isDeath = true;
             player.text.lifeText.setText('Life: <Death>');
             sprite.disableBody(true, true);
-            T.checkGameOver(GS);
+            EPT._game.checkGameOver(GS, T);
         }
     },
     fireBullet(GS, player)
@@ -180,29 +199,5 @@ EPT._player = {
             T.physics.pause();
             GS.gameOver == true;
        }
-    },
-    blinkEffect(player, T){
-        player.sprite.setAlpha(0);
-        T.tweens.add({
-            targets: player.sprite,
-            alpha: 1,
-            duration: 100,
-            ease: 'Linear',
-            repeat: 20,
-            onStart : ()=>{player.isUred = true;},
-            onComplete: ()=>{player.isUred = false;},
-        });
-    },
-    blinkLevelUp(player, T){
-        player.sprite.setTint(0xffffff);
-        T.tweens.add({
-            targets: player.sprite,
-            tint : 0x279ee2,
-            duration: 100,
-            ease: 'Linear',
-            repeat: 20,
-            onStart : ()=>{player.isUred = true;},
-            onComplete: ()=>{player.isUred = false;player.sprite.setTint(player.text.color);},
-        });
     }
 };

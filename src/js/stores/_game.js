@@ -1,4 +1,4 @@
-EPT._maps = {
+EPT._game = {
     generateMaps(GS, T) {
 
         //========== TILED
@@ -45,6 +45,20 @@ EPT._maps = {
         //  GS.map.platforms.create(750, 220, 'ground').setTint(0x7259ff);
     },
 
+    createColision(GS, T) {
+
+        //init collision
+        GS.enemy.list.filter((enemy) => {
+            GS.players.list.filter((player) => {
+                //player vs enemy
+                EPT._enemy.createInitEnemyCollision(player, enemy, GS, T);
+
+                //enemy vs weapon
+                EPT._weapon.createBulletsCollision(player, enemy, GS, T);
+                EPT._weapon.createSwordCollision(player, enemy, GS, T);
+            })
+        });
+    },
     initCollision(){
         GS.players.list.filter((player)=>{
             T.physics.add.collider(player.sprite, GS.map.platforms, this.enemyTouchWall);
@@ -74,5 +88,27 @@ EPT._maps = {
         if(a.body.onWall()){
             console.log('touch');
         }
+    },
+    checkGameOver(GS, T) {
+
+        var countDeath = 0;
+        GS.players.list.filter((player) => {
+            if (player.value.life == 0) {
+                countDeath++;
+                console.log(player.index + ' death');
+            }
+        });
+
+        if (countDeath == GS.players.list.length) {
+            T.add.text(GS.config.width / 2 - 200, GS.config.height / 2, 'GAME OVER', { fontSize: '62px', fill: '#ffee23' });
+        }
+    },
+    
+    isNextLevel(GS) {
+        const condi1 = GS.map.type == 'boss' && GS.bosses.healthReal == 0 && GS.enemy.list.length == GS.enemy.killedCount;
+        const condi2 = GS.map.type == 'enemy';
+        const condi3 = GS.enemy.list.length == GS.enemy.killedCount
+
+        return condi1 && condi3 || condi2 && condi3;
     }
 };

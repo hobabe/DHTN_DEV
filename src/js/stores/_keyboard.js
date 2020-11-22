@@ -31,6 +31,45 @@ EPT._keyboard = {
 
         player.joyKeys = joysticks;
         player.joystick = joy;
+    },
+    
+
+    getKeyLevel(indexPlayer, GS, T) {
+        var player = GS.players.list[indexPlayer];
+        return GS.players.keySheet + (player.value.level + 1);
+    },
+    createInitAnimationMoving(indexPlayer, GS, T) {
+        var player = GS.players.list[indexPlayer];
+        var joyKeys = player.joyKeys;
+        var textureLevel = this.getKeyLevel(indexPlayer, GS, T);
+        var keyPlay = 'p-' + indexPlayer + '_' + textureLevel + '_';
+
+        //  Our player animations, turning, walking left and walking right.
+        T.anims.create({//left
+            key: keyPlay + joyKeys[0],
+            frames: T.anims.generateFrameNumbers(textureLevel, { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        T.anims.create({//up
+            key: keyPlay + joyKeys[1],
+            frames: [{ key: textureLevel, frame: 4 }],
+            frameRate: 20
+        });
+
+        T.anims.create({//right
+            key: keyPlay + joyKeys[2],
+            frames: T.anims.generateFrameNumbers(textureLevel, { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        T.anims.create({//down
+            key: keyPlay + joyKeys[3],
+            frames: [{ key: textureLevel, frame: 4 }],
+            frameRate: 20
+        });
     }
 
 

@@ -38,17 +38,17 @@ EPT._item = {
                     player.value.speed.run += 20;
                     player.text.levelText.setText('Level: ' + player.value.level);
 
-                    T.createInitAnimationMoving(player.index);
-                    EPT._player.blinkLevelUp(player, T);
+                    EPT._keyboard.createInitAnimationMoving(player.index, GS, T);
+                    EPT._sprites.blinkLevelUp(player, T);
                 }
                 break;
             case 'gun':
                 player.weapon.using = typeCollect;
                 player.weapon.bulletCount++;
-                T.createBullets(player, GS, T);
+                EPT._weapon.createBullets(player, GS, T);
 
                 GS.enemy.list.filter((enemy) => {
-                    T.createBulletsCollision(player, enemy, GS, T);
+                    EPT._weapon.createBulletsCollision(player, enemy, GS, T);
                 });
 
                 player.swordLeft.disableBody(true, true);

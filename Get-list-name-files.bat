@@ -1,0 +1,1 @@
+dir /b > Get-list-name-files.txt
